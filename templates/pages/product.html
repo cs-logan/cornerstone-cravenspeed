@@ -74,8 +74,9 @@
   const archetypeTitleString = isArchetype ? title : getArchetypeString(title);
   
   const cdnRoot = 'https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/';
-  const archetypeUrlSnippet = archetypeTitleString.toLowerCase().replace(/ /g, '-');
+  const archetypeUrlSnippet = archetypeTitleString.toLowerCase().replace(/& ?/g, '').replace(/ /g, '-');
   const archetypeDataUrl = cdnRoot + archetypeUrlSnippet + '.js';
+  console.log('url:', archetypeDataUrl);
 
   const script = document.createElement('script');
   script.src = archetypeDataUrl;
