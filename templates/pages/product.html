@@ -74,7 +74,7 @@
   const archetypeTitleString = isArchetype ? title : getArchetypeString(title);
   
   const cdnRoot = 'https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/';
-  const archetypeUrlSnippet = archetypeTitleString.toLowerCase().replace(/& ?/g, '').replace(/ /g, '-');
+  const archetypeUrlSnippet = archetypeTitleString.toLowerCase().replace(/[/&]/g, ' ').replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-');
   const archetypeDataUrl = cdnRoot + archetypeUrlSnippet + '.js';
   console.log('url:', archetypeDataUrl);
 
@@ -86,3 +86,6 @@
 {{/partial}}
 
 {{> layout/base}}
+
+"ACC/IG Power Controller" => "acc-ig-power-controller"
+"ACC &IG Power Controller" => "acc-ig-power-controller"
