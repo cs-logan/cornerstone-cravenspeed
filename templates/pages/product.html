@@ -76,10 +76,15 @@
   const cdnRoot = 'https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/';
   const archetypeUrlSnippet = archetypeTitleString.toLowerCase().replace(/[/&]/g, ' ').replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-');
   const archetypeDataUrl = cdnRoot + archetypeUrlSnippet + '.js';
-  console.log('url:', archetypeDataUrl);
-
   const script = document.createElement('script');
   script.src = archetypeDataUrl;
+  script.onload = () => {
+    window.cdnScriptLoaded = true;
+    document.dispatchEvent(new CustomEvent('cdnScriptLoaded'));
+  };
+  script.onerror = () => {
+    throw new Error('Failed to load archetype data from CDN.');
+  };
   document.body.appendChild(script);
 </script>
 

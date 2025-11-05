@@ -102,25 +102,33 @@ export default class Product extends PageManager {
   }
 
   onReady() {
+    const initialize = () => {
+        console.log('updated:',last_update)
+        if (!isArchetype) {
+            // const title = this.contentElements.title.dataset.productTitle;
+            this.aliasVehicle = this.parseVehicleString(title);
+        }
 
-    if (!isArchetype) {
-      // const title = this.contentElements.title.dataset.productTitle;
-      this.aliasVehicle = this.parseVehicleString(title);
+        this.gallery = new CsGallery({
+            containerClass: 'cs-gallery-wrapper',
+            altCaption: true
+        });
+
+        // initialize the product rating
+        this.addRating();
+
+        // initialize the select elements
+        this.initSelections();
+
+        // initialize event listeners
+        this.bindEvents();
+    };
+
+    if (window.cdnScriptLoaded) {
+        initialize();
+    } else {
+        document.addEventListener('cdnScriptLoaded', initialize);
     }
-
-    this.gallery = new CsGallery({
-      containerClass: 'cs-gallery-wrapper',
-      altCaption: true
-    });
-
-    // initialize the product rating
-    this.addRating();
-
-    // initialize the select elements
-    this.initSelections();
-
-    // initialize event listeners
-    this.bindEvents();
   }
 
   bindEvents() {
@@ -547,7 +555,6 @@ export default class Product extends PageManager {
     let opt1Data = option_data[this.gen];
     if (isArchetype) {
       // not an alias product
-      console.log('loadOpt1 Archetype')
       if (opt1Data) {
         if (opt1Data.length === 1 && opt1Data[0].name.trim() === '') {
           this.endPointIndex = opt1Data[0].index;
