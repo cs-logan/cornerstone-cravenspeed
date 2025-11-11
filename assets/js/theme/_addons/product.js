@@ -105,7 +105,6 @@ export default class Product extends PageManager {
     const initialize = () => {
         console.log('updated:',last_update)
         if (!isArchetype) {
-            // const title = this.contentElements.title.dataset.productTitle;
             this.aliasVehicle = this.parseVehicleString(title);
         }
 
@@ -814,16 +813,21 @@ export default class Product extends PageManager {
     }
   }
 
-  // clear all of the content elements in this.contentElements
-  clearContent() {
-    for (const element in this.contentElements) {
-      if (element !== 'moreProducts' && element !== 'moreProductsHeader')
-        this.contentElements[element].innerHTML = '';
+clearContent() {
+  for (const element in this.contentElements) {
+    if (
+      element !== 'moreProducts' && 
+      element !== 'moreProductsHeader' && 
+      element !== 'title'
+    ) {
+      this.contentElements[element].innerHTML = '';
     }
-    this.clearMessages();
-    this.gallery.destroy();
-    this.gallery = null;
   }
+  
+  this.clearMessages();
+  this.gallery.destroy();
+  this.gallery = null;
+}
 
   // load the images for the endpoint product
   updateGallery() {
