@@ -42,7 +42,9 @@
         </form>
         <div id="product-fitment-notes"></div>
         {{> components/products-cs/modals/scratchAndDent}}
-        <a id="product-add-button" type="button">{{lang 'products.add_to_cart'}}</a>
+        <div id="add-button-wrapper">
+          <a id="product-add-button" type="button">{{lang 'products.add_to_cart'}}</a>
+        </div>
         {{> components/products-cs/modals/stockNotification}}
       </div>
       <div id="product-badges"></div>

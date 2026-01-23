@@ -629,14 +629,35 @@ html {
       text-align: center;
     }
 
+    #add-button-wrapper {
+      height: $product-select-height;
+      width: 100%;
+    }
+
     a {
+      display: block;
+      height: $product-select-height;
       background-color: stencilColor('color-secondaryDark');
       line-height: $product-select-height;
       border-radius: $button-border-radius;
       color: stencilColor('color-infoLight');
       text-decoration: none;
       text-align: center;
-      vertical-align: middle;
+
+      &.is-sticky {
+        position: fixed;
+        width: calc(100% - (#{$mobile-spacing} * 2));
+        bottom: 32px;
+        z-index: 10;
+        
+        @include breakpoint ('medium') {
+          position: static;
+          bottom: auto;
+          width: 100%;
+          z-index: auto;
+        }
+      }
+
     }
 
     a.enabled {

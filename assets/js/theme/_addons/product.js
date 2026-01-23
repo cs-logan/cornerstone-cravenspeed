@@ -119,6 +119,9 @@ export default class Product extends PageManager {
         // initialize the select elements
         this.initSelections();
 
+        // initialize the add to cart observer
+        this.initAddToCartObserver();
+
         // initialize event listeners
         this.bindEvents();
     };
@@ -202,6 +205,30 @@ export default class Product extends PageManager {
       this.contentElements.productMessages.classList.add('error');
       this.contentElements.productMessages.style.visibility = 'visible';
     }
+  }
+  // Setup for the sticky add to cart button
+  initAddToCartObserver() {
+    const sentinel = document.getElementById('add-button-wrapper');
+
+    if (sentinel.length === 0) return;
+
+    const options = {
+      root: null,
+      threshold: 1,
+      rootMargin: "0px 0px -32px 0px"
+    }
+
+    const callback = (entries) => {
+      entries.forEach(entry => {
+        const isVisible = entry.isIntersecting;
+        const isAboveViewport = entry.boundingClientRect.top < 0;
+        const shouldBeSticky = isVisible || isAboveViewport;
+        this.addToCartButton.classList.toggle('is-sticky', shouldBeSticky)
+      });
+    };
+
+    this.observer = new IntersectionObserver(callback, options);
+    this.observer.observe(sentinel);
   }
 
   // Add fitment notes to the product page if they exist
