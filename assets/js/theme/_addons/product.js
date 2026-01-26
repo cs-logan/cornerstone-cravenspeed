@@ -149,28 +149,34 @@ export default class Product extends PageManager {
       }
     }
 
-    this.addToCartButton.addEventListener('click', () => {
-        if (this.addToCartButton.classList.contains('is-sticky') && !this.addToCartButton.classList.contains('enabled')) {
-            const productSelection = document.querySelector('#product-selection');
-            if (productSelection) {
-                const header = document.querySelector('.header');
-                const headerHeight = header ? header.offsetHeight : 0;
-                const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                const elementPosition = productSelection.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - remInPixels;
+    this.addToCartButton.addEventListener('click', (event) => {
+        // If the button is disabled, prevent default and maybe do the scroll action.
+        if (!this.addToCartButton.classList.contains('enabled')) {
+            event.preventDefault(); // Stop the refresh!
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
+            // If it's the sticky button, then do the scroll and blink.
+            if (this.addToCartButton.classList.contains('is-sticky')) {
+                const productSelection = document.querySelector('#product-selection');
+                if (productSelection) {
+                    const header = document.querySelector('.header');
+                    const headerHeight = header ? header.offsetHeight : 0;
+                    const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                    const elementPosition = productSelection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight - remInPixels;
 
-            const nextStepElement = document.querySelector('.next-step');
-            if (nextStepElement) {
-                nextStepElement.classList.add('blink-me');
-                setTimeout(() => {
-                    nextStepElement.classList.remove('blink-me');
-                }, 2000); // Animation duration
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+
+                const nextStepElement = document.querySelector('.next-step');
+                if (nextStepElement) {
+                    nextStepElement.classList.add('blink-me');
+                    setTimeout(() => {
+                        nextStepElement.classList.remove('blink-me');
+                    }, 2000);
+                }
             }
         }
     });
