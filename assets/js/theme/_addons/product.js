@@ -149,6 +149,32 @@ export default class Product extends PageManager {
       }
     }
 
+    this.addToCartButton.addEventListener('click', () => {
+        if (this.addToCartButton.classList.contains('is-sticky') && !this.addToCartButton.classList.contains('enabled')) {
+            const productSelection = document.querySelector('#product-selection');
+            if (productSelection) {
+                const header = document.querySelector('.header');
+                const headerHeight = header ? header.offsetHeight : 0;
+                const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                const elementPosition = productSelection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - remInPixels;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+
+            const nextStepElement = document.querySelector('.next-step');
+            if (nextStepElement) {
+                nextStepElement.classList.add('blink-me');
+                setTimeout(() => {
+                    nextStepElement.classList.remove('blink-me');
+                }, 2000); // Animation duration
+            }
+        }
+    });
+
     this.instructionsTab.addEventListener('click', this.instructionsTabHandler);
     this.rating.addEventListener('click', this.ratingHandler);
     this.blemAcceptButton.addEventListener('click', this.blemAcceptHandler);
@@ -512,7 +538,6 @@ export default class Product extends PageManager {
         // if false was passed disable the button
         this.addToCartButton.classList.remove('enabled');
         this.addToCartButton.href = '';
-        this.addToCartButton.style.pointerEvents = 'none';
       }
     }
   }

@@ -2917,3 +2917,13 @@ li.mobile-number {
     color: #c13119;
   }
 }
+
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.blink-me {
+  animation: blink 1s 2;
+}
