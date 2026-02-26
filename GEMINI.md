@@ -51,6 +51,7 @@
 2.  **Handlebars Logic:** When editing templates, ensure variables match the BigCommerce [Stencil Object Reference](https://developer.bigcommerce.com/docs/storefront/stencil/themes/context/object-reference).
 3.  **Styling:** Prefer adding styles to custom.scss to avoid changes to default files
 4.  **Objectivity:** Prioritize standard BigCommerce developer best practices and verifiable Stencil framework documentation.
+5. **Sample Data** There are sample files in /assets/js/theme/_addons/product/sample-data. These are for reference only and are copies of files available on the digital ocean cdn. These files cannot be changed!
 
     * HTML Priorities
         * When editing html prioritize the following:
@@ -71,6 +72,11 @@
     * The modal template component is located at /templates/components/products-cs/modals/cart-preview.html
     * For appropriate feedback, the modal should open immediately and display a loading symbol while the cart content is fetched.
     * The logic for the modal should be contained in cartManager.js to keep the rest of the module independent from BigCommerce / Stencil.
+
+### Resolve Bug Archetype doesn't use options
+    * Currently stateManager and the addToCart ui module do not account for a unique scenario regarding aliasses and archetypes. 
+    * The code can't handle when options aren't needed, the archetype data will pass the alias json file as a generation key.
+    * The code needs to account for this scenario
 
 
 ## 📜 Full Context Request
@@ -101,5 +107,7 @@
     *the options manager is functioning well now we need to handle what happens once the selection process is complete. We are strategizing how to handle that. 
     *We have completed most of the "above the fold" content including the image gallery, the product header, and the alias selection section. The last step for this phase is to hook up the add to cart button and add the selected alias to the cart.
     *We have completed to addToCart functionality, but are attempting to set up a modal that opens when an item is added. 
+    *We have completed the cart preview modal
+    * We are now working on a bug regarding options
     
 

@@ -74,7 +74,14 @@ export default class StateManager {
             } else if (currentLevel.models && currentLevel.models[selection]) {
                 nextLevel = currentLevel.models[selection];
             } else if (currentLevel.generations && currentLevel.generations[selection]) {
-                nextLevel = currentLevel.generations[selection];
+                if (selection.endsWith('.json')) {
+                    return selection;
+                }
+                const nextNode = currentLevel.generations[selection];
+                if (typeof nextNode === 'string' && nextNode.endsWith('.json')) {
+                    return nextNode;
+                }
+                nextLevel = nextNode;
             } else if (currentLevel.options && currentLevel.options[selection]) {
                 if (typeof selection === 'string' && selection.endsWith('.json')) {
                     return selection;
@@ -137,7 +144,8 @@ export default class StateManager {
         // 3. Generation
         if (currentNode) {
             availableOptions.generation = getOptions(currentNode, 'generations');
-            currentNode = (selections.generation && currentNode.generations) ? currentNode.generations[selections.generation] : null;
+            const nextNode = (selections.generation && currentNode.generations) ? currentNode.generations[selections.generation] : null;
+            currentNode = (typeof nextNode === 'object') ? nextNode : null;
         }
 
         // 4. Option

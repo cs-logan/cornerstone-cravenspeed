@@ -1,0 +1,110 @@
+{
+  "archetype_status": "Active",
+  "option_title": "Specific Fitment",
+  "sub_option_title": "Color",
+  "archetype_name": "Battery Shield",
+  "parent_product_url": "/the-battery-shield/",
+  "universal_product": false,
+  "image_array": {
+    "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56000/nd-miata-battery-cover-thumbnail__39529.1600708871__22268.1703622625.1280.1280.jpg?c=2",
+    "description": "Battery Shield, lightbox image",
+    "display_description": false,
+    "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56000/nd-miata-battery-cover-thumbnail__39529.1600708871__22268.1703622625.133.100.jpg?c=2",
+    "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56000/nd-miata-battery-cover-thumbnail__39529.1600708871__22268.1703622625.640.480.jpg?c=2",
+    "secondary_images_list": [
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56681/battery_shield_Z4Z5ZLW_16548__32245.1703622625.1280.1280.jpg?c=2",
+        "description": "Battery Shield, installed on MX-5 Miata, next to intake cover",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56681/battery_shield_Z4Z5ZLW_16548__32245.1703622625.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56681/battery_shield_Z4Z5ZLW_16548__32245.1703622625.640.480.jpg?c=2",
+        "sort_order": 1
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56682/battery_shield_9J9JYK6_16548__48874.1703622625.1280.1280.jpg?c=2",
+        "description": "Battery Shield, installed on MX-5 Miata, sleek vinyl layer",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56682/battery_shield_9J9JYK6_16548__48874.1703622625.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56682/battery_shield_9J9JYK6_16548__48874.1703622625.640.480.jpg?c=2",
+        "sort_order": 2
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56683/battery_shield_UX916C0_16548__54501.1703622625.1280.1280.jpg?c=2",
+        "description": "Battery Shield, installed on MX-5 Miata, top view",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56683/battery_shield_UX916C0_16548__54501.1703622625.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56683/battery_shield_UX916C0_16548__54501.1703622625.640.480.jpg?c=2",
+        "sort_order": 3
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56684/battery_shield_W8T8099_16548__59688.1703622626.1280.1280.jpg?c=2",
+        "description": "Battery Shield, installed on MX-5 Miata, zoomed out view",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56684/battery_shield_W8T8099_16548__59688.1703622626.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56684/battery_shield_W8T8099_16548__59688.1703622626.640.480.jpg?c=2",
+        "sort_order": 4
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56685/battery_shield_UJ12314_16548__99829.1703622626.1280.1280.jpg?c=2",
+        "description": "Battery Shield, installed on MX-5 Miata covers the battery",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56685/battery_shield_UJ12314_16548__99829.1703622626.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56685/battery_shield_UJ12314_16548__99829.1703622626.640.480.jpg?c=2",
+        "sort_order": 5
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56686/battery_shield_X1BQHZM_16548__26712.1703622626.1280.1280.jpg?c=2",
+        "description": "Battery Shield, installed on MX-5 Miata, cleans up the engine bay",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56686/battery_shield_X1BQHZM_16548__26712.1703622626.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56686/battery_shield_X1BQHZM_16548__26712.1703622626.640.480.jpg?c=2",
+        "sort_order": 6
+      }
+    ],
+    "image_count": 7
+  },
+  "archetype_instructions_url": "https://www.cravenspeed.com/nd-mx-5-miata-battery-shield/",
+  "blem_dict": {
+
+  },
+  "archetype_average_review": "4.10",
+  "archetype_review_count": 10,
+  "search_thumb_image_url": "https://cdn11.bigcommerce.com/s-351ed/products/16548/images/56000/nd-miata-battery-cover-thumbnail__39529.1600708871__22268.1703622625.1280.1280.jpg?c=2",
+  "make_model_index": {
+    "mazda": {
+      "name": "Mazda",
+      "models": {
+        "mazdamx-5miatarf": {
+          "name": "MX-5 Miata RF",
+          "generations": {
+            "the-battery-shield-for-mazda-mx-5-miata-rf-4th-gen-nd.json": {
+              "name": "4th gen ND 2017 to 2025"
+            }
+          }
+        },
+        "mazdamx-5miata": {
+          "name": "MX-5 Miata",
+          "generations": {
+            "the-battery-shield-for-mazda-mx-5-miata-4th-gen-nd.json": {
+              "name": "4th gen ND 2016 to 2025"
+            }
+          }
+        }
+      }
+    },
+    "ram": {
+      "name": "Ram",
+      "models": {
+        "ram1500": {
+          "name": "1500",
+          "generations": {
+            "battery-shield-for-ram-1500-5th-gen.json": {
+              "name": "5th gen 2019 to 2026"
+            }
+          }
+        }
+      }
+    }
+  },
+  "last_json_update": "02/25/2026 08:20PM Pac"
+}
