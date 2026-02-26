@@ -2,9 +2,6 @@
     <h2 class="modal-header-title">
         {{lang 'cart.added_to_cart.what_next' num_products=cart.quantity}}
     </h2>
-    <button class="modal-close" type="button" title="{{lang 'common.close'}}" {{#if prevent_quick_search_close}}data-prevent-quick-search-close{{/if}}>
-        <span aria-hidden="true">&#215;</span>
-    </button>
 </div>
 
 <div class="modal-body">
@@ -33,15 +30,21 @@
                             {{> components/common/login-for-pricing}}
                         {{/or}}
                     </div>
+                    {{#each options}}
+                        <dl class="productView-info">
+                            <dt class="productView-info-name">
+                                {{name}}
+                            </dt>
+                            <dd class="productView-info-value">
+                                {{> components/common/product-options}}
+                            </dd>
+                        </dl>
+                    {{/each}}
                 </div>
             {{/with}}
         </section>
 
         <section class="previewCartCheckout">
-            <p data-cart-quantity="{{cart.quantity}}">
-                {{lang 'cart.added_to_cart.your_cart_contains' num_products=cart.quantity}}
-            </p>
-
             <p class="previewCartCheckout-subtotal">
                 {{lang 'cart.added_to_cart.order_subtotal'}}
                 <strong class="previewCartCheckout-price">

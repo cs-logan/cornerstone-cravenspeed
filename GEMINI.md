@@ -66,6 +66,12 @@
     * Use form validation to ensure the form cannot be submitted unless all appropriate options are selected (an alias is selected)
     * Attempt to add the item in the most "BigCommerce/Stencil" way
 
+### Cart Preview modal
+    * When the user Adds an item to the cart a modal should open. The modal should contain basic cart information
+    * The modal template component is located at /templates/components/products-cs/modals/cart-preview.html
+    * For appropriate feedback, the modal should open immediately and display a loading symbol while the cart content is fetched.
+    * The logic for the modal should be contained in cartManager.js to keep the rest of the module independent from BigCommerce / Stencil.
+
 
 ## 📜 Full Context Request
 **Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes.
