@@ -1,96 +1,96 @@
-{{!-- CravenSpeed Default Product --}}
-
 {{#partial "page"}}
-{{#each product.shipping_messages}}
-{{>components/common/alert/alert-info message}}
-{{/each}}
+<main class="cs-product-archetype">
 
-<div id="optimized-product">
-  <div id="product-messages"></div>
-  <div id="product-above">
-    <div id="product-above-photo">{{> components/products-cs/gallery}}</div>
-    <div id="product-above-info">
-      <div id="product-title">
-        <h1 data-product-title="{{product.title}}" data-product-category="{{product.category}}">
-          {{#contains (JSONstringify product.custom_fields) 'archetype_id'}}
-          {{product.title}}
-          {{else}}
-          {{#filter product.custom_fields 'Product Type' property='name'}}
-          {{value}}
-          {{/filter}}
-          {{/contains}}
-        </h1>
-      </div>
-      <h2 class="single-row" id="product-sku" data-product-sku="{{product.sku}}">{{product.sku}}</h2>
-      <h2 class="single-row" id="product-shipping"></h2>
-      <h2 class="single-row" id="product-stock"></h2>
-      <h2 class="double-row" id="product-price"></h2>
-      <a href="#tab-reviews" class="single-row" id="product-rating">
-        {{> components/products-cs/rating-cs}}
-      </a>
-      <h2 class="single-row" id="product-brand">{{product.brand.name}}</h2>
-      <div id="product-selection">
-        <select style="visibility: hidden;" disabled="true" name="make" id="make">
-        </select>
-        <select style="visibility: hidden;" disabled="true" name="model" id="model">
-        </select>
-        <select style="visibility: hidden;" disabled="true" name="year" id="year">
-        </select>
-        <select style="visibility: hidden;" disabled="true" name="Option One" id="option-one"></select>
-        <select style="visibility: hidden;" disabled="true" name="Option Two" id="option-two"></select>
-        <form id="product-blem-form" class="single-row" style="visibility: hidden;">
-        </form>
-        <div id="product-fitment-notes"></div>
-        {{> components/products-cs/modals/scratchAndDent}}
-        <div id="add-button-wrapper">
-          <a id="product-add-button" type="button">{{lang 'products.add_to_cart'}}</a>
+    {{#each product.shipping_messages}}
+        {{> components/common/alert/alert-info message}}
+    {{/each}}
+    <div id="product-messages"></div>
+
+    <article class="cs-product-container" itemscope itemtype="http://schema.org/Product">
+
+        <div class="cs-product-above-fold-layout">
+
+            <section class="cs-product-gallery-wrapper" aria-label="Product Media">
+                {{> components/products-cs/gallery}}
+            </section>
+
+
+            <section class="cs-product-info-wrapper" aria-label="Product Information">
+                <header class="cs-product-header">
+                    <h1 class="cs-product-title" itemprop="name" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
+                        {{inject "productTitle" product.title}}
+                    </h1>
+
+                    <h2 class="cs-info-row" id="product-sku" data-product-sku="{{product.sku}}">{{product.sku}}</h2>
+                    <h2 class="cs-info-row" id="product-shipping" data-product-shipping-info></h2>
+                    <h2 class="cs-info-row" id="product-stock" data-product-stock></h2>
+                    <h2 class="cs-info-row-double" id="product-price" data-product-price></h2>
+                    <a href="#tab-reviews" class="cs-info-row" id="product-rating" data-product-rating>
+                        {{> components/products-cs/rating-cs}}
+                    </a>
+                    <h2 class="cs-info-row" id="product-brand" data-product-brand>{{product.brand.name}}</h2>
+                </header>
+
+                <form class="cs-product-form" id="product-selection" data-product-options-container>
+
+                    <div class="cs-form-field" data-product-form-field="make">
+                        <label for="make" class="cs-form-label">Make</label>
+                        <select name="make" id="make" class="cs-form-select" data-product-option="make" disabled>
+                            <option selected>{{lang 'loading'}}...</option>
+                        </select>
+                    </div>
+                    <div class="cs-form-field" data-product-form-field="model">
+                        <label for="model" class="cs-form-label">Model</label>
+                        <select name="model" id="model" class="cs-form-select" data-product-option="model" disabled>
+                            <option selected>{{lang 'loading'}}...</option>
+                        </select>
+                    </div>
+                    <div class="cs-form-field" data-product-form-field="year">
+                        <label for="year" class="cs-form-label">Year</label>
+                        <select name="year" id="year" class="cs-form-select" data-product-option="generation" disabled>
+                            <option selected>{{lang 'loading'}}...</option>
+                        </select>
+                    </div>
+                    <div class="cs-form-field" data-product-form-field="option-one">
+                        <select name="Option One" id="option-one" class="cs-form-select" data-product-option="option" disabled>
+                            <option selected>{{lang 'loading'}}...</option>
+                        </select>
+                    </div>
+                    <div class="cs-form-field" data-product-form-field="option-two">
+                        <select name="Option Two" id="option-two" class="cs-form-select" data-product-option="sub_option" disabled>
+                            <option selected>{{lang 'loading'}}...</option>
+                        </select>
+                    </div>
+
+                    <div id="product-fitment-notes"></div>
+                    
+                    {{> components/products-cs/modals/scratchAndDent}}
+
+                    <div class="cs-add-to-cart-container" id="add-button-wrapper">
+                        <button id="product-add-button" type="submit" class="button">{{lang 'products.add_to_cart'}}</button>
+                    </div>
+                    
+                    {{> components/products-cs/modals/stockNotification}}
+                </form>
+
+                <div id="product-badges"></div>
+                {{> components/products-cs/modals/warrantyMessage}}
+                {{> components/products-cs/modals/shippingMessage}}
+            </section>
         </div>
-        {{> components/products-cs/modals/stockNotification}}
-      </div>
-      <div id="product-badges"></div>
-      {{> components/products-cs/modals/warrantyMessage}}
-      {{> components/products-cs/modals/shippingMessage}}
-    </div>
-  </div>
 
-  <div id="product-below">
 
-    {{>components/products-cs/description-tabs-cs}}
+        {{!-- =====================================================================
+        // "BELOW THE FOLD" CONTENT
+        // Cornerstone tabs for Description, Reviews, etc.
+        // ===================================================================== --}}
+        <section class="cs-product-tabs-container" aria-label="Product Details">
+            {{> components/products-cs/description-tabs-cs}}
+        </section>
 
-  </div>
+    </article>
+</main>
 
-</div>
 {{> components/products/schema}}
-
-<script>
-  CSoptimized = true;
-  const isArchetype = document.querySelector('h1').dataset.productCategory === 'Qty - All Products';
-  const title = document.querySelector('h1').dataset.productTitle;
-
-  const getArchetypeString = (fullTitle) => {
-    const separator = ' for ';
-    const lastIndex = fullTitle.lastIndexOf(separator);
-    return (lastIndex === -1) ? fullTitle : fullTitle.slice(0, lastIndex);
-  };
-
-  const archetypeTitleString = isArchetype ? title : getArchetypeString(title);
-  
-  const cdnRoot = 'https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/';
-  const archetypeUrlSnippet = archetypeTitleString.toLowerCase().replace(/[/&]/g, ' ').replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-');
-  const archetypeDataUrl = cdnRoot + archetypeUrlSnippet + '.js';
-  const script = document.createElement('script');
-  script.src = archetypeDataUrl;
-  console.log(archetypeDataUrl);
-  script.onload = () => {
-    window.cdnScriptLoaded = true;
-    document.dispatchEvent(new CustomEvent('cdnScriptLoaded'));
-  };
-  script.onerror = () => {
-    throw new Error('Failed to load archetype data from CDN.');
-  };
-  document.body.appendChild(script);
-</script>
-
 {{/partial}}
-
 {{> layout/base}}

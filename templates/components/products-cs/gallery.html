@@ -38,19 +38,19 @@
           </div>
       </div>
       <div class="gallery-nav">
-          <button data-gallery-item="previous" class="gallery-previous">
-            <svg class="gallery-arrow"><use xlink:href="#icon-prev" /></svg>
+          <button type="button" data-gallery-item="previous" class="gallery-previous" aria-label="Previous Slide">
+            <svg class="gallery-arrow" aria-hidden="true"><use xlink:href="#icon-prev" /></svg>
           </button>
           <div class="gallery-map"></div>
-          <button data-gallery-item="next" class="gallery-next">
-            <svg class="gallery-arrow"><use xlink:href="#icon-next" /></svg>
+          <button type="button" data-gallery-item="next" class="gallery-next" aria-label="Next Slide">
+            <svg class="gallery-arrow" aria-hidden="true"><use xlink:href="#icon-next" /></svg>
           </button>
       </div>
       <dialog class="gallery-modal" data-gallery-item="close" aria-modal="true" role="dialog">
           <div class="modal-content-wrapper">
             <div class="modal-content"></div>
-            <button class="gallery-modal-close">
-              <svg class="gallery-arrow"><use xlink:href="#icon-close" /></svg>
+            <button type="button" class="modal-close" data-gallery-item="close" aria-label="Close Gallery">
+              <svg class="gallery-arrow" aria-hidden="true"><use xlink:href="#icon-close" /></svg>
             </button>
           </div>
       </dialog>

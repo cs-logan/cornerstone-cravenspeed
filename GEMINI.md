@@ -1,0 +1,90 @@
+# Project Context: [Project Name]
+
+## 🎯 Purpose & Objectives
+* **Goal:** This project is a custom template for the CravenSpeed bigcommerce storfront at cravenspeed.com. It is a fork of BigCommerce's Cornerstone theme. It is heavily modified and the product pages for the most part do not rely on Cornerstone's default product html or js. 
+* **Tech Stack:** Stencil Framework, Handlebars.js, SCSS, JS with Webpack, Stencil CLI, YAML
+* **Current Status:** Production version in use, being re-worked
+
+---
+
+## 🏗️ Project Map (File Index)
+
+### 📂 Root Configuration
+* `config.json`: **Theme Settings.** Defines Page Builder variables, colors, and global styles.
+* `schema.json`: **UI Schema.** Configures the BigCommerce Control Panel customization options.
+* `.stencil`: **Local Dev Config.** Contains the `storeUrl` and port settings (Local only).
+* `package.json`: **Dependencies.** Lists Node modules and Stencil-CLI requirements.
+
+### 📂 Templates (`/templates`)
+* `layout/`: Core wrappers. `base.html` is the master template containing `<head>` and `<body>`.
+* `pages/`: Top-level page templates (e.g., `category.html`, `product.html`, `cart.html`).
+    * *Note: Check the YAML "Front Matter" at the top of these files for API data requests.*
+
+    The product.html is 100% custom built specifically for CravenSpeed needs
+
+* `components/`: Reusable Handlebars snippets.
+    * `common/`: Global elements (Header, Footer, Navigation).
+    * `products/`: Product-specific logic (Cards, Price, Add to Cart).
+    * `cart/`: Snippets for the shopping basket and checkout previews.
+
+### 📂 Assets (`/assets`)
+* `js/`: **Logic Layer.**
+    * `theme/`: Page-specific JS classes.
+    * `app.js`: The entry point that initializes theme objects.
+
+    the default product.js is not used. It will be replaced by a custom js module called product which is in js/theme/_addons/product/
+
+* `scss/`: **Style Layer.**
+    * `layouts/`: Global structure styling.
+    * `components/`: Individual UI element styles (Buttons, Modals).
+    * `settings/`: Variables for colors, spacing, and Foundation 6 overrides.
+    * `custom/`: Custom styles added by CravenSpeed to avoid modifying default files. 
+
+### 📂 Internationalization (`/lang`)
+* `en.json`: Default English translation strings accessed via `{{lang 'key'}}`.
+
+---
+
+## 📋 Instructions for Gemini
+0. Do not move on to new things when we complete a task. Ask me what to do next. You can suggest next steps but do not suggest code. We will operate in a checklist fashion, one step at a time. 
+1.  **Reference the Map:** Use the directory structure above to locate context before suggesting edits.
+2.  **Handlebars Logic:** When editing templates, ensure variables match the BigCommerce [Stencil Object Reference](https://developer.bigcommerce.com/docs/storefront/stencil/themes/context/object-reference).
+3.  **Styling:** Prefer adding styles to custom.scss to avoid changes to default files
+4.  **Objectivity:** Prioritize standard BigCommerce developer best practices and verifiable Stencil framework documentation.
+
+    * HTML Priorities
+        * When editing html prioritize the following:
+        - Page Speed Insights metrics
+        - Accesibility
+        - Semantic HTML
+
+---
+
+## 📜 Full Context Request
+**Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes.
+
+## Restart Prompt
+    please review GEMINI.md. Pay particular attention to the restart log to get caught up on what we have worked on previously, and make sure you review any mentioned files. 
+
+## Chat restart log
+    *We are working on the custom module in .assets/js/theme/_addons/product
+    *In addition to this file you need to review PRODUCT_MODULE_PLAN.md and QTY_SYSTEM.md
+    *We created the initial draft of the state-manager class
+    *We created the initial draft of the data-manager class
+    *In order to test data manager, we need to create boilerplate versions of index.js and product.js
+    *index.js needs to extend the page-manager class. 
+    *index.js is already mapped to product pages in app.js
+    *index.js is complete for now
+    *product.js needs to call on the data manager to fetch the archetype data in its onready method
+    * we discussed what data to use on initial load, bigcommerce via handlebars, or the json data
+    *we will use a hybrid approach, first populating the product info via handlebars, and then embedding that data as a JSON object which is used to hydrate the product controller and state. Subsequent interactions will use the data manager to fetch alias data.
+    *I have begun inserting the default data, starting with the shipping day. 
+    *The old system product-current.js, generated dynamic text based on the day of the week as well as the time of day
+    * we need to implement this functionality in our new module 
+    *the shipping info ui module has been completed. The state manager calculates the ship day and passes it to the shipping info ui module to render which watches state to update as needed. 
+    *in an effort to begin work on the alias selection module we need to be able to resolve the archetype name from the html template in the product module so we can dynamically fetch the archetype data.
+    * We are now using the injected title from the template to both display the title of the product and look up the correct archetype data file!
+    *We are now working on the optionsManager.js file
+    *the options manager is functioning well now we need to handle what happens once the selection process is complete. We are strategizing how to handle that. 
+
+
