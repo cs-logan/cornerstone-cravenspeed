@@ -1,0 +1,60 @@
+{
+  "url_safe_name": "the-vinyl-install-kit-for-all-vehicles",
+  "alias_status": "Active",
+  "bc_id": "20607",
+  "alias_sku": "CS-AD577-78T",
+  "weight_pounds": 0.5,
+  "price": 18,
+  "sale_price": null,
+  "name": "Vinyl Decal Install Kit for All Vehicles",
+  "image_array": {
+    "url": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/56042/vinyl-install-kit__84501.1573767397__10867.1675828259.1280.1280__21759.1675828294.1280.1280.jpg?c=2",
+    "description": "Vinyl Decal Install Kit - Rapic-tac, squeegee, microfibre towel",
+    "display_description": null,
+    "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/56042/vinyl-install-kit__84501.1573767397__10867.1675828259.1280.1280__21759.1675828294.133.100.jpg?c=2",
+    "url_standard": null,
+    "secondary_images_list": [
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184430/vinyl_decal_install_kit_for_all_vehicles_FMKRDRZ_20607__80470.1701284683.1280.1280.jpg?c=2",
+        "description": "Vinyl Decal Install Kit - Application Squeegee",
+        "display_description": null,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184430/vinyl_decal_install_kit_for_all_vehicles_FMKRDRZ_20607__80470.1701284683.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184430/vinyl_decal_install_kit_for_all_vehicles_FMKRDRZ_20607__80470.1701284683.640.480.jpg?c=2",
+        "sort_order": 1
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184431/vinyl_decal_install_kit_for_all_vehicles_66VTQYL_20607__15324.1701284684.1280.1280.jpg?c=2",
+        "description": "Vinyl Decal Install Kit - Rapic-tac application solution",
+        "display_description": null,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184431/vinyl_decal_install_kit_for_all_vehicles_66VTQYL_20607__15324.1701284684.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184431/vinyl_decal_install_kit_for_all_vehicles_66VTQYL_20607__15324.1701284684.640.480.jpg?c=2",
+        "sort_order": 2
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184432/vinyl_decal_install_kit_for_all_vehicles_LUB0OHW_20607__64469.1701284684.1280.1280.jpg?c=2",
+        "description": "Vinyl Decal Install Kit - Microfiber towel",
+        "display_description": null,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184432/vinyl_decal_install_kit_for_all_vehicles_LUB0OHW_20607__64469.1701284684.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20607/images/184432/vinyl_decal_install_kit_for_all_vehicles_LUB0OHW_20607__64469.1701284684.640.480.jpg?c=2",
+        "sort_order": 3
+      }
+    ],
+    "image_count": 4
+  },
+  "chassis_info_link": "",
+  "base_id": 1309,
+  "base_sku": "CS-AD577",
+  "brand_name": "CravenSpeed",
+  "drop_ship_product": false,
+  "made_in_usa": false,
+  "instructions_url": "",
+  "handling_time_days": 1,
+  "fitment_notes": "",
+  "archetype_title": "Vinyl Decal Install Kit",
+  "archetype_url": "/the-vinyl-install-kit/",
+  "universal_product": true,
+  "last_json_update": "02/10/2026 11:03PM Pac",
+  "description_template_id": 34,
+  "description": "\u003Cdiv class=\"descriptionContainer\"\u003E \u003Cdiv class=\"pdpRow\" style=\"max-width: 750px;\"\u003E \u003Cdiv class=\"productText\"\u003E \u003Ch3\u003ENo more bubbles\u003C/h3\u003E \u003Cp\u003EAchieve perfect vinyl decal applications every time with our essential collection of vinyl installation tools. This kit includes a 4oz bottle of Rapid Tac applicator and cleaner fluid, a CravenSpeed squeegee with microfiber blade, and a fresh new microfiber towel. This kit is a must have for installing any large decals. \u003C/p\u003E \u003Ca class=\"descriptionLink\" href=\"https://rapidtac.com/msds/rapidtacsds.pdf\" style=\"display:block; text-align: center;\"\u003ERapid Tack MSDS\u003C/a\u003E \u003C/div\u003E \u003C/div\u003E \u003C/div\u003E",
+  "short_nohtml_description": "Achieve perfect vinyl decal applications every time with our essential collection of vinyl installation tools. This kit includes a 4oz bottle of Rapid Tac applicator and cleaner fluid, a CravenSpeed squeegee with microfiber blade, and a fresh new mic..."
+}

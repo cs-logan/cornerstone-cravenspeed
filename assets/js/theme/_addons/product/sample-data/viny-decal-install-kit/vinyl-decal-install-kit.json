@@ -1,0 +1,64 @@
+{
+  "option_title": "Specific Fitment",
+  "sub_option_title": "Color",
+  "archetype_name": "Vinyl Decal Install Kit",
+  "parent_product_url": "/the-vinyl-install-kit/",
+  "universal_product": true,
+  "image_array": {
+    "url": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/56098/vinyl-install-kit__84501.1573767397__10867.1675828333.640.480__54602.1703633449.1280.1280.jpg?c=2",
+    "description": "CravenSpeed Vinyl Decal Install Kit - chamois, Rapid-Tac and applicator",
+    "display_description": false,
+    "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/56098/vinyl-install-kit__84501.1573767397__10867.1675828333.640.480__54602.1703633449.133.100.jpg?c=2",
+    "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/56098/vinyl-install-kit__84501.1573767397__10867.1675828333.640.480__54602.1703633449.640.480.jpg?c=2",
+    "secondary_images_list": [
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57427/vinyl_decal_install_kit_2FFTDQJ_20606__84680.1703633466.1280.1280.jpg?c=2",
+        "description": "CravenSpeed Vinyl Decal Installation Applicator",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57427/vinyl_decal_install_kit_2FFTDQJ_20606__84680.1703633466.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57427/vinyl_decal_install_kit_2FFTDQJ_20606__84680.1703633466.640.480.jpg?c=2",
+        "sort_order": 2
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57428/vinyl_decal_install_kit_1H4HNSX_20606__79657.1703633532.1280.1280.jpg?c=2",
+        "description": "Rapid Tac Cleaner and Application Fluid, 4oz. Bottle",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57428/vinyl_decal_install_kit_1H4HNSX_20606__79657.1703633532.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57428/vinyl_decal_install_kit_1H4HNSX_20606__79657.1703633532.640.480.jpg?c=2",
+        "sort_order": 3
+      },
+      {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57429/vinyl_decal_install_kit_KQ1PXDY_20606__93701.1703633540.1280.1280.jpg?c=2",
+        "description": "CravenSpeed Vinyl Decal Install Kit - Micro-fiber towl included",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57429/vinyl_decal_install_kit_KQ1PXDY_20606__93701.1703633540.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/57429/vinyl_decal_install_kit_KQ1PXDY_20606__93701.1703633540.640.480.jpg?c=2",
+        "sort_order": 4
+      }
+    ],
+    "image_count": 4
+  },
+  "archetype_instructions_url": "",
+  "blem_dict": {
+
+  },
+  "archetype_average_review": "4.86",
+  "archetype_review_count": 7,
+  "search_thumb_image_url": "https://cdn11.bigcommerce.com/s-351ed/products/20606/images/56098/vinyl-install-kit__84501.1573767397__10867.1675828333.640.480__54602.1703633449.1280.1280.jpg?c=2",
+  "make_model_index": {
+    "allvehicles": {
+      "name": "All Vehicles",
+      "models": {
+        "allvehicles": {
+          "name": "",
+          "generations": {
+            "the-vinyl-install-kit-for-all-vehicles.json": {
+              "name": " 0 to 0"
+            }
+          }
+        }
+      }
+    }
+  },
+  "last_json_update": "02/10/2026 11:03PM Pac"
+}

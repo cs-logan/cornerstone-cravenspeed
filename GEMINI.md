@@ -78,6 +78,14 @@
     * The code can't handle when options aren't needed, the archetype data will pass the alias json file as a generation key.
     * The code needs to account for this scenario
 
+### Account for Universal Products 
+    * Sometimes an Archetype is a universal product. This applies when a specific vehicle fitment is not applicable to a given product, for example a Vinyl Decal Install Kit does not need to be associated with a vehicle. 
+    * Some universal products have no options. Some universal products still have options, for example if its available in a different color. 
+    * There are sample data files for both instances in "/assets/js/theme/_addons/product/sample-data/vinyl-decal-install-kit" (no options) and "/assets/js/theme/_addons/product/sample-data/wind-deflector-storage-bag" (options)
+    * An archetype is indicated as Universal by the universal_product field in the archetype JSON file. 
+    * If there are no options for the universal product, the will still be an alias file that can be fetched to get the content for that alias, but the add to cart form is valid without any selections needing to be made and the add to cart button should be enabled.
+    * If there are options, then only the option selects need to be activated. The vehicle selects should be hidden and the form should be considered valid when the appropriate options are selected and an alias is chosen.
+
 
 ## 📜 Full Context Request
 **Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes.
@@ -109,5 +117,6 @@
     *We have completed to addToCart functionality, but are attempting to set up a modal that opens when an item is added. 
     *We have completed the cart preview modal
     * We are now working on a bug regarding options
+    * We are now working on support for Universal products
     
 
