@@ -31,7 +31,10 @@
                     <h2 class="cs-info-row" id="product-brand" data-product-brand>{{product.brand.name}}</h2>
                 </header>
 
-                <form class="cs-product-form" id="product-selection" data-product-options-container>
+                <form class="cs-product-form" id="product-selection" action="{{urls.cart}}" method="post" enctype="multipart/form-data" data-cart-item-add data-product-options-container>
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="product_id" value="{{product.id}}">
+                    <input type="hidden" name="qty[]" value="1">
 
                     <div class="cs-form-field" data-product-form-field="make">
                         <label for="make" class="cs-form-label">Make</label>
@@ -67,7 +70,7 @@
                     {{> components/products-cs/modals/scratchAndDent}}
 
                     <div class="cs-add-to-cart-container" id="add-button-wrapper">
-                        <button id="product-add-button" type="submit" class="button">{{lang 'products.add_to_cart'}}</button>
+                        <button id="product-add-button" type="submit" class="button" disabled>{{lang 'products.add_to_cart'}}</button>
                     </div>
                     
                     {{> components/products-cs/modals/stockNotification}}

@@ -60,6 +60,13 @@
 
 ---
 
+## Task Requirements
+
+### Add to Cart
+    * Use form validation to ensure the form cannot be submitted unless all appropriate options are selected (an alias is selected)
+    * Attempt to add the item in the most "BigCommerce/Stencil" way
+
+
 ## 📜 Full Context Request
 **Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes.
 
@@ -86,5 +93,7 @@
     * We are now using the injected title from the template to both display the title of the product and look up the correct archetype data file!
     *We are now working on the optionsManager.js file
     *the options manager is functioning well now we need to handle what happens once the selection process is complete. We are strategizing how to handle that. 
-
+    *We have completed most of the "above the fold" content including the image gallery, the product header, and the alias selection section. The last step for this phase is to hook up the add to cart button and add the selected alias to the cart.
+    *We have completed to addToCart functionality, but are attempting to set up a modal that opens when an item is added. 
+    
 

@@ -73,7 +73,12 @@ To maintain a predictable data flow, the state manager handles:
 * **State Update:** State Manager updates the selection, finds the matching Alias, and runs `_notifySubscribers()`.
 * **Reactive UI:** * `image-gallery.js` sees the new Alias and triggers a fade-transition to the new images.
 
-### 4. Requirements for the options ui module
+### 4. Platform Independence 
+    * The module is entirely independent from BigCommerce / Stencil and could be used on any platform.
+    * index.js is the entry point, in this case it is set up for Stencil, but could be adapted to any other code base to inject the real primary module: product.js
+    * cartManager.js exposes an addToCart(formData) method to receive the form submission from the modules addToCart.js UI module. addToCart.js is not built specifically for any platform, it simple sends the add to cart payload, and the cartManager.js handles converting this into Stencil friendly data.
+
+### 5. Requirements for the options ui module
 * **Initialization:** It must auto-populate the "Make" dropdown immediately upon loading the Archetype data.
 * **Persistence:** It should check cookies (or localStorage) for previously selected `make`, `model`, or `generation` and pre-select these options if they match the current archetype.
 * **Auto-Advance:** If a specific branch of the decision tree has only one valid option (e.g., a Make with only one Model), that option should be auto-selected to reduce user clicks.
