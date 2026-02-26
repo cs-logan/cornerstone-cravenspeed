@@ -40,6 +40,9 @@ export default class ProductController {
             this.addToCart = new AddToCart(this.stateManager);
 
             this.stateManager.subscribe(this.handleStateChange.bind(this));
+
+            // Trigger initial check in case alias was resolved during initialization
+            this.handleStateChange(this.stateManager.getState());
             
         } catch (error) {
             console.error(`Failed to load archetype data for ${this.archetypeName}:`, error);

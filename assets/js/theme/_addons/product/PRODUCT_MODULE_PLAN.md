@@ -34,7 +34,7 @@
 * `dataManager.js`: **Data Fetcher & Cache.** Fetches archetype JSON logic from `/content/` and implements memoization to prevent redundant network requests.
 * `stateManager.js`: **State Controller.** The "Single Source of Truth." Uses a **Pub/Sub pattern** to notify subscribers of state changes.
 * `ui/`: **Interface Components.** Handles all DOM manipulation and user-facing visual changes. All components are state-aware and subscribe to the `state-manager`.
-    * `optionsManager.js`: **Fitment Logic.** Manages dropdowns and filters available options based on current selections.
+    * `aliasSelection.js`: **Fitment Logic.** Manages dropdowns and filters available options based on current selections.
     * `imageGallery.js`: **Visuals.** Reacts to state changes to swap product imagery.
     * `stockInfo.js`: **Inventory.** Reflects real-time stock for the resolved Alias SKU. Manages the UI for back-in-stock notifications.
     * `shippingInfo.js`: **Shipping.** Generates and displays dynamic shipping-related text (e.g., "Ships in X days").

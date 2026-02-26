@@ -52,6 +52,7 @@
 3.  **Styling:** Prefer adding styles to custom.scss to avoid changes to default files
 4.  **Objectivity:** Prioritize standard BigCommerce developer best practices and verifiable Stencil framework documentation.
 5. **Sample Data** There are sample files in /assets/js/theme/_addons/product/sample-data. These are for reference only and are copies of files available on the digital ocean cdn. These files cannot be changed!
+6. **Do Not Make Assumptions** do not assume anything about HTML or JSON data structures, reference material for everything is available in this project.
 
     * HTML Priorities
         * When editing html prioritize the following:
@@ -63,22 +64,22 @@
 
 ## Task Requirements
 
-### Add to Cart
+### Add to Cart - COMPLETE
     * Use form validation to ensure the form cannot be submitted unless all appropriate options are selected (an alias is selected)
     * Attempt to add the item in the most "BigCommerce/Stencil" way
 
-### Cart Preview modal
+### Cart Preview modal - COMPLETE
     * When the user Adds an item to the cart a modal should open. The modal should contain basic cart information
     * The modal template component is located at /templates/components/products-cs/modals/cart-preview.html
     * For appropriate feedback, the modal should open immediately and display a loading symbol while the cart content is fetched.
     * The logic for the modal should be contained in cartManager.js to keep the rest of the module independent from BigCommerce / Stencil.
 
-### Resolve Bug Archetype doesn't use options
+### Resolve Bug Archetype doesn't use options - COMPLETE
     * Currently stateManager and the addToCart ui module do not account for a unique scenario regarding aliasses and archetypes. 
     * The code can't handle when options aren't needed, the archetype data will pass the alias json file as a generation key.
     * The code needs to account for this scenario
 
-### Account for Universal Products 
+### Account for Universal Products - Complete
     * Sometimes an Archetype is a universal product. This applies when a specific vehicle fitment is not applicable to a given product, for example a Vinyl Decal Install Kit does not need to be associated with a vehicle. 
     * Some universal products have no options. Some universal products still have options, for example if its available in a different color. 
     * There are sample data files for both instances in "/assets/js/theme/_addons/product/sample-data/vinyl-decal-install-kit" (no options) and "/assets/js/theme/_addons/product/sample-data/wind-deflector-storage-bag" (options)
@@ -117,6 +118,8 @@
     *We have completed to addToCart functionality, but are attempting to set up a modal that opens when an item is added. 
     *We have completed the cart preview modal
     * We are now working on a bug regarding options
+    * The options bug has been resolved
     * We are now working on support for Universal products
+    * We have completed support for Universal products
     
 

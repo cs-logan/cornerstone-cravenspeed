@@ -65,7 +65,7 @@ export default class AliasSelection {
             const currentVal = selections[optionKey] || '';
             const parentKey = this._getParentKey(rawOption, archetypeData);
 
-            this._updateVisibility(input, rawOption, parentKey, selections, optionsData);
+            this._updateVisibility(input, rawOption, parentKey, selections, optionsData, archetypeData);
             this._updateInputOptions(input, rawOption, optionKey, optionsData, currentVal);
         });
     }
@@ -79,20 +79,43 @@ export default class AliasSelection {
         return null;
     }
 
-    _updateVisibility(input, rawOption, parentKey, selections, optionsData) {
+    _updateVisibility(input, rawOption, parentKey, selections, optionsData, archetypeData) {
         const wrapper = input.closest('.form-field') || input;
         const isJsonEndpoint = optionsData && optionsData.length === 1 && optionsData[0].value.endsWith('.json');
+        const { universal_product } = archetypeData;
         
         let shouldShow = false;
-        if (['make', 'model', 'generation'].includes(rawOption)) {
-            shouldShow = true;
-        } else if (parentKey && selections[parentKey]) {
-            const hasOptions = optionsData && optionsData.length > 0;
-            if (hasOptions && !isJsonEndpoint) {
+
+        if (universal_product) {
+            if (['make', 'model', 'generation'].includes(rawOption)) {
+                wrapper.style.display = 'none';
+                
+                // If wrapper is just the input (no .form-field found), try to hide the label explicitly
+                if (wrapper === input && input.id) {
+                    const label = document.querySelector(`label[for="${input.id}"]`);
+                    if (label) label.style.display = 'none';
+                }
+                return;
+            }
+
+            // Universal: Show options if they have data
+            // First option (usually depends on generation)
+            if (parentKey === 'generation') {
+                if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
+            } 
+            // Sub-options (depend on parent option)
+            else if (parentKey && selections[parentKey]) {
+                if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
+            }
+        } else {
+            if (['make', 'model', 'generation'].includes(rawOption)) {
                 shouldShow = true;
+            } else if (parentKey && selections[parentKey]) {
+                if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
             }
         }
 
+        wrapper.style.display = '';
         wrapper.style.visibility = shouldShow ? '' : 'hidden';
     }
 

@@ -21,6 +21,12 @@ export default class AddToCart {
         // Initial state: Disable button until alias is selected
         this.button.disabled = true;
 
+        // Check for pre-existing alias (Universal products)
+        const state = this.state.getState();
+        if (state.aliasData) {
+            this.handleAliasChange(state.aliasData);
+        }
+
         this.bindEvents();
     }
 
