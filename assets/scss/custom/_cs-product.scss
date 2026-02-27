@@ -70,8 +70,23 @@
 // -----------------------------------------------------------------------------
 // 7. Product Description & Details
 // -----------------------------------------------------------------------------
+.tab-content {
 
+  h3 {
+    border-bottom: 2px solid stencilColor('color-primary');
+    margin-bottom: spacing('half');
+  }
 
+  .product-instructions {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .product-instructions a {
+    margin: 0;
+  }
+}
 
 // -----------------------------------------------------------------------------
 // 8. Desktop Overrides
@@ -85,16 +100,25 @@
       margin: 0 auto;
       gap: spacing('double');
     }
-
+    
     .tabs {
       display: flex;
       justify-content: center;
       width: 100%;
     }
 
+    .tab-content {
+      line-height: 1.5;
+    }
+
     #product-description {
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    #product-shipping-tab {
+      margin: 0 auto;
+      max-width: 70ch;
     }
   }
 }

@@ -70,9 +70,24 @@ export default class ProductDetails {
         return `${stars} <span class="rating-count">${average}/5 with ${reviews} reviews</span>`;
     }
 
+    _generateInstructionsHtml(url) {
+        return `<a href="${url}" target="_blank" class="button button--primary">View Instructions</a>`;
+    }
+
     render(data, archetypeData) {
         if (this.descriptionElement) this.descriptionElement.innerHTML = data.description || this.defaults.description;
-        if (this.instructionsElement) this.instructionsElement.innerHTML = data.instructions || this.defaults.instructions;
+        if (this.instructionsElement) {
+            if (data.instructions_url) {
+                this.instructionsElement.innerHTML = this._generateInstructionsHtml(data.instructions_url);
+                this.instructionsElement.style.display = 'flex';
+            } else if (this.defaults.instructions && this.defaults.instructions.trim().length > 0) {
+                this.instructionsElement.innerHTML = this.defaults.instructions;
+                this.instructionsElement.style.display = 'flex';
+            } else {
+                this.instructionsElement.innerHTML = '';
+                this.instructionsElement.style.display = 'none';
+            }
+        }
         if (this.skuElement) this.skuElement.textContent = data.base_sku || this.defaults.sku;
         if (this.brandElement) this.brandElement.textContent = data.brand_name || this.defaults.brand;
         if (this.priceElement) {

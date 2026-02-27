@@ -93,9 +93,15 @@
 ### Establish basic styles - Complete
     * Establish some groundwork in the product styles file (/assets/scss/theme/custom/_cs-product.scss). Outline the file with comments. Come up with a plan to organise the base styles for mobile and then use @include breakpoint('medium') when styling the desktop version. 
 
-### Swap in Alias descriptions
-    * 
+### Complete the instructions tab content - COMPLETE
+    * Decide how we will provide access to the instructions
+    * The alias JSON contains the path to the instructions via "instructions_url"
+    * Should it be a simple link? button? iFrame?
 
+### Implement URL Switching - In consideration
+    * Update the browser URL (history.pushState) when a full alias (Vehicle + Options) is resolved.
+    * Ensure the "Back" button works as expected (popstate event).
+    * Verify this does not trigger a full page reload.
 
 ## 📜 Full Context Request
 **Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes.
@@ -132,4 +138,3 @@
     * We have completed support for Universal products
     * We completed establishing basic styles
     
-
