@@ -90,8 +90,11 @@
     * If there are no options for the universal product, the will still be an alias file that can be fetched to get the content for that alias, but the add to cart form is valid without any selections needing to be made and the add to cart button should be enabled.
     * If there are options, then only the option selects need to be activated. The vehicle selects should be hidden and the form should be considered valid when the appropriate options are selected and an alias is chosen.
 
-### Establish basic styles 
+### Establish basic styles - Complete
     * Establish some groundwork in the product styles file (/assets/scss/theme/custom/_cs-product.scss). Outline the file with comments. Come up with a plan to organise the base styles for mobile and then use @include breakpoint('medium') when styling the desktop version. 
+
+### Swap in Alias descriptions
+    * 
 
 
 ## 📜 Full Context Request
@@ -127,5 +130,6 @@
     * The options bug has been resolved
     * We are now working on support for Universal products
     * We have completed support for Universal products
+    * We completed establishing basic styles
     
 
