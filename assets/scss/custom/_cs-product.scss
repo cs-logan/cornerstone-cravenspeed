@@ -1,77 +1,100 @@
-.cs-product-archetype {
-    h1, h2, h3, h4, h5, h6, p {
-        margin: 0;
-    }
+// =============================================================================
+// CRAVENSPEED CUSTOM PRODUCT PAGE STYLES
+// =============================================================================
+//
+// This file contains styles specific to the custom product page implementation.
+// It follows a mobile-first approach.
+//
+// Structure:
+// 1. Variables & Mixins
+// 2. Global Product Layout (Mobile Base)
+// 3. Product Images / Gallery
+// 4. Product Information (Title, Price, SKU)
+// 5. Options & Selectors
+// 6. Add to Cart & Actions
+// 7. Product Description & Details
+// 8. Desktop Overrides (Medium Breakpoint)
+//
+// =============================================================================
 
-    h2 {
-      font-size: 1rem;
-      font-weight: 400;
-    }
-}
+// -----------------------------------------------------------------------------
+// 1. Variables & Mixins
+// -----------------------------------------------------------------------------
 
-.cs-product-above-fold-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 2rem;
-}
-
-.cs-product-header,
-.cs-product-form {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-}
-
-#product-rating {
-  text-decoration: none;
+// -----------------------------------------------------------------------------
+// 2. Global Product Layout (Mobile Base)
+// -----------------------------------------------------------------------------
+// Base container styles for the product page
+.cs-product-container {
   display: flex;
-  align-items: center;
-}
+  flex-direction: column;
+  width: 100%;
 
-.rating-count {
-  margin-left: 6px;
-}
-
-.cs-info-row,
-.cs-info-row-double {
-  // Set a minimum height roughly equal to your body text's line-height.
-  // This reserves the vertical space before JavaScript populates the content, preventing CLS.
-  // Adjust the value to match your theme's typography. 1.5rem is a common starting point.
-  min-height: 1.5rem;
-  border-radius: 4px; // Helps the skeleton loader look nicer
-}
-
-// Apply the loading effect only to the elements that are initially empty.
-#product-sku:empty,
-#product-shipping:empty,
-#product-stock:empty,
-#product-price:empty {
-    background: #eee; // A base color for the skeleton
-    background: linear-gradient(
-        110deg,
-        #ececec 8%,
-        #f5f5f5 18%,
-        #ececec 33%
-    );
-    background-size: 200% 100%;
-    animation: 1.5s shimmer infinite linear;
-    will-change: background-position;
-}
-
-
-.cs-info-row-double {
-  // If your double-row price is larger, you might give it a larger min-height.
-  // This can be specific if needed, e.g., min-height: 2.5rem;
-}
-
-
-@keyframes shimmer {
-  0% {
-    background-position: 100% 0;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+    padding: 0;
   }
-  100% {
-    background-position: -100% 0;
+}
+
+// -----------------------------------------------------------------------------
+// 3. Product Images / Gallery
+// -----------------------------------------------------------------------------
+.cs-product-gallery {
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// 4. Product Information
+// -----------------------------------------------------------------------------
+.cs-product-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: spacing('single');
+}
+
+// -----------------------------------------------------------------------------
+// 5. Options & Selectors
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// 6. Add to Cart & Actions
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// 7. Product Description & Details
+// -----------------------------------------------------------------------------
+
+
+
+// -----------------------------------------------------------------------------
+// 8. Desktop Overrides
+// -----------------------------------------------------------------------------
+@include breakpoint('medium') {
+  .cs-product-container {
+    .cs-product-above-fold-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: spacing('double');
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    #product-description {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
   }
 }

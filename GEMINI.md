@@ -40,6 +40,8 @@
     * `settings/`: Variables for colors, spacing, and Foundation 6 overrides.
     * `custom/`: Custom styles added by CravenSpeed to avoid modifying default files. 
 
+* `custom/_cs-product.scss`: styles for the new product page. 
+
 ### 📂 Internationalization (`/lang`)
 * `en.json`: Default English translation strings accessed via `{{lang 'key'}}`.
 
@@ -53,6 +55,7 @@
 4.  **Objectivity:** Prioritize standard BigCommerce developer best practices and verifiable Stencil framework documentation.
 5. **Sample Data** There are sample files in /assets/js/theme/_addons/product/sample-data. These are for reference only and are copies of files available on the digital ocean cdn. These files cannot be changed!
 6. **Do Not Make Assumptions** do not assume anything about HTML or JSON data structures, reference material for everything is available in this project.
+7. **Mobile First** All styling should be approached from a mobile first perspective
 
     * HTML Priorities
         * When editing html prioritize the following:
@@ -86,6 +89,9 @@
     * An archetype is indicated as Universal by the universal_product field in the archetype JSON file. 
     * If there are no options for the universal product, the will still be an alias file that can be fetched to get the content for that alias, but the add to cart form is valid without any selections needing to be made and the add to cart button should be enabled.
     * If there are options, then only the option selects need to be activated. The vehicle selects should be hidden and the form should be considered valid when the appropriate options are selected and an alias is chosen.
+
+### Establish basic styles 
+    * Establish some groundwork in the product styles file (/assets/scss/theme/custom/_cs-product.scss). Outline the file with comments. Come up with a plan to organise the base styles for mobile and then use @include breakpoint('medium') when styling the desktop version. 
 
 
 ## 📜 Full Context Request
