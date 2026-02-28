@@ -20,6 +20,29 @@
 // -----------------------------------------------------------------------------
 // 1. Variables & Mixins
 // -----------------------------------------------------------------------------
+@mixin shimmer {
+  background: #f6f7f8;
+  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-repeat: no-repeat;
+  background-size: 800px 100%; 
+  display: block;
+  position: relative; 
+  
+  animation-duration: 1s;
+  animation-fill-mode: forwards; 
+  animation-iteration-count: infinite;
+  animation-name: placeholderShimmer;
+  animation-timing-function: linear;
+}
+
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
 
 // -----------------------------------------------------------------------------
 // 2. Global Product Layout (Mobile Base)
@@ -29,6 +52,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: 0 spacing('half');
 
   h1,
   h2,
@@ -42,6 +66,12 @@
   }
 }
 
+#product-messages {
+  min-height: 50px;
+  margin-bottom: spacing('single');
+  padding: 0 spacing('half');
+}
+
 // -----------------------------------------------------------------------------
 // 3. Product Images / Gallery
 // -----------------------------------------------------------------------------
@@ -52,20 +82,114 @@
 // -----------------------------------------------------------------------------
 // 4. Product Information
 // -----------------------------------------------------------------------------
-.cs-product-info {
+.cs-product-info-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: spacing('single');
+  margin-bottom: spacing('single');
+
+  .cs-product-header {
+    display: flex;
+    flex-direction: column;
+    gap: spacing('quarter');
+  }
+
+  .cs-product-title {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin-bottom: spacing('half');
+    min-height: 1.8rem; // Prevent CLS
+  }
+
+  .cs-info-row {
+    font-size: 1rem;
+    line-height: 1.5;
+    min-height: 1.5rem; // Reserve space
+    display: flex;
+    align-items: center;
+
+    // Shimmer effect for empty fields (waiting for JS)
+    &:empty {
+      @include shimmer;
+      width: 60%;
+      border-radius: 4px;
+    }
+  }
+
+  // Specific widths for shimmer to look organic
+  #product-stock:empty { width: 30%; }
+  #product-shipping:empty { width: 70%; }
+
+  .cs-info-row-double {
+    font-size: 1.25rem;
+    font-weight: 700;
+    min-height: 1.875rem;
+    margin-top: spacing('quarter');
+
+    &:empty {
+      @include shimmer;
+      width: 40%;
+      border-radius: 4px;
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
 // 5. Options & Selectors
 // -----------------------------------------------------------------------------
+.cs-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing('half');
+}
+
+.cs-form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.cs-form-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: spacing('quarter');
+}
+
+.cs-form-select {
+  height: 44px; // Mobile touch target friendly
+  font-size: 16px; // Prevent iOS zoom
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0 spacing('half');
+  background-color: #fff;
+  
+  &:disabled {
+    background-color: #f4f4f4;
+    color: #757575;
+    cursor: not-allowed;
+  }
+}
 
 // -----------------------------------------------------------------------------
 // 6. Add to Cart & Actions
 // -----------------------------------------------------------------------------
+.cs-add-to-cart-container {
+  margin-top: spacing('single');
+  
+  #product-add-button {
+    width: 100%;
+    min-height: 50px; // Large touch target
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
 
 // -----------------------------------------------------------------------------
 // 7. Product Description & Details

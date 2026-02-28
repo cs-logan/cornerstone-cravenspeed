@@ -18,13 +18,20 @@
             <section class="cs-product-info-wrapper" aria-label="Product Information">
                 <header class="cs-product-header">
                     <h1 class="cs-product-title" itemprop="name" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
+                        {{product.title}}
                         {{inject "productTitle" product.title}}
                     </h1>
 
                     <h2 class="cs-info-row" id="product-sku" data-product-sku="{{product.sku}}">{{product.sku}}</h2>
                     <h2 class="cs-info-row" id="product-shipping" data-product-shipping-info></h2>
                     <h2 class="cs-info-row" id="product-stock" data-product-stock></h2>
-                    <h2 class="cs-info-row-double" id="product-price" data-product-price></h2>
+                    <h2 class="cs-info-row-double" id="product-price" data-product-price>
+                        {{#if product.price.with_tax}}
+                            {{product.price.with_tax.formatted}}
+                        {{else}}
+                            {{product.price.without_tax.formatted}}
+                        {{/if}}
+                    </h2>
                     <a href="#tab-reviews" class="cs-info-row" id="product-rating" data-product-rating>
                         {{> components/products-cs/rating-cs}}
                     </a>
