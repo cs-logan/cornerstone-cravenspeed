@@ -4,6 +4,7 @@ import ShippingInfo from './ui/shippingInfo';
 import AliasSelection from './ui/aliasSelection';
 import StockInfo from './ui/stockInfo';
 import ProductDetails from './ui/productDetails';
+import Rating from './ui/rating';
 import ImageGallery from './ui/imageGallery';
 import AddToCart from './ui/addToCart';
 
@@ -36,6 +37,7 @@ export default class ProductController {
             this.aliasSelection = new AliasSelection(this.stateManager);
             this.stockInfo = new StockInfo(this.stateManager);
             this.productDetails = new ProductDetails(this.stateManager);
+            this.rating = new Rating(this.stateManager);
             this.imageGallery = new ImageGallery(this.stateManager);
             this.addToCart = new AddToCart(this.stateManager);
 

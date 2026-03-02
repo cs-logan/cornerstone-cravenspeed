@@ -82,7 +82,7 @@
     * The code can't handle when options aren't needed, the archetype data will pass the alias json file as a generation key.
     * The code needs to account for this scenario
 
-### Account for Universal Products - Complete
+### Account for Universal Products - Completed | NOW BROKEN
     * Sometimes an Archetype is a universal product. This applies when a specific vehicle fitment is not applicable to a given product, for example a Vinyl Decal Install Kit does not need to be associated with a vehicle. 
     * Some universal products have no options. Some universal products still have options, for example if its available in a different color. 
     * There are sample data files for both instances in "/assets/js/theme/_addons/product/sample-data/vinyl-decal-install-kit" (no options) and "/assets/js/theme/_addons/product/sample-data/wind-deflector-storage-bag" (options)

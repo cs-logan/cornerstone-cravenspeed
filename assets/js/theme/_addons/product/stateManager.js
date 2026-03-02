@@ -22,8 +22,14 @@ export default class StateManager {
     }
 
     updateSelection({option, value}) {
-        const { option_title, sub_option_title } = this.state.archetypeData;
-        const optionOrder = ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
+        const { option_title, sub_option_title, universal_product } = this.state.archetypeData;
+        
+        let optionOrder;
+        if (universal_product) {
+            optionOrder = [option_title, sub_option_title].filter(Boolean);
+        } else {
+            optionOrder = ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
+        }
         
         this.state.selections[option] = value;
 
@@ -76,9 +82,87 @@ export default class StateManager {
         return this.state;
     }
 
+    _getUniversalRoot() {
+        const { archetypeData } = this.state;
+        
+        // If flat structure (no make_model_index), return root
+        if (!archetypeData.make_model_index) return archetypeData;
+
+        try {
+            // Universal products with make_model_index are expected to have a single path
+            // e.g. allvehicles -> allvehicles -> allvehicles
+            const make = Object.values(archetypeData.make_model_index)[0];
+            const model = Object.values(make.models)[0];
+            
+            // Check if the generation key is the alias itself (no-option universal products)
+            const genKey = Object.keys(model.generations)[0];
+            if (genKey && genKey.endsWith('.json')) {
+                return genKey;
+            }
+
+            const gen = model.generations[genKey];
+            return gen;
+        } catch (e) {
+            return archetypeData;
+        }
+    }
+
     _traverseSelections() {
         const { selections, archetypeData } = this.state;
-        const { make_model_index, option_title, sub_option_title } = archetypeData;
+        const { make_model_index, option_title, sub_option_title, universal_product } = archetypeData;
+
+        if (universal_product) {
+            let currentLevel = this._getUniversalRoot();
+
+            // If the resolved root is a string (alias filename), return it immediately
+            if (typeof currentLevel === 'string' && currentLevel.endsWith('.json')) {
+                return currentLevel;
+            }
+
+            // 1. Options
+            if (option_title) {
+                const selection = selections[option_title];
+                if (!selection) return currentLevel;
+
+                if (currentLevel.options && currentLevel.options[selection]) {
+                    const nextNode = currentLevel.options[selection];
+
+                    // Check if the selection key itself is the alias
+                    const nextHasSubOptions = sub_option_title && nextNode && nextNode.sub_options;
+                    if (!nextHasSubOptions && typeof selection === 'string' && selection.endsWith('.json')) {
+                        return selection;
+                    }
+
+                    if (typeof nextNode === 'string' && nextNode.endsWith('.json')) {
+                        return nextNode;
+                    }
+                    currentLevel = nextNode;
+                } else {
+                    return null;
+                }
+            }
+
+            // 2. Sub-Options
+            if (sub_option_title) {
+                const selection = selections[sub_option_title];
+                if (!selection) return currentLevel;
+
+                if (currentLevel.sub_options && currentLevel.sub_options[selection]) {
+                    return selection;
+                } else {
+                    return null;
+                }
+            }
+
+            // No options? Check for direct alias
+            if (!option_title && !sub_option_title) {
+                if (currentLevel.alias && currentLevel.alias.endsWith('.json')) {
+                    return currentLevel.alias;
+                }
+            }
+
+            return currentLevel;
+        }
 
         if (!make_model_index) return null;
 
@@ -133,7 +217,7 @@ export default class StateManager {
 
     _updateAvailableOptions() {
         const { archetypeData, selections } = this.state;
-        const { make_model_index, option_title, sub_option_title } = archetypeData;
+        const { make_model_index, option_title, sub_option_title, universal_product } = archetypeData;
 
         const availableOptions = {};
 
@@ -148,6 +232,33 @@ export default class StateManager {
                 };
             }).sort((a, b) => a.label.localeCompare(b.label));
         };
+
+        if (universal_product) {
+            let currentNode = this._getUniversalRoot();
+
+            if (typeof currentNode === 'string') {
+                this.state.availableOptions = {};
+                return;
+            }
+
+            if (option_title) {
+                availableOptions[option_title] = getOptions(currentNode, 'options');
+                const selectedOption = selections[option_title];
+                if (selectedOption && currentNode.options && currentNode.options[selectedOption]) {
+                    const nextNode = currentNode.options[selectedOption];
+                    currentNode = (typeof nextNode === 'object') ? nextNode : null;
+                } else {
+                    currentNode = null;
+                }
+            }
+
+            if (currentNode && sub_option_title) {
+                availableOptions[sub_option_title] = getOptions(currentNode, 'sub_options');
+            }
+
+            this.state.availableOptions = availableOptions;
+            return;
+        }
 
         // Always available: Makes
         if (make_model_index) {

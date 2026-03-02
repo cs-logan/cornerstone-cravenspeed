@@ -10,7 +10,6 @@ export default class ProductDetails {
         this.skuElement = document.querySelector('[data-product-sku]');
         this.priceElement = document.querySelector('[data-product-price]');
         this.brandElement = document.querySelector('[data-product-brand]');
-        this.ratingElement = document.querySelector('[data-product-rating]');
 
         this.stateManager.subscribe(this.update.bind(this));
     }
@@ -52,20 +51,6 @@ export default class ProductDetails {
         return 'Out of Stock';
     }
 
-    _generateRatingHtml(average, count) {
-        const rating = Math.round(parseFloat(average) || 0);
-        const reviews = parseInt(count) || 0;
-        
-        let stars = '';
-        for (let i = 0; i < 5; i++) {
-            const isFull = i < rating;
-            const iconClass = isFull ? 'icon--ratingFull' : 'icon--ratingEmpty';
-            stars += `<span class="icon ${iconClass}"><svg><use xlink:href="#icon-star" /></svg></span>`;
-        }
-        
-        return `${stars} <span class="rating-count">${average}/5 with ${reviews} reviews</span>`;
-    }
-
     _generateInstructionsHtml(url) {
         return `<a href="${url}" target="_blank" class="button button--primary">View Instructions</a>`;
     }
@@ -94,8 +79,14 @@ export default class ProductDetails {
             if (data.base_sku) this._animate(this.skuElement);
         }
         if (this.brandElement) {
-            this.brandElement.textContent = data.brand_name || '';
-            if (data.brand_name) this._animate(this.brandElement);
+            if (data.brand_name) {
+                this.brandElement.textContent = data.brand_name;
+                this.brandElement.style.display = '';
+                this._animate(this.brandElement);
+            } else {
+                this.brandElement.textContent = '';
+                this.brandElement.style.display = 'none';
+            }
         }
         if (this.priceElement) {
             const price = data.price;
@@ -108,14 +99,6 @@ export default class ProductDetails {
                     ? price.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) 
                     : price;
                 this._animate(this.priceElement);
-            }
-        }
-        if (this.ratingElement) {
-            if (archetypeData && archetypeData.archetype_average_review) {
-                this.ratingElement.innerHTML = this._generateRatingHtml(archetypeData.archetype_average_review, archetypeData.archetype_review_count);
-                this._animate(this.ratingElement);
-            } else {
-                this.ratingElement.innerHTML = '';
             }
         }
     }
