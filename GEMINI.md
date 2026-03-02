@@ -93,6 +93,16 @@
 ### Establish basic styles - Complete
     * Establish some groundwork in the product styles file (/assets/scss/theme/custom/_cs-product.scss). Outline the file with comments. Come up with a plan to organise the base styles for mobile and then use @include breakpoint('medium') when styling the desktop version. 
 
+### Use JSON file for search data. - current task
+    * Currently this project uses https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/cs_search_data.js and a serverside script at cravenspeed.com/content/cs_search.js
+    * We will switch to a more standardized approach of creating a new addon module that will operate the quick seach bar in the header globally.
+    * This addon will use the json file at https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com/global/cravenspeed-global-search.json as its reference data.
+    * I have already established the file structure of the search module in /assets/js/theme/_addons/global/search
+    * and example of this file can be found at /assets/js/theme/_addons/global/search/sample-data/cravenspeed-global-search.json
+    * The search module will operate in similar fashion to the product module.
+    * The HTML template for the quick search is /templates/components/common/cs-quick-search.html
+    * We will start by setting up the data manager to make the search data available globally
+
 ### Complete the instructions tab content - COMPLETE
     * Decide how we will provide access to the instructions
     * The alias JSON contains the path to the instructions via "instructions_url"
