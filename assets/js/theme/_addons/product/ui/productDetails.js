@@ -12,16 +12,6 @@ export default class ProductDetails {
         this.brandElement = document.querySelector('[data-product-brand]');
         this.ratingElement = document.querySelector('[data-product-rating]');
 
-        // Cache defaults (Handlebars rendered state) for reversion
-        this.defaults = {
-            description: this.descriptionElement ? this.descriptionElement.innerHTML : '',
-            instructions: this.instructionsElement ? this.instructionsElement.innerHTML : '',
-            sku: this.skuElement ? this.skuElement.textContent : '',
-            price: this.priceElement ? this.priceElement.innerHTML : '',
-            brand: this.brandElement ? this.brandElement.textContent : '',
-            rating: this.ratingElement ? this.ratingElement.innerHTML : ''
-        };
-
         this.stateManager.subscribe(this.update.bind(this));
     }
 
@@ -33,15 +23,21 @@ export default class ProductDetails {
         this.lastAliasData = aliasData;
         this.lastInventory = inventory;
 
-        // If aliasData exists, use it; otherwise fallback to defaults
-        let dataToRender = aliasData ? { ...aliasData } : this.defaults;
+        let dataToRender = {};
 
-        // Calculate stock message if we have alias data and inventory
-        if (aliasData && inventory && inventory.global_inv && aliasData.base_id) {
-            const stockItem = inventory.global_inv[aliasData.base_id];
-            if (stockItem) {
-                dataToRender.stock_message = this._getStockMessage(stockItem);
+        if (aliasData) {
+            dataToRender = { ...aliasData };
+            // Calculate stock message if we have alias data and inventory
+            if (inventory && inventory.global_inv && aliasData.base_id) {
+                const stockItem = inventory.global_inv[aliasData.base_id];
+                if (stockItem) {
+                    dataToRender.stock_message = this._getStockMessage(stockItem);
+                }
             }
+        } else if (archetypeData) {
+            // Fallback to archetype data for description and brand
+            dataToRender.description = archetypeData.description;
+            dataToRender.brand_name = archetypeData.brand_name;
         }
 
         this.render(dataToRender, archetypeData);
@@ -74,34 +70,52 @@ export default class ProductDetails {
         return `<a href="${url}" target="_blank" class="button button--primary">View Instructions</a>`;
     }
 
+    _animate(element) {
+        if (!element) return;
+        element.classList.remove('fade-in');
+        void element.offsetWidth; // trigger reflow
+        element.classList.add('fade-in');
+    }
+
     render(data, archetypeData) {
-        if (this.descriptionElement) this.descriptionElement.innerHTML = data.description || this.defaults.description;
+        if (this.descriptionElement) this.descriptionElement.innerHTML = data.description || '';
         if (this.instructionsElement) {
             if (data.instructions_url) {
                 this.instructionsElement.innerHTML = this._generateInstructionsHtml(data.instructions_url);
                 this.instructionsElement.style.display = 'flex';
-            } else if (this.defaults.instructions && this.defaults.instructions.trim().length > 0) {
-                this.instructionsElement.innerHTML = this.defaults.instructions;
-                this.instructionsElement.style.display = 'flex';
+                this._animate(this.instructionsElement);
             } else {
                 this.instructionsElement.innerHTML = '';
                 this.instructionsElement.style.display = 'none';
             }
         }
-        if (this.skuElement) this.skuElement.textContent = data.base_sku || this.defaults.sku;
-        if (this.brandElement) this.brandElement.textContent = data.brand_name || this.defaults.brand;
+        if (this.skuElement) {
+            this.skuElement.textContent = data.base_sku || '';
+            if (data.base_sku) this._animate(this.skuElement);
+        }
+        if (this.brandElement) {
+            this.brandElement.textContent = data.brand_name || '';
+            if (data.brand_name) this._animate(this.brandElement);
+        }
         if (this.priceElement) {
-            const price = (data.price !== undefined) ? data.price : this.defaults.price;
-            // Handle both numeric prices (from JSON) and string prices (from default HTML)
-            this.priceElement.innerHTML = typeof price === 'number' 
-                ? price.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) 
-                : price;
+            const price = data.price;
+            
+            if (price === undefined || price === null || price === 0 || price === '0' || (typeof price === 'string' && price.includes('$0.00'))) {
+                this.priceElement.innerHTML = '';
+            } else {
+                // Handle both numeric prices (from JSON) and string prices (from default HTML)
+                this.priceElement.innerHTML = typeof price === 'number' 
+                    ? price.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) 
+                    : price;
+                this._animate(this.priceElement);
+            }
         }
         if (this.ratingElement) {
             if (archetypeData && archetypeData.archetype_average_review) {
                 this.ratingElement.innerHTML = this._generateRatingHtml(archetypeData.archetype_average_review, archetypeData.archetype_review_count);
+                this._animate(this.ratingElement);
             } else {
-                this.ratingElement.innerHTML = this.defaults.rating;
+                this.ratingElement.innerHTML = '';
             }
         }
     }

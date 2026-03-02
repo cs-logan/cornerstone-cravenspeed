@@ -20,12 +20,14 @@
 // -----------------------------------------------------------------------------
 // 1. Variables & Mixins
 // -----------------------------------------------------------------------------
+
+$cs-product-max-width: 1440px;
+
 @mixin shimmer {
   background: #e0e0e0;
   background-image: linear-gradient(to right, #e0e0e0 0%, #d0d0d0 20%, #e0e0e0 40%, #e0e0e0 100%);
   background-repeat: no-repeat;
   background-size: 800px 100%;
-  display: block;
   position: relative;
 
   animation-duration: 1s;
@@ -45,6 +47,16 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 // -----------------------------------------------------------------------------
 // 2. Global Product Layout (Mobile Base)
 // -----------------------------------------------------------------------------
@@ -54,6 +66,7 @@
   flex-direction: column;
   width: 100%;
   padding: 0 spacing('half');
+  color: stencilColor("color-textBase");
 
   h1,
   h2,
@@ -69,15 +82,19 @@
 
 #product-messages {
   min-height: 50px;
-  margin-bottom: spacing('single');
+  // margin-bottom: spacing('single');
   padding: 0 spacing('half');
 }
 
 // -----------------------------------------------------------------------------
 // 3. Product Images / Gallery
 // -----------------------------------------------------------------------------
-.cs-product-gallery {
+.cs-product-gallery-wrapper {
   width: 100%;
+}
+
+.cs-gallery-wrapper .slides.fade-in {
+  animation: fadeIn 0.5s ease-out;
 }
 
 // -----------------------------------------------------------------------------
@@ -88,17 +105,34 @@
   flex-direction: column;
   width: 100%;
   margin-bottom: spacing('single');
+  gap: spacing('half');
 
   .cs-product-header {
     display: flex;
     flex-direction: column;
-    gap: spacing('quarter');
+    gap: spacing('half');
+  }
+
+  .cs-product-meta-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: spacing("half");
+    align-items: center;
+  }
+
+  color: stencilColor("color-textSecondary");
+
+  .cs-product-meta-row h2 {
+    font-weight: 400;
+  }
+
+  #product-brand {
+    color: stencilColor("color-textSecondary");
   }
 
   .cs-product-title {
     font-size: 1.5rem;
     line-height: 1.2;
-    margin-bottom: spacing('half');
     min-height: 1.8rem; // Prevent CLS
   }
 
@@ -108,6 +142,11 @@
     min-height: 1.5rem; // Reserve space
     display: flex;
     align-items: center;
+    text-decoration: none;
+
+    &.fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
 
     // Shimmer effect for empty fields (waiting for JS)
     &:empty {
@@ -115,9 +154,24 @@
       width: 60%;
       border-radius: 4px;
     }
+
+    .rating-count {
+      margin-left: spacing("half");
+      color: stencilColor("color-textBase");
+    }
+
   }
 
+
   // Specific widths for shimmer to look organic
+  #product-sku:empty {
+    width: 8ch;
+  }
+
+  #product-brand:empty {
+    width: 12ch;
+  }
+
   #product-stock:empty {
     width: 30%;
   }
@@ -127,10 +181,17 @@
   }
 
   .cs-info-row-double {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
     min-height: 1.875rem;
-    margin-top: spacing('quarter');
+    color: stencilColor("color-primary");
+    display: flex;
+    align-items: center;
+    line-height: 1.2;
+
+    &.fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
 
     &:empty {
       @include shimmer;
@@ -148,6 +209,7 @@
   flex-direction: column;
   gap: spacing('half');
   width: 100%;
+  color: stencilColor("color-textBase");
 }
 
 .cs-form-field {
@@ -169,6 +231,12 @@
   border-radius: 4px;
   padding: 0 spacing('half');
   background-color: #fff;
+
+  &:focus {
+    border-color: stencilColor("color-primary");
+    box-shadow: 0 0 4px stencilColor("color-primary");
+    outline: none;
+  }
 
   &:disabled {
     background-color: #f4f4f4;
@@ -226,11 +294,16 @@
   .cs-product-container {
     .cs-product-above-fold-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.4fr 1fr;
       width: 100%;
-      max-width: 1200px;
+      max-width: $cs-product-max-width;
       margin: 0 auto;
       gap: spacing('double');
+    }
+
+    .cs-product-gallery-wrapper {
+      width: 80%;
+      margin: 0 auto;
     }
 
     .tabs {
@@ -244,7 +317,7 @@
     }
 
     #product-description {
-      max-width: 1200px;
+      max-width: $cs-product-max-width;
       margin: 0 auto;
     }
 

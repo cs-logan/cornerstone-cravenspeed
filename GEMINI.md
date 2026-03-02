@@ -62,7 +62,7 @@
         - Page Speed Insights metrics
         - Accesibility
         - Semantic HTML
-
+8. Do not under any circumestance use jQuery
 ---
 
 ## Tasks
@@ -93,7 +93,7 @@
 ### Establish basic styles - Complete
     * Establish some groundwork in the product styles file (/assets/scss/theme/custom/_cs-product.scss). Outline the file with comments. Come up with a plan to organise the base styles for mobile and then use @include breakpoint('medium') when styling the desktop version. 
 
-### Use JSON file for search data. - current task
+### Use JSON file for search data. - Complete
     * Currently this project uses https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/cs_search_data.js and a serverside script at cravenspeed.com/content/cs_search.js
     * We will switch to a more standardized approach of creating a new addon module that will operate the quick seach bar in the header globally.
     * This addon will use the json file at https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com/global/cravenspeed-global-search.json as its reference data.
@@ -102,6 +102,24 @@
     * The search module will operate in similar fashion to the product module.
     * The HTML template for the quick search is /templates/components/common/cs-quick-search.html
     * We will start by setting up the data manager to make the search data available globally
+
+### Build the addon search module - In Progress (skip for now)
+    * This is a powerful module built for e-commerce in the automotive space and can handle complex fitment based queries due to the optimized data structure
+    * The search module is a global module that will be a "quick" search with results appearing below the input field as you type
+    * The search algorithm should maximize the potential of the the data
+    * It should have a scoring system to prioritize titles, skus, and fitment
+    * it should tokenize the search string
+    * for example, searching "toyota" should return all products with compatibility with Toyota vehicles
+    * The same should be true of a model based query, and of generation based queries
+    * The initial structure has already been created and the module is partially complete:
+        * `search/`:
+            * `sample-data/`:
+                * `cravenspeed-global-search`: an example of the data file which in production is hosted on the digital ocean cdn
+            * `ui/`
+                * `quickSearch.js`: holds the logic for the quickSearch ui
+            * `index.js`: the entry point into the Cornerstone theme in order to keep the rest of the module independent from Cornerstone
+            * `search.js`: the primary controller file
+            * `searchDataManager.js`: handles fetching of the data file
 
 ### Complete the instructions tab content - COMPLETE
     * Decide how we will provide access to the instructions

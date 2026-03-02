@@ -2,6 +2,9 @@ __webpack_public_path__ = window.__webpack_public_path__; // eslint-disable-line
 
 import Global from './theme/global';
 
+// Import for CravenSpeed search
+import GlobalSearch from './theme/_addons/global/search/index';
+
 const getAccount = () => import('./theme/account');
 const getLogin = () => import('./theme/auth');
 const noop = null;
@@ -70,6 +73,7 @@ window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null
                 // Load globals
                 if (loadGlobal) {
                     Global.load(context);
+                    GlobalSearch.load(context);
                 }
 
                 const importPromises = [];

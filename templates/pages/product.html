@@ -16,26 +16,21 @@
 
 
             <section class="cs-product-info-wrapper" aria-label="Product Information">
+                <div class="cs-product-meta-row">
+                    <h2 class="cs-info-row" id="product-sku" data-product-sku="{{product.sku}}">{{product.sku}}</h2>
+                    <h2 class="cs-info-row" id="product-brand" data-product-brand>{{product.brand.name}}</h2>
+                </div>
                 <header class="cs-product-header">
                     <h1 class="cs-product-title" itemprop="name" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
                         {{product.title}}
                         {{inject "productTitle" product.title}}
                     </h1>
-
-                    <h2 class="cs-info-row" id="product-sku" data-product-sku="{{product.sku}}">{{product.sku}}</h2>
-                    <h2 class="cs-info-row" id="product-shipping" data-product-shipping-info></h2>
-                    <h2 class="cs-info-row" id="product-stock" data-product-stock></h2>
-                    <h2 class="cs-info-row-double" id="product-price" data-product-price>
-                        {{#if product.price.with_tax}}
-                            {{product.price.with_tax.formatted}}
-                        {{else}}
-                            {{product.price.without_tax.formatted}}
-                        {{/if}}
-                    </h2>
                     <a href="#tab-reviews" class="cs-info-row" id="product-rating" data-product-rating>
                         {{> components/products-cs/rating-cs}}
                     </a>
-                    <h2 class="cs-info-row" id="product-brand" data-product-brand>{{product.brand.name}}</h2>
+                    <h2 class="cs-info-row-double" id="product-price" data-product-price></h2>
+                    <h2 class="cs-info-row" id="product-shipping" data-product-shipping-info></h2>
+                    <h2 class="cs-info-row" id="product-stock" data-product-stock></h2>
                 </header>
 
                 <form class="cs-product-form" id="product-selection" action="{{urls.cart}}" method="post" enctype="multipart/form-data" data-cart-item-add data-product-options-container>
@@ -62,6 +57,7 @@
                         </select>
                     </div>
                     <div class="cs-form-field" data-product-form-field="option-one">
+                        <label class="cs-form-label" for="option-one">Options</label>
                         <select name="Option One" id="option-one" class="cs-form-select" data-product-option="option" disabled>
                             <option selected>{{lang 'loading'}}...</option>
                         </select>

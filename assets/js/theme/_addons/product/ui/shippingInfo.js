@@ -70,7 +70,7 @@ class ShippingInfo {
             text = 'tomorrow';
         }
 
-        return `Ships free, ${text}`;
+        return `Ships free, ${text}.`;
     }
 
     /**

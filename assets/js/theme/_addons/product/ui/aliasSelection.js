@@ -1,6 +1,7 @@
 export default class AliasSelection {
     constructor(stateManager) {
         this.stateManager = stateManager;
+        this.initialLoad = true;
         // Establish event listener on the parent container (Event Delegation)
         this.container = document.querySelector('[data-product-options-container]') || document.body;
         
@@ -77,6 +78,17 @@ export default class AliasSelection {
             this._updateVisibility(input, rawOption, parentKey, selections, optionsData, archetypeData);
             this._updateInputOptions(input, rawOption, optionKey, optionsData, currentVal);
         });
+
+        if (!this.initialLoad) {
+            const nextInput = Array.from(inputs).find(input => !input.disabled && !input.value);
+            if (nextInput) {
+                nextInput.focus();
+            } else {
+                const addToCart = document.getElementById('product-add-button');
+                if (addToCart) addToCart.focus();
+            }
+        }
+        this.initialLoad = false;
     }
 
     _getParentKey(rawOption, archetypeData) {
@@ -89,7 +101,7 @@ export default class AliasSelection {
     }
 
     _updateVisibility(input, rawOption, parentKey, selections, optionsData, archetypeData) {
-        const wrapper = input.closest('.form-field') || input;
+        const wrapper = input.closest('.cs-form-field') || input.closest('.form-field') || input;
         const isJsonEndpoint = optionsData && optionsData.length === 1 && optionsData[0].value.endsWith('.json');
         const { universal_product } = archetypeData;
         

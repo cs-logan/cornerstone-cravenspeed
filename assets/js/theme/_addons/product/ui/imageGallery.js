@@ -53,6 +53,12 @@ export default class ImageGallery {
 
         // Build HTML
         this.slidesContainer.innerHTML = '';
+
+        // Trigger fade-in animation
+        this.slidesContainer.classList.remove('fade-in');
+        void this.slidesContainer.offsetWidth; // Force reflow
+        this.slidesContainer.classList.add('fade-in');
+
         imageArray.forEach(image => {
             const slide = document.createElement('div');
             slide.classList.add('slide');
@@ -75,6 +81,12 @@ export default class ImageGallery {
         if (!this.slidesContainer) return;
         if (this.currentGallery) this.currentGallery.destroy();
         this.slidesContainer.innerHTML = this.defaultSlidesHTML;
+
+        // Trigger fade-in animation
+        this.slidesContainer.classList.remove('fade-in');
+        void this.slidesContainer.offsetWidth; // Force reflow
+        this.slidesContainer.classList.add('fade-in');
+
         this.initCsGallery();
     }
 
