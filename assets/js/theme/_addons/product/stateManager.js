@@ -22,7 +22,8 @@ export default class StateManager {
     }
 
     updateSelection({option, value}) {
-        const optionOrder = ['make', 'model', 'generation', this.state.archetypeData.option_title, this.state.archetypeData.sub_option_title].filter(Boolean);
+        const { option_title, sub_option_title } = this.state.archetypeData;
+        const optionOrder = ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
         
         this.state.selections[option] = value;
 
@@ -34,8 +35,30 @@ export default class StateManager {
             }
         }
 
-        this._findAlias();
-        this._updateAvailableOptions();
+        // Auto-select loop: Resolve single-option paths synchronously
+        let changed = true;
+        while (changed) {
+            changed = false;
+            this._findAlias();
+            this._updateAvailableOptions();
+
+            for (const key of optionOrder) {
+                if (!this.state.selections[key]) {
+                    const opts = this.state.availableOptions[key];
+                    if (opts && opts.length === 1) {
+                        this.state.selections[key] = opts[0].value;
+                        changed = true;
+                        break; // Restart loop to refresh available options for next level
+                    }
+                }
+            }
+        }
+
+        // Only clear aliasData if we ended up without a valid alias after resolution
+        if (!this.state.currentAlias) {
+            this.state.aliasData = null;
+        }
+
         this._notifySubscribers();
     }
 
@@ -105,7 +128,6 @@ export default class StateManager {
             this.state.currentAlias = result;
         } else {
             this.state.currentAlias = null;
-            this.state.aliasData = null;
         }
     }
 

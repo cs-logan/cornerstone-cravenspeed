@@ -55,6 +55,15 @@ export default class AliasSelection {
     update(state) {
         const { availableOptions, selections, archetypeData } = state;
 
+        // Sync persistence with current selections (handles auto-selections)
+        ['make', 'model', 'generation'].forEach(key => {
+            if (selections[key]) {
+                localStorage.setItem(`cs_garage_${key}`, selections[key]);
+            } else {
+                localStorage.removeItem(`cs_garage_${key}`);
+            }
+        });
+
         const inputs = this.container.querySelectorAll('[data-product-option]');
         inputs.forEach(input => {
             const rawOption = input.dataset.productOption;
@@ -128,11 +137,6 @@ export default class AliasSelection {
 
     _updateInputOptions(input, rawOption, optionKey, optionsData, currentVal) {
         if (optionsData && optionsData.length > 0) {
-            // Auto-Advance: If only 1 option exists, select it automatically
-            let autoSelectValue = null;
-            if (optionsData.length === 1) {
-                autoSelectValue = optionsData[0].value;
-            }
             
             const placeholder = this._getPlaceholder(rawOption);
 
@@ -140,7 +144,7 @@ export default class AliasSelection {
             input.innerHTML = `<option value="">${placeholder}</option>`;
             
             optionsData.forEach(opt => {
-                const isSelected = opt.value === currentVal || (autoSelectValue && opt.value === autoSelectValue);
+                const isSelected = opt.value === currentVal;
                 const optionEl = document.createElement('option');
                 optionEl.value = opt.value;
                 optionEl.textContent = opt.label;
@@ -150,14 +154,6 @@ export default class AliasSelection {
             });
             
             input.disabled = false;
-
-            // Trigger state update if auto-selected
-            if (autoSelectValue && currentVal !== autoSelectValue) {
-                setTimeout(() => {
-                    this.stateManager.updateSelection({ option: optionKey, value: autoSelectValue });
-                    if (['make', 'model', 'generation'].includes(rawOption)) this._savePersistence(rawOption, autoSelectValue);
-                }, 0);
-            }
         } else {
             // Disable downstream inputs that don't have data yet
             input.disabled = true;

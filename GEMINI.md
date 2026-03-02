@@ -65,7 +65,7 @@
 
 ---
 
-## Task Requirements
+## Tasks
 
 ### Add to Cart - COMPLETE
     * Use form validation to ensure the form cannot be submitted unless all appropriate options are selected (an alias is selected)
@@ -103,38 +103,15 @@
     * Ensure the "Back" button works as expected (popstate event).
     * Verify this does not trigger a full page reload.
 
+### Prevent flashing of default content when switching from alias to alias - COMPLETE
+    * We have code in place to load default content when an alias isn't selected. This content, nor the shimmer effects, should appear when an alias is currently selected and then a new one is selected because it causes an unsightly flash of the default/loading content between when the alias content is being fetched.
+
 ## 📜 Full Context Request
-**Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes.
+**Note to Gemini:** Please ingest all files mentioned in the "Project Map" above. Analyze the relationships between the frontend and backend before suggesting code changes. 
+**Full Module Path**: Add the module to context: /assets/js/theme/_addons/product
 
 ## Restart Prompt
-    please review GEMINI.md. Pay particular attention to the restart log to get caught up on what we have worked on previously, and make sure you review any mentioned files. 
+    please review GEMINI.md. Injest any mentioned files in this document or PRODUCT_MODULE_PLAN.md. Check the task section to inform yourself on what we will be working on next. 
 
-## Chat restart log
-    *We are working on the custom module in .assets/js/theme/_addons/product
-    *In addition to this file you need to review PRODUCT_MODULE_PLAN.md and QTY_SYSTEM.md
-    *We created the initial draft of the state-manager class
-    *We created the initial draft of the data-manager class
-    *In order to test data manager, we need to create boilerplate versions of index.js and product.js
-    *index.js needs to extend the page-manager class. 
-    *index.js is already mapped to product pages in app.js
-    *index.js is complete for now
-    *product.js needs to call on the data manager to fetch the archetype data in its onready method
-    * we discussed what data to use on initial load, bigcommerce via handlebars, or the json data
-    *we will use a hybrid approach, first populating the product info via handlebars, and then embedding that data as a JSON object which is used to hydrate the product controller and state. Subsequent interactions will use the data manager to fetch alias data.
-    *I have begun inserting the default data, starting with the shipping day. 
-    *The old system product-current.js, generated dynamic text based on the day of the week as well as the time of day
-    * we need to implement this functionality in our new module 
-    *the shipping info ui module has been completed. The state manager calculates the ship day and passes it to the shipping info ui module to render which watches state to update as needed. 
-    *in an effort to begin work on the alias selection module we need to be able to resolve the archetype name from the html template in the product module so we can dynamically fetch the archetype data.
-    * We are now using the injected title from the template to both display the title of the product and look up the correct archetype data file!
-    *We are now working on the optionsManager.js file
-    *the options manager is functioning well now we need to handle what happens once the selection process is complete. We are strategizing how to handle that. 
-    *We have completed most of the "above the fold" content including the image gallery, the product header, and the alias selection section. The last step for this phase is to hook up the add to cart button and add the selected alias to the cart.
-    *We have completed to addToCart functionality, but are attempting to set up a modal that opens when an item is added. 
-    *We have completed the cart preview modal
-    * We are now working on a bug regarding options
-    * The options bug has been resolved
-    * We are now working on support for Universal products
-    * We have completed support for Universal products
-    * We completed establishing basic styles
+
     
