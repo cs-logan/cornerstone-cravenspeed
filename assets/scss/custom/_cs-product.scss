@@ -126,8 +126,7 @@ $cs-product-max-width: 1440px;
 
   #product-brand,
   #product-sku,
-  #product-shipping,
-  #product-stock {
+  #product-fulfillment {
     color: stencilColor("color-textSecondary");
   }
 
@@ -173,12 +172,8 @@ $cs-product-max-width: 1440px;
     width: 12ch;
   }
 
-  #product-stock:empty {
-    width: 30%;
-  }
-
-  #product-shipping:empty {
-    width: 70%;
+  #product-fulfillment:empty {
+    width: 60%;
   }
 
   .cs-info-row-double {

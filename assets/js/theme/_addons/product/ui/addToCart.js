@@ -14,6 +14,8 @@ export default class AddToCart {
             return;
         }
 
+        this.defaultButtonText = this.button.textContent;
+
         this.init();
     }
 
@@ -22,41 +24,64 @@ export default class AddToCart {
         this.button.disabled = true;
 
         // Check for pre-existing alias (Universal products)
-        const state = this.state.getState();
-        if (state.aliasData) {
-            this.handleAliasChange(state.aliasData);
-        }
+        this.updateButtonState(this.state.getState());
 
         this.bindEvents();
     }
 
     bindEvents() {
         // Watch for alias changes
-        this.state.subscribe((state) => this.handleAliasChange(state.aliasData));
+        this.state.subscribe((state) => this.updateButtonState(state));
 
         // Intercept form submission
         this.form.addEventListener('submit', (event) => this.handleSubmit(event));
     }
 
-    handleAliasChange(alias) {
+    updateButtonState(state) {
+        const { aliasData, inventory } = state;
+
         // We expect alias to be an object with a 'bc_id' property representing the BC Product ID
-        if (alias && alias.bc_id) {
-            const wasDisabled = this.button.disabled;
+        if (aliasData && aliasData.bc_id) {
+            // Check inventory
+            let isStocked = true;
 
-            // Enable button
-            this.button.disabled = false;
-
-            // Update the hidden product_id field with the Alias ID (swapping out the Archetype ID)
-            if (this.productIdInput) {
-                this.productIdInput.value = alias.bc_id;
+            if (inventory && inventory.global_inv && aliasData.base_id) {
+                const stockItem = inventory.global_inv[aliasData.base_id];
+                if (stockItem) {
+                    const { av, a2b } = stockItem;
+                    if (av <= 0 && a2b <= 0) {
+                        isStocked = false;
+                    }
+                } else {
+                    // base_id exists but not found in inventory -> Out of Stock
+                    isStocked = false;
+                }
             }
 
-            if (wasDisabled) {
-                this.button.focus();
+            if (isStocked) {
+                const wasDisabled = this.button.disabled;
+
+                // Enable button
+                this.button.disabled = false;
+                this.button.textContent = this.defaultButtonText;
+
+                // Update the hidden product_id field with the Alias ID (swapping out the Archetype ID)
+                if (this.productIdInput) {
+                    this.productIdInput.value = aliasData.bc_id;
+                }
+
+                if (wasDisabled) {
+                    this.button.focus();
+                }
+            } else {
+                // Alias selected but Out of Stock
+                this.button.disabled = true;
+                this.button.textContent = 'Out of Stock';
             }
         } else {
             // Disable button
             this.button.disabled = true;
+            this.button.textContent = this.defaultButtonText;
         }
     }
 

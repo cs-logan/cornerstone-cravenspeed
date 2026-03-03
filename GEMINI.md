@@ -55,6 +55,8 @@
 | :--- | :--- | :--- |
 | **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
+| **Combine stockInfo and shippingInfo** | 🟢 Current Task | The shipping info row and the stock info row are semi redundant. If we say something will ship, it should be in stock. Lets combine these rows and ui components into one fulfillmentStatus component and have that take up only one row instead of two. |
+
 
 ### ✅ Completed
 * **Add to Cart Logic:** Form validation and alias-specific submission.
@@ -66,6 +68,7 @@
 * **Instructions Tab:** Implemented `instructions_url` via alias JSON.
 * **Anti-Flash Logic:** Prevented content flashing during alias switching.
 * **Audit Product Info Height** Adjust height of product info section to keep the add to cart button above the fold with extra room
+* **Fix Out of Stock functionality** The add to cart button should be disabled if an alias is out of stock
 
 ---
 

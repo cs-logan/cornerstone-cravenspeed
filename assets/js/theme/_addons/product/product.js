@@ -1,8 +1,7 @@
 import DataManager from './dataManager';
 import StateManager from './stateManager';
-import ShippingInfo from './ui/shippingInfo';
+import FulfillmentStatus from './ui/fulfillmentStatus';
 import AliasSelection from './ui/aliasSelection';
-import StockInfo from './ui/stockInfo';
 import ProductDetails from './ui/productDetails';
 import Rating from './ui/rating';
 import ImageGallery from './ui/imageGallery';
@@ -33,9 +32,8 @@ export default class ProductController {
 
             this.stateManager = new StateManager(archetypeData);
             this.stateManager.setInventoryData(inventoryData);
-            this.shippingInfo = new ShippingInfo(this.stateManager);
+            this.fulfillmentStatus = new FulfillmentStatus(this.stateManager);
             this.aliasSelection = new AliasSelection(this.stateManager);
-            this.stockInfo = new StockInfo(this.stateManager);
             this.productDetails = new ProductDetails(this.stateManager);
             this.rating = new Rating(this.stateManager);
             this.imageGallery = new ImageGallery(this.stateManager);
