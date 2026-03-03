@@ -33,6 +33,8 @@
                 </header>
 
                 <form class="cs-product-form" id="product-selection" action="{{urls.cart}}" method="post" enctype="multipart/form-data" data-cart-item-add data-product-options-container>
+                    <div id="product-messages" data-product-messages></div>
+
                     <input type="hidden" name="action" value="add">
                     <input type="hidden" name="product_id" value="{{product.id}}">
                     <input type="hidden" name="qty[]" value="1">
@@ -66,14 +68,14 @@
                             <option selected>{{lang 'loading'}}...</option>
                         </select>
                     </div>
-
-                    <div id="product-fitment-notes"></div>
                     
-                    {{> components/products-cs/modals/scratchAndDent}}
-
                     <div class="cs-add-to-cart-container" id="add-button-wrapper">
                         <button id="product-add-button" type="submit" class="button" disabled>{{lang 'products.add_to_cart'}}</button>
                     </div>
+
+                    <div id="product-fitment-notes" data-fitment-notes></div>
+                    
+                    {{> components/products-cs/modals/scratchAndDent}}
                     
                     {{> components/products-cs/modals/stockNotification}}
                 </form>

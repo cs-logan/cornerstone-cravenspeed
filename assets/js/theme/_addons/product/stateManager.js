@@ -78,6 +78,12 @@ export default class StateManager {
         this._notifySubscribers();
     }
 
+    setInitialSelections(selections) {
+        this.state.selections = selections;
+        this._performInitialReconciliation();
+        this._notifySubscribers(); // Notify once after all initial selections are set
+    }
+
     getState() {
         return this.state;
     }

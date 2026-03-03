@@ -81,9 +81,9 @@ $cs-product-max-width: 1440px;
 }
 
 #product-messages {
-  min-height: 50px;
+  // min-height: 50px;
   // margin-bottom: spacing('single');
-  padding: 0 spacing('half');
+  // padding: 0 spacing('half');
 }
 
 // -----------------------------------------------------------------------------
@@ -359,4 +359,43 @@ $cs-product-max-width: 1440px;
       }
     }
   }
+}
+
+// =============================================================================
+// 9. Incompatibility Message
+// =============================================================================
+#product-messages {
+    display: none;
+    .cs-product-message--vehicle-incompatible {
+        border-left: 4px solid stencilColor("color-warning");
+        background-color: stencilColor("color-warningLight");
+        color: stencilColor("color-warning");
+        padding: spacing('half');
+        text-align: center;
+        width: 100%;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.cs-product-form.has-incompatibility-message {
+    #product-messages {
+        display: block;
+    }
+
+    [data-product-form-field="option-one"],
+    [data-product-form-field="option-two"] {
+        display: none;
+    }
+}
+
+@include breakpoint('medium') {
+    .cs-product-form.has-incompatibility-message {
+        #product-messages {
+            grid-row: 2;
+            grid-column: 1 / -1;
+        }
+    }
 }

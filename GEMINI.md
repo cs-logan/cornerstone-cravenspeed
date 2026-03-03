@@ -45,6 +45,7 @@
 6. **Objectivity:** Prioritize standard BigCommerce developer best practices and verifiable Stencil documentation.
 7. **Sample Data:** Files in `/sample-data/` are reference copies of CDN files. **Do not modify them.**
 8. **Module Integrity:** When editing `/assets/js/theme/_addons/product`, maintain existing functionality unless explicitly asked to change it.
+9. **Dont Advance** When Gemini completes a task it should ask me what is next, it should not begin work on a new task. 
 
 ---
 
@@ -55,7 +56,8 @@
 | :--- | :--- | :--- |
 | **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
-| **Combine stockInfo and shippingInfo** | 🟢 Current Task | The shipping info row and the stock info row are semi redundant. If we say something will ship, it should be in stock. Lets combine these rows and ui components into one fulfillmentStatus component and have that take up only one row instead of two. |
+
+revise css to prevent CLS
 
 
 ### ✅ Completed
@@ -69,6 +71,9 @@
 * **Anti-Flash Logic:** Prevented content flashing during alias switching.
 * **Audit Product Info Height** Adjust height of product info section to keep the add to cart button above the fold with extra room
 * **Fix Out of Stock functionality** The add to cart button should be disabled if an alias is out of stock
+* **Combine stockInfo and shippingInfo** The shipping info row and the stock info row are semi redundant. If we say something will ship, it should be in stock. Lets combine these rows and ui components into one fulfillmentStatus component and have that take up only one row instead of two.
+| **Save Options in Persistence** | | We are currently saving the vehicle in persistence, lets also save the options. This is a little tricky as the options are dependent on the archetype |
+| **Show Incompatibility Message** | | Since the previously selected vehicle is saved in persistance and we attempt to pre-select the vehicle when loading a product page, there are some cases where a vehicle will not have compatibility with a given archetype (ie: vehicle is not listed in make_model_index in the archetype data) When this is the case we should indicate to the user that this product is not compatible with their previously selected vehicle. This is handled by productMessages.js ui component. Observe the current layout of the selection fields (make model gen in the first row, option one and option two in the second row) via product.html and _cs-product.scss. When the selected vehicle is not compatible with the current archetype display a message indicating as such. the message should occupy the space that the two option selects would normally occupy (the second row). Work on this task has already been attempted, but Gemini failed to complete it |
 
 ---
 

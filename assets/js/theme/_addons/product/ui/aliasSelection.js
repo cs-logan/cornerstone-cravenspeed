@@ -1,23 +1,35 @@
 export default class AliasSelection {
-    constructor(stateManager) {
+    constructor(stateManager, productMessages) {
         this.stateManager = stateManager;
+        this.productMessages = productMessages;
+        this.persistedVehicle = {};
         this.initialLoad = true;
         // Establish event listener on the parent container (Event Delegation)
         this.container = document.querySelector('[data-product-options-container]') || document.body;
+        this.form = document.querySelector('.cs-product-form');
         
         this._bindEvents();
-        this._checkPersistence();
-        
-        // Subscribe to state changes to re-render options (e.g. populate Models after Make is selected)
+        this._initialize();
+    }
+
+    _initialize() {
+        // Subscribe to state changes first
         this.stateManager.subscribe(this.update.bind(this));
 
-        // Perform initial render to populate "Make" dropdown
-        this.update(this.stateManager.getState());
+        // Then, handle persistence and initial state setup
+        const initialState = this.stateManager.getState();
+        this._handlePersistence(initialState.archetypeData);
     }
 
     _bindEvents() {
         this.container.addEventListener('change', (e) => {
             if (e.target.matches('[data-product-option]')) {
+                // When a user starts making a new selection, clear any incompatibility messages
+                this.productMessages.hideMessage('vehicle-incompatible');
+                if (this.form) {
+                    this.form.classList.remove('has-incompatibility-message');
+                }
+
                 const rawOption = e.target.dataset.productOption;
                 const value = e.target.value;
                 console.log(`Change: ${rawOption} selected ${value}`);
@@ -27,41 +39,111 @@ export default class AliasSelection {
                 const optionKey = this._resolveOptionKey(rawOption, state.archetypeData);
                 this.stateManager.updateSelection({ option: optionKey, value });
 
-                // Save to persistence if it's a vehicle selection
-                if (['make', 'model', 'generation'].includes(rawOption)) {
-                    this._savePersistence(rawOption, value);
-                }
+                // Save to persistence
+                this._savePersistence(rawOption, value, state.archetypeData);
             }
         });
     }
 
-    _checkPersistence() {
+    _handlePersistence(archetypeData) {
+        if (!archetypeData || !archetypeData.archetypeName) {
+            this.update(this.stateManager.getState());
+            return;
+        }
+
+        const selections = {};
+        
+        // Vehicle persistence
         const make = localStorage.getItem('cs_garage_make');
         const model = localStorage.getItem('cs_garage_model');
         const generation = localStorage.getItem('cs_garage_generation');
 
-        if (make) this.stateManager.updateSelection({ option: 'make', value: make });
-        if (model) this.stateManager.updateSelection({ option: 'model', value: model });
-        if (generation) this.stateManager.updateSelection({ option: 'generation', value: generation });
+        if (make) {
+            selections.make = make;
+            this.persistedVehicle.make = make;
+        }
+        if (model) {
+            selections.model = model;
+            this.persistedVehicle.model = model;
+        }
+        if (generation) {
+            selections.generation = generation;
+            this.persistedVehicle.generation = generation;
+        }
+
+        // Options persistence
+        const { archetypeName, option_title, sub_option_title } = archetypeData;
+        if (option_title) {
+            const optionValue = localStorage.getItem(`cs_options_${archetypeName}_${option_title}`);
+            if (optionValue) selections[option_title] = optionValue;
+        }
+        if (sub_option_title) {
+            const subOptionValue = localStorage.getItem(`cs_options_${archetypeName}_${sub_option_title}`);
+            if (subOptionValue) selections[sub_option_title] = subOptionValue;
+        }
+        
+        // Apply all selections at once
+        this.stateManager.setInitialSelections(selections);
     }
 
-    _savePersistence(option, value) {
-        if (value) {
-            localStorage.setItem(`cs_garage_${option}`, value);
-        } else {
-            localStorage.removeItem(`cs_garage_${option}`);
+    _savePersistence(option, value, archetypeData) {
+        const { archetypeName, option_title, sub_option_title } = archetypeData;
+        let key;
+        
+        if (!archetypeName) return;
+
+        if (['make', 'model', 'generation'].includes(option)) {
+            key = `cs_garage_${option}`;
+        } else if (option === 'option' && option_title) {
+            key = `cs_options_${archetypeName}_${option_title}`;
+        } else if (option === 'sub_option' && sub_option_title) {
+            key = `cs_options_${archetypeName}_${sub_option_title}`;
+        }
+
+        if (key) {
+            if (value) {
+                localStorage.setItem(key, value);
+            } else {
+                localStorage.removeItem(key);
+            }
         }
     }
 
     update(state) {
         const { availableOptions, selections, archetypeData } = state;
+        const { archetypeName, option_title, sub_option_title } = archetypeData;
+
+        // One-time check on initial load for vehicle compatibility
+        if (this.initialLoad && this.persistedVehicle.generation) {
+            const isCompatible = availableOptions.generation && availableOptions.generation.find(g => g.value === this.persistedVehicle.generation);
+            if (!isCompatible) {
+                this.productMessages.showMessage('vehicle-incompatible', 'This product is not compatible with your saved vehicle.');
+                if (this.form) {
+                    this.form.classList.add('has-incompatibility-message');
+                }
+            }
+            this.initialLoad = false;
+        }
 
         // Sync persistence with current selections (handles auto-selections)
-        ['make', 'model', 'generation'].forEach(key => {
-            if (selections[key]) {
-                localStorage.setItem(`cs_garage_${key}`, selections[key]);
-            } else {
-                localStorage.removeItem(`cs_garage_${key}`);
+        const persistKeys = ['make', 'model', 'generation'];
+        if (option_title) persistKeys.push(option_title);
+        if (sub_option_title) persistKeys.push(sub_option_title);
+
+        persistKeys.forEach(key => {
+            let storageKey;
+            if (['make', 'model', 'generation'].includes(key)) {
+                storageKey = `cs_garage_${key}`;
+            } else if (archetypeName) {
+                storageKey = `cs_options_${archetypeName}_${key}`;
+            }
+
+            if (storageKey) {
+                if (selections[key]) {
+                    localStorage.setItem(storageKey, selections[key]);
+                } else {
+                    localStorage.removeItem(storageKey);
+                }
             }
         });
 
@@ -79,16 +161,13 @@ export default class AliasSelection {
             this._updateInputOptions(input, rawOption, optionKey, optionsData, currentVal);
         });
 
-        if (!this.initialLoad) {
-            const nextInput = Array.from(inputs).find(input => !input.disabled && !input.value);
-            if (nextInput) {
-                nextInput.focus();
-            } else {
-                const addToCart = document.getElementById('product-add-button');
-                if (addToCart) addToCart.focus();
-            }
+        const nextInput = Array.from(inputs).find(input => !input.disabled && !input.value);
+        if (nextInput) {
+            // nextInput.focus();
+        } else {
+            const addToCart = document.getElementById('product-add-button');
+            // if (addToCart) addToCart.focus();
         }
-        this.initialLoad = false;
     }
 
     _getParentKey(rawOption, archetypeData) {

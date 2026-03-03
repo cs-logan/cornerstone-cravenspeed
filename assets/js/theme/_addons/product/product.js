@@ -6,6 +6,7 @@ import ProductDetails from './ui/productDetails';
 import Rating from './ui/rating';
 import ImageGallery from './ui/imageGallery';
 import AddToCart from './ui/addToCart';
+import ProductMessages from './ui/productMessages';
 
 export default class ProductController {
     constructor(context) {
@@ -30,10 +31,14 @@ export default class ProductController {
                 this.dataManager.getInventoryData()
             ]);
 
+            archetypeData.archetypeName = this.archetypeName;
+
             this.stateManager = new StateManager(archetypeData);
             this.stateManager.setInventoryData(inventoryData);
+
+            this.productMessages = new ProductMessages();
             this.fulfillmentStatus = new FulfillmentStatus(this.stateManager);
-            this.aliasSelection = new AliasSelection(this.stateManager);
+            this.aliasSelection = new AliasSelection(this.stateManager, this.productMessages);
             this.productDetails = new ProductDetails(this.stateManager);
             this.rating = new Rating(this.stateManager);
             this.imageGallery = new ImageGallery(this.stateManager);
