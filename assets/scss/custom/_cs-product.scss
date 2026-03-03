@@ -120,13 +120,14 @@ $cs-product-max-width: 1440px;
     align-items: center;
   }
 
-  color: stencilColor("color-textSecondary");
-
   .cs-product-meta-row h2 {
     font-weight: 400;
   }
 
-  #product-brand {
+  #product-brand,
+  #product-sku,
+  #product-shipping,
+  #product-stock {
     color: stencilColor("color-textSecondary");
   }
 
@@ -259,6 +260,17 @@ $cs-product-max-width: 1440px;
     text-transform: uppercase;
     letter-spacing: 1px;
 
+    &:not(:disabled) {
+      background-color: stencilColor("color-primary");
+      color: #fff;
+      border-color: stencilColor("color-primary");
+
+      &:hover,
+      &:focus {
+        filter: brightness(0.85);
+      }
+    }
+
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -301,11 +313,6 @@ $cs-product-max-width: 1440px;
       gap: spacing('double');
     }
 
-    .cs-product-gallery-wrapper {
-      width: 80%;
-      margin: 0 auto;
-    }
-
     .tabs {
       display: flex;
       justify-content: center;
@@ -324,6 +331,37 @@ $cs-product-max-width: 1440px;
     #product-shipping-tab {
       margin: 0 auto;
       max-width: 70ch;
+    }
+
+    .cs-product-form {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: spacing('half');
+
+      > * {
+        grid-column: span 12;
+      }
+
+      .cs-form-field {
+        justify-content: flex-end;
+      }
+
+      [data-product-form-field="make"] {
+        grid-column: span 3;
+      }
+
+      [data-product-form-field="model"] {
+        grid-column: span 4;
+      }
+
+      [data-product-form-field="year"] {
+        grid-column: span 5;
+      }
+
+      [data-product-form-field="option-one"],
+      [data-product-form-field="option-two"] {
+        grid-column: span 6;
+      }
     }
   }
 }

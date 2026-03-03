@@ -65,6 +65,7 @@
 * **Search Data Migration:** Migrated to global search JSON from CDN.
 * **Instructions Tab:** Implemented `instructions_url` via alias JSON.
 * **Anti-Flash Logic:** Prevented content flashing during alias switching.
+* **Audit Product Info Height** Adjust height of product info section to keep the add to cart button above the fold with extra room
 
 ---
 

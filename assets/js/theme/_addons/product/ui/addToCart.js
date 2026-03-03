@@ -41,12 +41,18 @@ export default class AddToCart {
     handleAliasChange(alias) {
         // We expect alias to be an object with a 'bc_id' property representing the BC Product ID
         if (alias && alias.bc_id) {
+            const wasDisabled = this.button.disabled;
+
             // Enable button
             this.button.disabled = false;
 
             // Update the hidden product_id field with the Alias ID (swapping out the Archetype ID)
             if (this.productIdInput) {
                 this.productIdInput.value = alias.bc_id;
+            }
+
+            if (wasDisabled) {
+                this.button.focus();
             }
         } else {
             // Disable button
