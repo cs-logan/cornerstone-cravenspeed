@@ -31,7 +31,11 @@ export default class Badges {
         this._toggleBadge(
             'made-in-usa-badge',
             !!data.made_in_usa,
-            () => this._createBadge('<img src="/product_images/uploaded_images/flag.png" alt="Made in USA"><h4>MADE IN USA</h4>'),
+            () => {
+                const el = this._createBadge('<img src="/product_images/uploaded_images/flag.png" alt="Made in USA"><h4>MADE IN USA</h4>');
+                el.setAttribute('data-reveal-id', 'usa-message');
+                return el;
+            },
             'prepend'
         );
 

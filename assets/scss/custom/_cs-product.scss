@@ -472,3 +472,44 @@ $cs-product-max-width: 1440px;
         }
     }
 }
+
+// =============================================================================
+// 10. Product Modals
+// =============================================================================
+.cs-product-modal {
+    background-color: #fff; // Force white background
+    border-radius: 4px;
+
+    .modal-content {
+        padding: spacing("single");
+        padding-top: spacing("double"); // Clear close button
+        color: #333; // Force dark text for contrast
+
+        @include breakpoint("medium") {
+            padding: spacing("double");
+            padding-top: spacing("double");
+        }
+
+        h4 {
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: spacing("half");
+            color: #000;
+            padding-right: spacing("double"); // Ensure title doesn't hit close button
+        }
+
+        p, li {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: spacing("half");
+        }
+
+        ul {
+            margin-left: spacing("single");
+        }
+
+        a {
+            color: stencilColor("color-primary");
+        }
+    }
+}
