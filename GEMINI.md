@@ -56,8 +56,7 @@
 | :--- | :--- | :--- |
 | **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
-
-revise css to prevent CLS
+| **Write the Badges UI Component** | Current Task | Recreate the badges feature from the old script. Use your own preferred strategy to do so, you do not need to copy the previous version, just use it for reference to ensure that you match its functionality. Take note of the scss styles in _custom.scss so that they still apply. |
 
 
 ### ✅ Completed

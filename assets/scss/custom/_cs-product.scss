@@ -30,11 +30,11 @@ $cs-product-max-width: 1440px;
   background-size: 800px 100%;
   position: relative;
 
-  animation-duration: 1s;
+  animation-duration: 1s, 0.5s;
   animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-name: placeholderShimmer;
-  animation-timing-function: linear;
+  animation-iteration-count: infinite, 1;
+  animation-name: placeholderShimmer, fadeIn;
+  animation-timing-function: linear, ease-out;
 }
 
 @keyframes placeholderShimmer {
@@ -65,7 +65,6 @@ $cs-product-max-width: 1440px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 spacing('half');
   color: stencilColor("color-textBase");
 
   h1,
@@ -80,10 +79,8 @@ $cs-product-max-width: 1440px;
   }
 }
 
-#product-messages {
-  // min-height: 50px;
-  // margin-bottom: spacing('single');
-  // padding: 0 spacing('half');
+.cs-product-above-fold-layout {
+  margin: spacing("half");
 }
 
 // -----------------------------------------------------------------------------
@@ -97,6 +94,10 @@ $cs-product-max-width: 1440px;
   animation: fadeIn 0.5s ease-out;
 }
 
+.gallery-caption {
+  height: spacing("double");
+}
+
 // -----------------------------------------------------------------------------
 // 4. Product Information
 // -----------------------------------------------------------------------------
@@ -104,7 +105,7 @@ $cs-product-max-width: 1440px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: spacing('single');
+  margin-top: spacing("half");
   gap: spacing('half');
 
   .cs-product-header {
@@ -165,15 +166,19 @@ $cs-product-max-width: 1440px;
 
   // Specific widths for shimmer to look organic
   #product-sku:empty {
-    width: 8ch;
+    width: 7ch;
   }
 
   #product-brand:empty {
-    width: 12ch;
+    width: 10ch;
+  }
+
+  #product-price:empty {
+    width: 6ch;
   }
 
   #product-fulfillment:empty {
-    width: 60%;
+    width: 23ch;
   }
 
   .cs-info-row-double {
@@ -245,7 +250,7 @@ $cs-product-max-width: 1440px;
 // 6. Add to Cart & Actions
 // -----------------------------------------------------------------------------
 .cs-add-to-cart-container {
-  margin-top: spacing('single');
+  margin-top: spacing('half');
 
   #product-add-button {
     width: 100%;
@@ -254,6 +259,7 @@ $cs-product-max-width: 1440px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-bottom: 0;
 
     &:not(:disabled) {
       background-color: stencilColor("color-primary");
@@ -274,6 +280,65 @@ $cs-product-max-width: 1440px;
 }
 
 // -----------------------------------------------------------------------------
+// 7. Product Badges
+// -----------------------------------------------------------------------------
+
+#product-badges {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: spacing("half");
+  justify-content: center;
+  align-items: stretch;
+  height: spacing("single") * 3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  & > * {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 2px solid #d7d7d7;
+    border-radius: 4px;
+    padding: spacing("quarter");
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    max-width: 128px;
+
+    &.fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    &:hover {
+      border-color: stencilColor("color-primary");
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  }
+  
+  & > * h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  img {
+    height: 24px;
+    width: auto;
+    margin-bottom: spacing("quarter");
+  }
+}
+
+// -----------------------------------------------------------------------------
 // 7. Product Description & Details
 // -----------------------------------------------------------------------------
 .tab-content {
@@ -281,6 +346,10 @@ $cs-product-max-width: 1440px;
   h3 {
     border-bottom: 2px solid stencilColor('color-primary');
     margin-bottom: spacing('half');
+  }
+
+  .pdpRow {
+    padding: 0 spacing("half");
   }
 
   .product-instructions {
@@ -304,8 +373,12 @@ $cs-product-max-width: 1440px;
       grid-template-columns: 1.4fr 1fr;
       width: 100%;
       max-width: $cs-product-max-width;
-      margin: 0 auto;
+      margin: spacing("double") auto;
       gap: spacing('double');
+    }
+
+    .cs-product-info-wrapper {
+      margin-top: 0;
     }
 
     .tabs {

@@ -85,7 +85,6 @@ export default class ProductDetails {
                 this._animate(this.brandElement);
             } else {
                 this.brandElement.textContent = '';
-                this.brandElement.style.display = 'none';
             }
         }
         if (this.priceElement) {
