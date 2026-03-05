@@ -84,14 +84,27 @@ export default class ProductController {
 
     _resolveArchetypeTitle() {
         if (this.context.productTitle) {
-            let title = this.context.productTitle;
+            const title = this.context.productTitle;
 
-            // Handle alias titles: split at the last " for " to isolate the archetype name
-            // We use lastIndexOf because some product names might contain " for "
-            const splitIndex = title.toLowerCase().lastIndexOf(' for ');
-            if (splitIndex !== -1) {
-                title = title.substring(0, splitIndex);
+            // Breadcrumbs Strategy
+            // We look for a breadcrumb that matches the start of the product title.
+            // This handles cases where the archetype name is a prefix of the alias title.
+            if (this.context.breadcrumbs && this.context.breadcrumbs.length) {
+                // Check breadcrumbs from deepest to shallowest, excluding the current page
+                const parents = this.context.breadcrumbs.slice(0, -1).reverse();
+
+                for (const breadcrumb of parents) {
+                    // Remove "Qty - " prefix which appears in some category names
+                    const cleanName = breadcrumb.name.replace(/^Qty\s*-\s*/i, '').trim();
+
+                    // If the product title starts with this category name, it's likely the archetype
+                    if (cleanName && title.toLowerCase().startsWith(cleanName.toLowerCase())) {
+                        return cleanName;
+                    }
+                }
             }
+
+            // If no parent breadcrumb matches, assume the current title is the archetype title
             return title;
         }
 

@@ -5,7 +5,7 @@ export default class DataManager {
         }
         this.archetypeName = archetypeName;
         this.cache = new Map();
-        this.basePath = 'https://craven-cdn-archetypes.sfo3.digitaloceanspaces.com';
+        this.basePath = 'https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com';
     }
 
     /**
@@ -20,7 +20,7 @@ export default class DataManager {
         }
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, { cache: 'no-cache' });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

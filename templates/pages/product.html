@@ -24,6 +24,7 @@
                     <h1 class="cs-product-title" itemprop="name" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
                         {{product.title}}
                         {{inject "productTitle" product.title}}
+                        {{inject "breadcrumbs" breadcrumbs}}
                     </h1>
                     <a href="#tab-reviews" class="cs-info-row" id="product-rating" data-product-rating>
                         {{> components/products-cs/rating-cs}}
@@ -68,6 +69,8 @@
                             <option selected>{{lang 'loading'}}...</option>
                         </select>
                     </div>
+
+                    <div id="product-blem" data-product-blem></div>
                     
                     <div class="cs-add-to-cart-container" id="add-button-wrapper">
                         <button id="product-add-button" type="submit" class="button" disabled>{{lang 'products.add_to_cart'}}</button>

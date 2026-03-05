@@ -51,6 +51,12 @@ export default class ProductDetails {
         return 'Out of Stock';
     }
 
+    _formatPrice(price) {
+        return typeof price === 'number'
+            ? price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+            : price;
+    }
+
     _generateInstructionsHtml(url) {
         return `<a href="${url}" target="_blank" class="button button--primary">View Instructions</a>`;
     }
@@ -89,14 +95,21 @@ export default class ProductDetails {
         }
         if (this.priceElement) {
             const price = data.price;
+            const salePrice = data.sale_price;
             
-            if (price === undefined || price === null || price === 0 || price === '0' || (typeof price === 'string' && price.includes('$0.00'))) {
+            const isValid = (p) => p !== undefined && p !== null && p !== 0 && p !== '0' && !(typeof p === 'string' && p.includes('$0.00'));
+
+            if (!isValid(price)) {
                 this.priceElement.innerHTML = '';
             } else {
-                // Handle both numeric prices (from JSON) and string prices (from default HTML)
-                this.priceElement.innerHTML = typeof price === 'number' 
-                    ? price.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) 
-                    : price;
+                const formattedPrice = this._formatPrice(price);
+
+                if (isValid(salePrice) && salePrice < price) {
+                    const formattedSalePrice = this._formatPrice(salePrice);
+                    this.priceElement.innerHTML = `<span style="text-decoration: line-through; color: #757575; margin-right: 0.5rem; font-size: 0.8em;">${formattedPrice}</span><span>${formattedSalePrice}</span>`;
+                } else {
+                    this.priceElement.innerHTML = formattedPrice;
+                }
                 this._animate(this.priceElement);
             }
         }

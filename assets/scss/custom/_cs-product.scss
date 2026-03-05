@@ -341,9 +341,9 @@ $cs-product-max-width: 1440px;
 // -----------------------------------------------------------------------------
 // 7. Product Description & Details
 // -----------------------------------------------------------------------------
-.tab-content {
+.tab-content, .modal-content {
 
-  h3 {
+  h3, h4 {
     border-bottom: 2px solid stencilColor('color-primary');
     margin-bottom: spacing('half');
   }

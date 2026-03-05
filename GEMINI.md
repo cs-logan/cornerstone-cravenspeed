@@ -56,7 +56,6 @@
 | :--- | :--- | :--- |
 | **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
-| **Style Badge Modals** | Current Task | Help me make the badge modals more pleasing to the user. Prioritize mobile presentation.
 
 
 ### ✅ Completed
@@ -74,6 +73,8 @@
 | **Save Options in Persistence** | | We are currently saving the vehicle in persistence, lets also save the options. This is a little tricky as the options are dependent on the archetype |
 | **Show Incompatibility Message** | | Since the previously selected vehicle is saved in persistance and we attempt to pre-select the vehicle when loading a product page, there are some cases where a vehicle will not have compatibility with a given archetype (ie: vehicle is not listed in make_model_index in the archetype data) When this is the case we should indicate to the user that this product is not compatible with their previously selected vehicle. This is handled by productMessages.js ui component. Observe the current layout of the selection fields (make model gen in the first row, option one and option two in the second row) via product.html and _cs-product.scss. When the selected vehicle is not compatible with the current archetype display a message indicating as such. the message should occupy the space that the two option selects would normally occupy (the second row). Work on this task has already been attempted, but Gemini failed to complete it |
 | **Write the Badges UI Component** | Current Task | Recreate the badges feature from the old script. Use your own preferred strategy to do so, you do not need to copy the previous version, just use it for reference to ensure that you match its functionality. Take note of the scss styles in _custom.scss so that they still apply. |
+| **Style Badge Modals** | Current Task | Help me make the badge modals more pleasing to the user. Prioritize mobile presentation.
+| **Implement Sale Price Feature** | ✅ Completed | The aliasData has a field for sale_price. If this is not 0 or null, we should cross out the normal price and display the sale price in line with the normal price. 
 
 ---
 
