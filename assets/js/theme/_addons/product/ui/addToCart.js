@@ -38,15 +38,28 @@ export default class AddToCart {
     }
 
     updateButtonState(state) {
-        const { aliasData, inventory } = state;
+        const { aliasData, inventory, blemSelected } = state;
 
         // We expect alias to be an object with a 'bc_id' property representing the BC Product ID
         if (aliasData && aliasData.bc_id) {
             // Check inventory
             let isStocked = true;
+            let targetId = aliasData.bc_id;
+            let inventoryId = aliasData.base_id;
 
-            if (inventory && inventory.global_inv && aliasData.base_id) {
-                const stockItem = inventory.global_inv[aliasData.base_id];
+            if (blemSelected && aliasData.blem) {
+                targetId = aliasData.blem.big_c_id;
+                inventoryId = aliasData.blem.qty_id;
+            }
+
+            if (!targetId) {
+                console.error('AddToCart: Target Product ID not found.');
+                this.button.disabled = true;
+                return;
+            }
+
+            if (inventory && inventory.global_inv && inventoryId) {
+                const stockItem = inventory.global_inv[inventoryId];
                 if (stockItem) {
                     const { av, a2b } = stockItem;
                     if (av <= 0 && a2b <= 0) {
@@ -67,7 +80,7 @@ export default class AddToCart {
 
                 // Update the hidden product_id field with the Alias ID (swapping out the Archetype ID)
                 if (this.productIdInput) {
-                    this.productIdInput.value = aliasData.bc_id;
+                    this.productIdInput.value = targetId;
                 }
 
                 if (wasDisabled) {
@@ -90,6 +103,9 @@ export default class AddToCart {
 
         // Double check validation
         if (this.button.disabled) return;
+
+        // Accessibility: Blur focus to prevent "aria-hidden" warning when modal opens
+        if (document.activeElement) document.activeElement.blur();
 
         this.button.classList.add('loading');
 

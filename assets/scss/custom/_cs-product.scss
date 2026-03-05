@@ -246,11 +246,32 @@ $cs-product-max-width: 1440px;
   }
 }
 
+#product-blem {
+  min-height: spacing("single");
+  display: flex;
+  align-items: center;
+
+  .form-field {
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-checkbox {
+    margin: 0;
+  }
+
+  .form-label {
+    margin-bottom: 0;
+    margin-left: spacing("quarter");
+  }
+}
+
 // -----------------------------------------------------------------------------
 // 6. Add to Cart & Actions
 // -----------------------------------------------------------------------------
 .cs-add-to-cart-container {
-  margin-top: spacing('half');
+  // margin-top: spacing('half');
 
   #product-add-button {
     width: 100%;
@@ -299,7 +320,7 @@ $cs-product-max-width: 1440px;
     opacity: 1;
   }
 
-  & > * {
+  &>* {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -320,11 +341,11 @@ $cs-product-max-width: 1440px;
 
     &:hover {
       border-color: stencilColor("color-primary");
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
   }
-  
-  & > * h4 {
+
+  &>* h4 {
     font-size: 0.85rem;
     font-weight: 700;
     margin: 0;
@@ -341,9 +362,11 @@ $cs-product-max-width: 1440px;
 // -----------------------------------------------------------------------------
 // 7. Product Description & Details
 // -----------------------------------------------------------------------------
-.tab-content, .modal-content {
+.tab-content,
+.modal-content {
 
-  h3, h4 {
+  h3,
+  h4 {
     border-bottom: 2px solid stencilColor('color-primary');
     margin-bottom: spacing('half');
   }
@@ -406,7 +429,7 @@ $cs-product-max-width: 1440px;
       grid-template-columns: repeat(12, 1fr);
       gap: spacing('half');
 
-      > * {
+      >* {
         grid-column: span 12;
       }
 
@@ -438,78 +461,122 @@ $cs-product-max-width: 1440px;
 // 9. Incompatibility Message
 // =============================================================================
 #product-messages {
-    display: none;
-    .cs-product-message--vehicle-incompatible {
-        border-left: 4px solid stencilColor("color-warning");
-        background-color: stencilColor("color-warningLight");
-        color: stencilColor("color-warning");
-        padding: spacing('half');
-        text-align: center;
-        width: 100%;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+  display: none;
+
+  .cs-product-message--vehicle-incompatible {
+    border-left: 4px solid stencilColor("color-warning");
+    background-color: stencilColor("color-warningLight");
+    color: stencilColor("color-warning");
+    padding: spacing('half');
+    text-align: center;
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .cs-product-form.has-incompatibility-message {
-    #product-messages {
-        display: block;
-    }
+  #product-messages {
+    display: block;
+  }
 
-    [data-product-form-field="option-one"],
-    [data-product-form-field="option-two"] {
-        display: none;
-    }
+  [data-product-form-field="option-one"],
+  [data-product-form-field="option-two"] {
+    display: none;
+  }
 }
 
 @include breakpoint('medium') {
-    .cs-product-form.has-incompatibility-message {
-        #product-messages {
-            grid-row: 2;
-            grid-column: 1 / -1;
-        }
+  .cs-product-form.has-incompatibility-message {
+    #product-messages {
+      grid-row: 2;
+      grid-column: 1 / -1;
     }
+  }
 }
 
 // =============================================================================
 // 10. Product Modals
 // =============================================================================
 .cs-product-modal {
-    background-color: #fff; // Force white background
-    border-radius: 4px;
+  background-color: #fff; // Force white background
+  border-radius: 4px;
 
-    .modal-content {
-        padding: spacing("single");
-        padding-top: spacing("double"); // Clear close button
-        color: #333; // Force dark text for contrast
+  .modal-content {
+    padding: spacing("single");
+    padding-top: spacing("double"); // Clear close button
+    color: #333; // Force dark text for contrast
 
-        @include breakpoint("medium") {
-            padding: spacing("double");
-            padding-top: spacing("double");
-        }
-
-        h4 {
-            font-weight: 700;
-            margin-top: 0;
-            margin-bottom: spacing("half");
-            color: #000;
-            padding-right: spacing("double"); // Ensure title doesn't hit close button
-        }
-
-        p, li {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: spacing("half");
-        }
-
-        ul {
-            margin-left: spacing("single");
-        }
-
-        a {
-            color: stencilColor("color-primary");
-        }
+    @include breakpoint("medium") {
+      padding: spacing("double");
+      padding-top: spacing("double");
     }
+
+    h4 {
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: spacing("half");
+      color: #000;
+      padding-right: spacing("double"); // Ensure title doesn't hit close button
+    }
+
+    p,
+    li {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: spacing("half");
+    }
+
+    ul {
+      margin-left: spacing("single");
+    }
+
+    a {
+      color: stencilColor("color-primary");
+    }
+
+    // Layouts
+    .modal-layout {
+      display: flex;
+      flex-direction: column;
+      gap: spacing("single");
+    }
+
+    .modal-layout--two-col {
+      @include breakpoint("medium") {
+        flex-direction: row;
+        align-items: flex-start;
+
+        .modal-col-media {
+          flex: 0 0 220px;
+        }
+      }
+    }
+
+    .modal-col-content {
+      flex: 1;
+    }
+
+    .modal-col-media {
+      margin-top: spacing("half");
+
+      @include breakpoint("medium") {
+        margin-top: 0;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .modal-footer {
+      margin-top: spacing("single");
+      display: flex;
+      justify-content: flex-end;
+      gap: spacing("half");
+    }
+  }
 }

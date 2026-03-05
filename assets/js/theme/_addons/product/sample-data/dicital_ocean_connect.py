@@ -64,7 +64,7 @@ def add_to_s3_bucket(**kwargs):
     # print('file_path',file_path)
     # print('privacy',privacy)
 
-    extra_args = {'ACL': privacy, 'CacheControl': 'no-cache'}
+    extra_args = {'ACL': privacy, 'CacheControl': 'public, max-age=0, must-revalidate'}
 
     client = create_s3_session(**params)
     client.upload_file(

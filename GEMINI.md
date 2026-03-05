@@ -56,6 +56,15 @@
 | :--- | :--- | :--- |
 | **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
+| **Discuss a Plan to implement the Blem feature** | We often have scratch and dent products available for purchase at a discounted price. The alias data contains a "blem" object. The blem object has "price" "qty_id", and "bigc_id". The price can be used to display and to show how much the customer can save by purchasing the blem. The qty_id can be used to check the inventory data to see if the blem is in stock. The bigc_id is what should be added to the cart if the user wishes to purchase the blem. 
+
+* **Blem Feature MVP:**
+    * When a blem is available. a link/button should appear with the text "Interested in saving $~VALUE~". (data-product-blem)
+    * This link should open the scratchAndDent.html modal
+    * The modal describes the blem system and should also have some method for the user to accept or decline the purchase of the blem instead of a new part. 
+    * If accept, close the modal show the discounted price in the price field with a blem qualifier text. and validate the add to cart form to add the blem item to the cart. Also show an checkbox where the initial blem text was to indicate that the blem is selected and give a way to revert the decision
+    * If deny, close the modal. 
+
 
 
 ### ✅ Completed

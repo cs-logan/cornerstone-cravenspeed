@@ -1,6 +1,7 @@
 __webpack_public_path__ = window.__webpack_public_path__; // eslint-disable-line
 
 import Global from './theme/global';
+import initGlobalAccessibility from './theme/global/accessibility';
 
 // Import for CravenSpeed search
 // import GlobalSearch from './theme/_addons/global/search/index';
@@ -73,6 +74,7 @@ window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null
                 // Load globals
                 if (loadGlobal) {
                     Global.load(context);
+                    initGlobalAccessibility();
                     // GlobalSearch.load(context);
                 }
 

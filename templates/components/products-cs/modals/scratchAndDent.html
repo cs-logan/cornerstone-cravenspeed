@@ -1,24 +1,26 @@
-<div id="scratch-and-dent" class="modal" data-reveal data-prevent-quick-search-close>
+<div id="scratch-and-dent" class="modal cs-product-modal" data-reveal data-prevent-quick-search-close>
     <div id="modal-content" class="modal-content">
-        <div class="pdpRow">
-            <div class="productText">
-                <h3>Scratch and Dent?</h3>
-                <p>Occasionally, we get new parts or returns that have cosmetic blemishes that do not affect the
-                    functionality of the part. Rather than toss them in the scrap bin, we offer the parts for sale at a
-                    deeply discounted price. In many cases, the location of the blemish prevents it from even being seen
-                    once the part is installed. Like all of our products, we still guarantee it to be the correct fit
-                    and to work properly and will offer to exchange components should anything need adjustment, or
-                    simply set up a free return if you decide that you are not happy with the product.
-                    <strong>Our normal return policy applies to all scratch and dent products.</strong>
+        <div class="modal-layout modal-layout--two-col">
+            <div class="modal-col-content">
+                <h4>Same Performance, Better Price</h4>
+                <p>Performance shouldn't always have to come at a premium. Occasionally, we have parts with minor
+                    cosmetic blemishes that don't meet our "shelf-perfect" standards but still function flawlessly.
+                    Instead of scrapping them, we offer them to you at a deep discount.</p>
+                <p>
+                    Often, these blemishes are in spots you'll never even see once installed. Most importantly, we still
+                    guarantee the fit and function of every "Scratch & Dent" item. If you aren't stoked with the part,
+                    <strong>our standard return policy still applies.</strong>
                 </p>
             </div>
-            <div class="productGraphic">
+            <div class="modal-col-media">
                 <img src="/product_images/uploaded_images/blem-parts.jpg"
                     alt="Some examples of parts that we would consider blemished.">
             </div>
         </div>
-        <button class="button" id="blem-accept" data-reveal-close>Sounds Good!</button>
-        <a id="blem-decline" data-reveal-close>No Thanks</a>
+        <div class="modal-footer">
+            <button class="button button--primary" id="blem-accept">Yes, I'll take it</button>
+            <button class="button" id="blem-decline">No, thanks</button>
+        </div>
     </div>
     <div class="loadingOverlay"></div>
     {{> components/common/modal/modal-close-btn}}

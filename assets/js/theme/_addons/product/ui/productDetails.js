@@ -15,17 +15,25 @@ export default class ProductDetails {
     }
 
     update(state) {
-        const { aliasData, inventory, archetypeData } = state;
+        const { aliasData, inventory, archetypeData, blemSelected } = state;
 
         // Optimization: Only update DOM if relevant state (aliasData or inventory) has changed
-        if (aliasData === this.lastAliasData && inventory === this.lastInventory) return;
+        if (aliasData === this.lastAliasData && inventory === this.lastInventory && blemSelected === this.lastBlemSelected) return;
         this.lastAliasData = aliasData;
         this.lastInventory = inventory;
+        this.lastBlemSelected = blemSelected;
 
         let dataToRender = {};
 
         if (aliasData) {
             dataToRender = { ...aliasData };
+            
+            // Override price if blem is selected
+            if (blemSelected && aliasData.blem) {
+                dataToRender.price = aliasData.blem.price;
+                dataToRender.sale_price = null; // Reset sale price for blems to avoid confusion
+            }
+
             // Calculate stock message if we have alias data and inventory
             if (inventory && inventory.global_inv && aliasData.base_id) {
                 const stockItem = inventory.global_inv[aliasData.base_id];

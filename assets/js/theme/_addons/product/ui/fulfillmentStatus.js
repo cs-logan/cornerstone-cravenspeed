@@ -11,17 +11,16 @@ export default class FulfillmentStatus {
     update(state) {
         const { aliasData, inventory } = state;
 
-        let message = '';
+        let message = ''; // Default to empty string (fail-open)
 
-        if (aliasData && inventory && inventory.global_inv && aliasData.base_id) {
-            const stockItem = inventory.global_inv[aliasData.base_id];
-            if (stockItem) {
-                message = this._getFulfillmentMessage(stockItem);
-            } else {
-                message = 'Out of Stock';
+        // Only attempt to create a message if an alias is selected
+        if (aliasData && aliasData.base_id) {
+            // If inventory data is available, check stock.
+            if (inventory && inventory.global_inv) {
+                const stockItem = inventory.global_inv[aliasData.base_id];
+                message = stockItem ? this._getFulfillmentMessage(stockItem) : 'Out of Stock';
             }
-        } else if (aliasData && aliasData.stock_message) {
-            message = aliasData.stock_message;
+            // If inventory is null, message remains '', which is the desired fail-open behavior.
         }
 
         this.render(message);

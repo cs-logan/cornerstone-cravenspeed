@@ -20,7 +20,7 @@ export default class DataManager {
         }
 
         try {
-            const response = await fetch(url, { cache: 'no-cache' });
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -57,6 +57,11 @@ export default class DataManager {
      */
     async getInventoryData() {
         const url = 'https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com/global/global-inventory.json';
-        return this._fetchJSON(url);
+        try {
+            return await this._fetchJSON(url);
+        } catch (error) {
+            console.warn('Global inventory unreachable. Defaulting to in-stock behavior.', error);
+            return null;
+        }
     }
 }

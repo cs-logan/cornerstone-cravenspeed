@@ -8,6 +8,7 @@ import ImageGallery from './ui/imageGallery';
 import AddToCart from './ui/addToCart';
 import ProductMessages from './ui/productMessages';
 import Badges from './ui/badges';
+import BlemProducts from './ui/blemProducts';
 
 export default class ProductController {
     constructor(context) {
@@ -45,6 +46,7 @@ export default class ProductController {
             this.imageGallery = new ImageGallery(this.stateManager);
             this.addToCart = new AddToCart(this.stateManager);
             this.badges = new Badges(this.stateManager);
+            this.blemProducts = new BlemProducts(this.stateManager);
 
             this.stateManager.subscribe(this.handleStateChange.bind(this));
 

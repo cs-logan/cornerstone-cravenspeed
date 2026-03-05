@@ -12,6 +12,7 @@ export default class StateManager {
             
             availableOptions: {}, 
             inventory: null,
+            blemSelected: false,
         };
 
         this._performInitialReconciliation();
@@ -70,6 +71,7 @@ export default class StateManager {
 
     setAliasData(data) {
         this.state.aliasData = data;
+        this.state.blemSelected = false;
         this._notifySubscribers();
     }
 
@@ -82,6 +84,11 @@ export default class StateManager {
         this.state.selections = selections;
         this._performInitialReconciliation();
         this._notifySubscribers(); // Notify once after all initial selections are set
+    }
+
+    setBlemSelection(isSelected) {
+        this.state.blemSelected = isSelected;
+        this._notifySubscribers();
     }
 
     getState() {
