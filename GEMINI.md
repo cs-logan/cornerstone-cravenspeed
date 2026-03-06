@@ -58,12 +58,12 @@
 ### 🚀 Active & Upcoming
 | Task | Status | Notes |
 | :--- | :--- | :--- |
-| **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
 
 
 
 ### ✅ Completed
+* **Search Module Build:** Full implementation including Quick Search, Results Page, Related Products, and Caching.
 * **Add to Cart Logic:** Form validation and alias-specific submission.
 * **Cart Preview Modal:** Modal logic in `cartManager.js` with loading states.
 * **Archetype Option Bug:** Fixed alias JSON generation keys for non-option archetypes.

@@ -1,94 +1,75 @@
 export default class SearchDataManager {
     constructor(stateManager) {
         this.stateManager = stateManager;
-        this.sourceUrl = 'https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com/global/cravenspeed-global-search.json';
-        this.storageKey = 'cs_search_index';
-        this.cacheDuration = 1000 * 60 * 60 * 24; // 24 Hours
+        this.dataUrl = 'https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com/global/cravenspeed-global-search.json';
+        this.storageKey = 'cs_global_search_index';
+        this.ttl = 1000 * 60 * 60 * 24; // 24 hours
     }
 
-    async loadData() {
-        // Prevent multiple fetches if already loaded or loading
-        const currentState = this.stateManager.getState();
-        if (currentState.data || currentState.isLoading) {
-            return;
-        }
+    loadData() {
+        const state = this.stateManager.getState();
+        // If we already have data or are loading, do nothing
+        if (state.data || state.isLoading) return;
 
-        // 1. Try Local Storage
-        const cachedData = this._loadFromStorage();
-        if (cachedData) {
-            this.stateManager.setState({ 
-                isLoading: false, 
-                data: cachedData 
-            });
-            return;
-        }
-
-        // 2. Fetch from Network
         this.stateManager.setState({ isLoading: true });
 
-        try {
-            const response = await fetch(this.sourceUrl);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            let data = await response.json();
-            
-            // 3. Preprocess (Hook for data transformation/minification)
-            data = this._preprocessData(data);
-
-            // 4. Save to Storage
-            this._saveToStorage(data);
-
-            this.stateManager.setState({ 
-                isLoading: false, 
-                data: data 
-            });
-        } catch (error) {
-            console.error('Search Data Fetch Error:', error);
-            this.stateManager.setState({ 
-                isLoading: false, 
-                error: error 
-            });
+        // 1. Try to load from LocalStorage
+        const cachedData = this._loadFromCache();
+        if (cachedData) {
+            console.log('SearchDataManager: Loaded from cache');
+            this.stateManager.setState({ data: cachedData, isLoading: false });
+            return;
         }
+
+        // 2. Fetch from CDN
+        console.log('SearchDataManager: Fetching from CDN');
+        fetch(this.dataUrl)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                this._saveToCache(data);
+                this.stateManager.setState({ data, isLoading: false });
+            })
+            .catch(error => {
+                console.error('SearchDataManager: Fetch error', error);
+                this.stateManager.setState({ error, isLoading: false });
+            });
     }
 
-    _preprocessData(data) {
-        // Example: Strip descriptions or unused fields here to save localStorage space
-        return data;
-    }
-
-    _saveToStorage(data) {
+    _loadFromCache() {
         try {
-            const payload = {
-                timestamp: Date.now(),
-                data: data
-            };
-            localStorage.setItem(this.storageKey, JSON.stringify(payload));
-        } catch (e) {
-            console.warn('Search: Failed to save to LocalStorage (likely quota exceeded).', e);
-        }
-    }
+            const recordStr = localStorage.getItem(this.storageKey);
+            if (!recordStr) return null;
 
-    _loadFromStorage() {
-        try {
-            const raw = localStorage.getItem(this.storageKey);
-            if (!raw) return null;
+            const record = JSON.parse(recordStr);
+            if (!record || !record.timestamp || !record.data) return null;
 
-            const payload = JSON.parse(raw);
-            
-            // Check Expiration
-            if (Date.now() - payload.timestamp > this.cacheDuration) {
+            // Check expiration
+            const now = Date.now();
+            if (now - record.timestamp > this.ttl) {
+                console.log('SearchDataManager: Cache expired');
                 localStorage.removeItem(this.storageKey);
                 return null;
             }
 
-            // Validate Data Structure
-            if (!payload.data || !payload.data.products) {
-                localStorage.removeItem(this.storageKey);
-                return null;
-            }
-
-            return payload.data;
+            return record.data;
         } catch (e) {
+            console.warn('SearchDataManager: Failed to load cache', e);
             return null;
+        }
+    }
+
+    _saveToCache(data) {
+        try {
+            const record = {
+                timestamp: Date.now(),
+                data
+            };
+            localStorage.setItem(this.storageKey, JSON.stringify(record));
+        } catch (e) {
+            console.warn('SearchDataManager: Failed to save cache (likely quota exceeded)', e);
         }
     }
 }

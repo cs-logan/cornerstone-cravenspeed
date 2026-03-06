@@ -1,6 +1,3 @@
-/*
- Import all search specific js
- */
 import PageManager from '../../../page-manager';
 import SearchController from './search';
 
@@ -10,7 +7,7 @@ export default class Search extends PageManager {
     }
 
     onReady() {
-        const search = new SearchController(this.context);
-        search.onReady();
+        this.searchController = new SearchController(this.context);
+        this.searchController.onReady();
     }
 }

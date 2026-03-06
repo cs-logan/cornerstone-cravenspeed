@@ -1,3 +1,5 @@
+import { escapeHtml } from '../utils';
+
 export default class ResultsPage {
     constructor() {
         this.container = document.getElementById('global-search-results');
@@ -27,9 +29,10 @@ export default class ResultsPage {
     }
 
     _renderHeading(count, query) {
+        const safeQuery = escapeHtml(query);
         const headingHTML = `
             <h1 class="page-heading">
-                ${count} results for '${query}'
+                ${count} results for '${safeQuery}'
             </h1>
         `;
         
@@ -49,11 +52,12 @@ export default class ResultsPage {
     }
 
     _renderNoResults(query) {
+        const safeQuery = escapeHtml(query);
         this.container.innerHTML = `
             <div class="panel panel--large">
                 <div class="panel-body">
                     <p class="search-suggestion">
-                        Your search for "<strong>${query}</strong>" did not match any products.
+                        Your search for "<strong>${safeQuery}</strong>" did not match any products.
                     </p>
                     <p>Suggestions:</p>
                     <ul>
@@ -67,29 +71,34 @@ export default class ResultsPage {
     }
 
     _buildCard(product) {
+        const title = escapeHtml(product.title);
+        const url = escapeHtml(product.url);
+        const image = escapeHtml(product.image);
+        const price = escapeHtml(product.price);
+
         // Semantic HTML structure matching Cornerstone's components/products/card.html
         // Uses 'lazyload' class for lazysizes to pick up (if configured in theme)
         return `
             <li class="product">
                 <article class="card">
                     <figure class="card-figure">
-                        <a href="${product.url}" class="card-figure__link" aria-label="${product.title}">
+                        <a href="${url}" class="card-figure__link" aria-label="${title}">
                             <div class="card-img-container">
                                 <img class="card-image lazyload" 
                                      data-sizes="auto" 
-                                     src="${product.image}" 
-                                     alt="${product.title}" 
-                                     title="${product.title}">
+                                     src="${image}" 
+                                     alt="${title}" 
+                                     title="${title}">
                             </div>
                         </a>
                     </figure>
                     <div class="card-body">
                         <h3 class="card-title">
-                            <a href="${product.url}">${product.title}</a>
+                            <a href="${url}">${title}</a>
                         </h3>
                         <div class="card-text" data-test-info-type="price">
                             <div class="price-section price-section--withoutTax">
-                                <span class="price price--withoutTax">${product.price}</span>
+                                <span class="price price--withoutTax">${price}</span>
                             </div>
                         </div>
                     </div>

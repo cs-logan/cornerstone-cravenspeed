@@ -118,14 +118,10 @@ export default class SearchEngine {
 
     calculateScore(product, tokens) {
         let score = 0;
-        const title = (product.title || '').toLowerCase();
-        const sku = (product.sku || '').toLowerCase();
-        
-        // Handle general_keywords string from JSON (e.g., "lisense, lisence, numberplate")
-        let keywords = [];
-        if (typeof product.general_keywords === 'string') {
-            keywords = product.general_keywords.toLowerCase().split(',').map(k => k.trim());
-        }
+        // Use pre-computed search fields to avoid overhead in the loop
+        const title = product._search_title;
+        const sku = product._search_sku;
+        const keywords = product._search_keywords;
 
         // Compatibility Check
         const productIds = product.compatibility_ids || [];
@@ -152,27 +148,38 @@ export default class SearchEngine {
     }
 
     _normalizeProducts(data) {
+        let products = [];
         if (!data) return [];
 
         // Case 1: Data is the array (Flat list)
         if (Array.isArray(data)) {
-            return data;
+            products = data;
         }
-
         // Case 2: Data has a products key
-        if (data && data.products) {
-            if (Array.isArray(data.products)) return data.products;
-            
+        else if (data && data.products) {
+            if (Array.isArray(data.products)) {
+                products = data.products;
+            }
             // Case 3: Products is an object map (URL -> Product)
-            if (typeof data.products === 'object') {
-                return Object.entries(data.products).map(([url, product]) => {
+            else if (typeof data.products === 'object') {
+                products = Object.entries(data.products).map(([url, product]) => {
                     return { ...product, url: url };
                 });
             }
+        } else {
+            console.warn('SearchEngine: Could not parse products from data', data);
+            return [];
         }
 
-        console.warn('SearchEngine: Could not parse products from data', data);
-        return [];
+        // Pre-compute search fields for performance
+        return products.map(p => {
+            p._search_title = (p.title || '').toLowerCase();
+            p._search_sku = (p.sku || '').toLowerCase();
+            p._search_keywords = (typeof p.general_keywords === 'string') 
+                ? p.general_keywords.toLowerCase().split(',').map(k => k.trim()) 
+                : [];
+            return p;
+        });
     }
 
     _buildVehicleIndex(registry) {

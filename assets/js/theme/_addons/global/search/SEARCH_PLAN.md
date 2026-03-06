@@ -159,6 +159,17 @@ I have set up a rough template of the structure.
 * **Action:** Update `templates/pages/product.html`.
 * **Purpose:** Add a `<div id="global-search-related"></div>` placeholder where the related products will be injected.
 
+# Phase 5: Persistence & Optimization
+**Goal:** Ensure the module stays performant in a heavy theme.
+
+### Step 1: Implement Data Caching
+* **Action:** Update `searchDataManager.js`.
+* **Purpose:** Implement `localStorage` caching with a Time-To-Live (TTL) mechanism (e.g., 24 hours). Before fetching, check if valid data exists in storage.
+
+### Step 2: Optimize Input Handling
+* **Action:** Update `search.js`.
+* **Purpose:** Verify and tune the debounce delay (increase to 300ms) to reduce unnecessary calculations during rapid typing.
+
 ___
 
 ## Task Organization
@@ -172,7 +183,7 @@ ___
 *   *(Add future ideas or "nice-to-have" features here)*
 
 ## 📍 Current Task (User Only)
-*  **Phase 5: Persistence & Optimization**
+*  **Module Complete**
 
 ## ✅ Completed Tasks
 *   **Phase 1: Initialization & Data Fetching**
@@ -195,6 +206,9 @@ ___
     *   Implemented "Find Related" Logic
     *   Integrated with Search Controller
     *   Added Container to Product Template
+*   **Phase 5: Persistence & Optimization**
+    *   Implemented Data Caching (localStorage with TTL)
+    *   Optimized Input Handling (Debounce)
 
 ---
 

@@ -1,3 +1,5 @@
+import { escapeHtml } from '../utils';
+
 export default class QuickSearch {
     constructor() {
         this.$resultsContainer = document.querySelector('#cs-search-results');
@@ -36,11 +38,11 @@ export default class QuickSearch {
     }
 
     buildCard(product) {
-        const image = product.thumbnail || product.image || ''; 
-        const title = product.title || 'Unknown Product';
-        const url = product.url || '#';
-        const sku = product.sku || '';
-        const price = product.price ? `${product.price}` : ''; 
+        const image = escapeHtml(product.thumbnail || product.image || ''); 
+        const title = escapeHtml(product.title || 'Unknown Product');
+        const url = escapeHtml(product.url || '#');
+        const sku = escapeHtml(product.sku || '');
+        const price = product.price ? escapeHtml(`${product.price}`) : ''; 
 
         return `
             <a href="${url}" class="cs-search-result-item">
@@ -67,9 +69,10 @@ export default class QuickSearch {
     }
 
     renderNoResults(query) {
+        const safeQuery = escapeHtml(query);
         this.$resultsContainer.innerHTML = `
             <div class="cs-search-no-results">
-                <p>No results found for <strong>"${query}"</strong></p>
+                <p>No results found for <strong>"${safeQuery}"</strong></p>
             </div>
         `;
         this.show();
@@ -83,10 +86,14 @@ export default class QuickSearch {
     }
 
     show() {
-        this.$resultsContainer.classList.add('visible');
+        if (this.$resultsContainer) {
+            this.$resultsContainer.classList.add('visible');
+        }
     }
 
     hide() {
-        this.$resultsContainer.classList.remove('visible');
+        if (this.$resultsContainer) {
+            this.$resultsContainer.classList.remove('visible');
+        }
     }
 }

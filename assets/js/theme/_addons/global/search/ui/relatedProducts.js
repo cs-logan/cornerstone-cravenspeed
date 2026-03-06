@@ -1,3 +1,5 @@
+import { escapeHtml } from '../utils';
+
 export default class RelatedProducts {
     constructor() {
         this.container = document.getElementById('more-products');
@@ -20,7 +22,7 @@ export default class RelatedProducts {
         if (!this.header) return;
         
         if (vehicleName) {
-            this.header.innerHTML = `<h3>More for your ${vehicleName}</h3>`;
+            this.header.innerHTML = `<h3>More for your ${escapeHtml(vehicleName)}</h3>`;
         } else {
             this.header.innerHTML = `<h3>Related Products</h3>`;
         }
@@ -36,28 +38,33 @@ export default class RelatedProducts {
     }
 
     _buildCard(product) {
+        const title = escapeHtml(product.title);
+        const url = escapeHtml(product.url);
+        const image = escapeHtml(product.image);
+        const price = escapeHtml(product.price);
+
         // Reusing the standard card structure
         return `
             <li class="product">
                 <article class="card">
                     <figure class="card-figure">
-                        <a href="${product.url}" class="card-figure__link" aria-label="${product.title}">
+                        <a href="${url}" class="card-figure__link" aria-label="${title}">
                             <div class="card-img-container">
                                 <img class="card-image lazyload" 
                                      data-sizes="auto" 
-                                     src="${product.image}" 
-                                     alt="${product.title}" 
-                                     title="${product.title}">
+                                     src="${image}" 
+                                     alt="${title}" 
+                                     title="${title}">
                             </div>
                         </a>
                     </figure>
                     <div class="card-body">
                         <h3 class="card-title">
-                            <a href="${product.url}">${product.title}</a>
+                            <a href="${url}">${title}</a>
                         </h3>
                         <div class="card-text" data-test-info-type="price">
                             <div class="price-section price-section--withoutTax">
-                                <span class="price price--withoutTax">${product.price}</span>
+                                <span class="price price--withoutTax">${price}</span>
                             </div>
                         </div>
                     </div>

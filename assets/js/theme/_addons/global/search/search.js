@@ -23,9 +23,6 @@ export default class SearchController {
         this.searchQuery = this.urlParams.get('search_query');
         this.isSearchPage = window.location.pathname === '/search.php';
         this.isProductPage = document.querySelector('.cs-product-archetype') !== null;
-
-        // DEBUG: Expose instance to window for testing
-        // window.CS_Search = this;
     }
 
     onReady() {
@@ -46,6 +43,13 @@ export default class SearchController {
         if (state.data && !this.isEngineInitialized) {
             this.searchEngine = new SearchEngine(state.data);
             this.isEngineInitialized = true;
+
+            // If user typed while loading, update results immediately
+            if (this.$searchInput && this.$searchInput.value.trim().length > 0) {
+                const query = this.$searchInput.value;
+                const results = this.searchEngine.search(query, 8);
+                this.quickSearch.update(results, query);
+            }
         }
 
         // Phase 3: Render Full Results if on search page and data is ready
@@ -71,14 +75,14 @@ export default class SearchController {
             const query = e.target.value;
             const results = this.searchEngine.search(query, 8);
             this.quickSearch.update(results, query);
-        }, 200));
+        }, 300));
 
         // Phase 3: Handle Enter Key for Full Search Redirect
         this.$searchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const query = this.$searchInput.value;
-                if (query && query.length > 0) {
+                const query = this.$searchInput.value.trim();
+                if (query.length > 0) {
                     window.location.href = `/search.php?search_query=${encodeURIComponent(query)}`;
                 }
             }
