@@ -61,14 +61,13 @@ export default class ProductController {
     async handleStateChange(state) {
         const { currentAlias } = state;
 
+        if (currentAlias === 'self') return;
+
         if (currentAlias && currentAlias !== this.currentAlias) {
             this.currentAlias = currentAlias;
-            console.log(`New alias detected: ${currentAlias}. Fetching data...`);
             try {
                 const aliasData = await this.dataManager.getAliasData(currentAlias);
                 this.stateManager.setAliasData(aliasData);
-                console.log('Alias data set in state.');
-                console.log('new alias:', this.stateManager.state.aliasData);
             } catch (error) {
                 console.error(`Failed to load alias data for ${currentAlias}:`, error);
             }

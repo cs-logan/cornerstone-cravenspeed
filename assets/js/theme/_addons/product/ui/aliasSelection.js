@@ -4,6 +4,7 @@ export default class AliasSelection {
         this.productMessages = productMessages;
         this.persistedVehicle = {};
         this.initialLoad = true;
+        this.persistenceHandled = false;
         // Establish event listener on the parent container (Event Delegation)
         this.container = document.querySelector('[data-product-options-container]') || document.body;
         this.form = document.querySelector('.cs-product-form');
@@ -18,7 +19,12 @@ export default class AliasSelection {
 
         // Then, handle persistence and initial state setup
         const initialState = this.stateManager.getState();
-        this._handlePersistence(initialState.archetypeData);
+        if (initialState.archetypeData && initialState.archetypeData.archetypeName) {
+            this._handlePersistence(initialState.archetypeData);
+        } else {
+            // If data isn't ready, just run an initial update to set up the DOM state (disable inputs)
+            this.update(initialState);
+        }
     }
 
     _bindEvents() {
@@ -32,7 +38,6 @@ export default class AliasSelection {
 
                 const rawOption = e.target.dataset.productOption;
                 const value = e.target.value;
-                console.log(`Change: ${rawOption} selected ${value}`);
 
                 // Resolve dynamic option names (e.g. "option" -> "Color")
                 const state = this.stateManager.getState();
@@ -46,10 +51,8 @@ export default class AliasSelection {
     }
 
     _handlePersistence(archetypeData) {
-        if (!archetypeData || !archetypeData.archetypeName) {
-            this.update(this.stateManager.getState());
-            return;
-        }
+        if (this.persistenceHandled) return;
+        if (!archetypeData || !archetypeData.archetypeName) return;
 
         const selections = {};
         
@@ -83,6 +86,7 @@ export default class AliasSelection {
         }
         
         // Apply all selections at once
+        this.persistenceHandled = true;
         this.stateManager.setInitialSelections(selections);
     }
 
@@ -111,6 +115,15 @@ export default class AliasSelection {
 
     update(state) {
         const { availableOptions, selections, archetypeData } = state;
+        
+        if (!archetypeData) return;
+
+        // Lazy load persistence if it wasn't ready at init
+        if (!this.persistenceHandled && archetypeData.archetypeName) {
+            this._handlePersistence(archetypeData);
+            return;
+        }
+
         const { archetypeName, option_title, sub_option_title } = archetypeData;
 
         // One-time check on initial load for vehicle compatibility
@@ -126,26 +139,32 @@ export default class AliasSelection {
         }
 
         // Sync persistence with current selections (handles auto-selections)
-        const persistKeys = ['make', 'model', 'generation'];
-        if (option_title) persistKeys.push(option_title);
-        if (sub_option_title) persistKeys.push(sub_option_title);
+        // Only sync if we have successfully handled initial persistence to avoid wiping LS during load
+        if (this.persistenceHandled) {
+            const persistKeys = [];
+            // Only sync vehicle data if the product is NOT universal (prevents wiping garage on universal items)
+            if (!archetypeData.universal_product) persistKeys.push('make', 'model', 'generation');
+            
+            if (option_title) persistKeys.push(option_title);
+            if (sub_option_title) persistKeys.push(sub_option_title);
 
-        persistKeys.forEach(key => {
-            let storageKey;
-            if (['make', 'model', 'generation'].includes(key)) {
-                storageKey = `cs_garage_${key}`;
-            } else if (archetypeName) {
-                storageKey = `cs_options_${archetypeName}_${key}`;
-            }
-
-            if (storageKey) {
-                if (selections[key]) {
-                    localStorage.setItem(storageKey, selections[key]);
-                } else {
-                    localStorage.removeItem(storageKey);
+            persistKeys.forEach(key => {
+                let storageKey;
+                if (['make', 'model', 'generation'].includes(key)) {
+                    storageKey = `cs_garage_${key}`;
+                } else if (archetypeName) {
+                    storageKey = `cs_options_${archetypeName}_${key}`;
                 }
-            }
-        });
+
+                if (storageKey) {
+                    if (selections[key]) {
+                        localStorage.setItem(storageKey, selections[key]);
+                    } else {
+                        localStorage.removeItem(storageKey);
+                    }
+                }
+            });
+        }
 
         const inputs = this.container.querySelectorAll('[data-product-option]');
         inputs.forEach(input => {

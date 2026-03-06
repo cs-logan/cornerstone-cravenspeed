@@ -15,7 +15,7 @@ export default class StateManager {
             blemSelected: false,
         };
 
-        this._performInitialReconciliation();
+        this._resolveAutoSelections();
     }
     
     subscribe(callback) {
@@ -23,14 +23,7 @@ export default class StateManager {
     }
 
     updateSelection({option, value}) {
-        const { option_title, sub_option_title, universal_product } = this.state.archetypeData;
-        
-        let optionOrder;
-        if (universal_product) {
-            optionOrder = [option_title, sub_option_title].filter(Boolean);
-        } else {
-            optionOrder = ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
-        }
+        const optionOrder = this._getOptionOrder();
         
         this.state.selections[option] = value;
 
@@ -42,24 +35,7 @@ export default class StateManager {
             }
         }
 
-        // Auto-select loop: Resolve single-option paths synchronously
-        let changed = true;
-        while (changed) {
-            changed = false;
-            this._findAlias();
-            this._updateAvailableOptions();
-
-            for (const key of optionOrder) {
-                if (!this.state.selections[key]) {
-                    const opts = this.state.availableOptions[key];
-                    if (opts && opts.length === 1) {
-                        this.state.selections[key] = opts[0].value;
-                        changed = true;
-                        break; // Restart loop to refresh available options for next level
-                    }
-                }
-            }
-        }
+        this._resolveAutoSelections();
 
         // Only clear aliasData if we ended up without a valid alias after resolution
         if (!this.state.currentAlias) {
@@ -82,7 +58,7 @@ export default class StateManager {
 
     setInitialSelections(selections) {
         this.state.selections = selections;
-        this._performInitialReconciliation();
+        this._resolveAutoSelections();
         this._notifySubscribers(); // Notify once after all initial selections are set
     }
 
@@ -223,6 +199,10 @@ export default class StateManager {
 
         if (typeof result === 'string' && result.endsWith('.json')) {
             this.state.currentAlias = result;
+        } else if (typeof result === 'object' && result !== null && result.bc_id) {
+            // Handle simple products where the result is the data object itself
+            this.state.currentAlias = 'self';
+            this.state.aliasData = result;
         } else {
             this.state.currentAlias = null;
         }
@@ -322,8 +302,32 @@ export default class StateManager {
         });
     }
 
-    _performInitialReconciliation() {
-        this._findAlias();
-        this._updateAvailableOptions();
+    _getOptionOrder() {
+        const { option_title, sub_option_title, universal_product } = this.state.archetypeData;
+        if (universal_product) {
+            return [option_title, sub_option_title].filter(Boolean);
+        } else {
+            return ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
+        }
+    }
+
+    _resolveAutoSelections() {
+        const optionOrder = this._getOptionOrder();
+        let changed = true;
+        while (changed) {
+            changed = false;
+            this._findAlias();
+            this._updateAvailableOptions();
+            for (const key of optionOrder) {
+                if (!this.state.selections[key]) {
+                    const opts = this.state.availableOptions[key];
+                    if (opts && opts.length === 1) {
+                        this.state.selections[key] = opts[0].value;
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
