@@ -34,6 +34,81 @@ export default class SearchEngine {
         return results.map(result => result.product);
     }
 
+    /**
+     * Finds related products based on vehicle or archetype compatibility
+     * @param {string} currentUrl - The URL of the current product (archetype)
+     * @param {string|null} vehicleId - The selected vehicle generation ID (e.g. "cooperf56")
+     * @param {number} limit - Max results
+     * @returns {Array}
+     */
+    findRelated(currentUrl, vehicleId = null, limit = 12) {
+        // Normalize currentUrl to match keys (ensure trailing slash if keys have them, or strip)
+        // The JSON keys have trailing slashes (e.g. "/product/").
+        const normalizedUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
+        
+        const currentProduct = this.products.find(p => p.url === normalizedUrl);
+        
+        // If no vehicle selected AND no current product found, we can't do anything.
+        if (!currentProduct && !vehicleId) return [];
+
+        let related = [];
+
+        if (vehicleId) {
+            // Strategy 1: Prioritize products that fit the selected vehicle
+            related = this.products.filter(p => {
+                const isNotCurrent = currentProduct ? p.url !== currentProduct.url : true;
+                const hasCompat = p.compatibility_ids && p.compatibility_ids.includes(vehicleId);
+                return isNotCurrent && hasCompat;
+            });
+        } else {
+            // Strategy 2: Fallback to products that share ANY compatibility with the current one
+            if (!currentProduct) return [];
+
+            const currentIds = currentProduct.compatibility_ids || [];
+            related = this.products.filter(p => 
+                p.url !== currentProduct.url && 
+                p.compatibility_ids && 
+                p.compatibility_ids.some(id => currentIds.includes(id))
+            );
+        }
+
+        // Sort by sort_order (ascending)
+        related.sort((a, b) => (a.sort_order || 10000) - (b.sort_order || 10000));
+
+        return related.slice(0, limit);
+    }
+
+    /**
+     * Returns a human-readable vehicle string from slugs
+     * @param {string} makeSlug 
+     * @param {string} modelSlug 
+     * @param {string} genSlug 
+     * @returns {string|null}
+     */
+    getVehicleName(makeSlug, modelSlug, genSlug) {
+        if (!this.data || !this.data.vehicle_registry) return null;
+        const registry = this.data.vehicle_registry;
+        
+        let makeName = makeSlug;
+        let modelName = modelSlug;
+        let genName = genSlug;
+
+        // Brand
+        if (registry.brands && registry.brands[makeSlug]) {
+            makeName = registry.brands[makeSlug].name || makeSlug;
+        }
+
+        // Model & Generation
+        if (registry.models && registry.models[modelSlug]) {
+            modelName = registry.models[modelSlug].name || modelSlug;
+            if (registry.models[modelSlug].generations && registry.models[modelSlug].generations[genSlug]) {
+                genName = registry.models[modelSlug].generations[genSlug];
+            }
+        }
+
+        return `${makeName} ${modelName} ${genName}`;
+    }
+
     tokenize(query) {
         return query.toLowerCase()
             .replace(/[^\w\s]/g, '') // Remove special characters

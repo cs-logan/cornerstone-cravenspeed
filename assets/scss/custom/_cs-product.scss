@@ -388,6 +388,10 @@ $cs-button-height: 50px;
   }
 }
 
+#more-products {
+  margin-top: spacing("single");
+}
+
 // -----------------------------------------------------------------------------
 // 9. Desktop Overrides
 // -----------------------------------------------------------------------------
@@ -425,6 +429,13 @@ $cs-button-height: 50px;
       margin: 0 auto;
       max-width: 70ch;
     }
+
+    #tab-more-products {
+      max-width: $cs-product-max-width;
+      margin: 0 auto;
+    }
+
+    
 
     .cs-product-form {
       display: grid;

@@ -131,6 +131,34 @@ I have set up a rough template of the structure.
 * **Action:** Update `search.js`.
 * **Purpose:** Ensure that pressing "Enter" in the quick search input redirects the browser to `/search.php?search_query=...` so the routing logic can take over.
 
+# Phase 4: Related Products (Product Page Context)
+**Goal:** Display a "Fits Your Vehicle" or "Related Parts" section on product pages based on the compatibility data in the JSON.
+
+### Step 1: Create Related Products UI
+* **Action:** Create `ui/relatedProducts.js`.
+* **Purpose:** This class manages the DOM for the related products section. It will target a specific container on the product page and render a list/carousel of products using the standard card HTML.
+
+### Step 2: Implement "Find Related" Logic
+* **Action:** Update `searchEngine.js`.
+* **Purpose:** Add a method `findRelated(currentProductUrl, limit)` that:
+    1.  Locates the current product in the index using the URL.
+    2.  Extracts its `compatibility_ids`.
+    3.  Scans the product list for other items sharing those IDs.
+    4.  Returns a list of matching product objects, excluding the current one.
+
+### Step 3: Integrate with Search Controller
+* **Action:** Update `search.js`.
+* **Purpose:**
+    1.  Detect if `this.context.pageType === 'product'`.
+    2.  If true, trigger `dataManager.loadData()` immediately.
+    3.  In `handleStateChange`, if data is ready and we are on a product page:
+        *   Call `searchEngine.findRelated(window.location.pathname)`.
+        *   Initialize `RelatedProducts` and call `render(results)`.
+
+### Step 4: Add Container to Product Template
+* **Action:** Update `templates/pages/product.html`.
+* **Purpose:** Add a `<div id="global-search-related"></div>` placeholder where the related products will be injected.
+
 ___
 
 ## Task Organization
@@ -144,7 +172,7 @@ ___
 *   *(Add future ideas or "nice-to-have" features here)*
 
 ## 📍 Current Task (User Only)
-*  **Phase 4: Related Products (Product Page Context)**
+*  **Phase 5: Persistence & Optimization**
 
 ## ✅ Completed Tasks
 *   **Phase 1: Initialization & Data Fetching**
@@ -162,6 +190,11 @@ ___
     *   Implemented URL Routing Logic
     *   Executed Full Search
     *   Handled Search Submission
+*   **Phase 4: Related Products (Product Page Context)**
+    *   Created Related Products UI
+    *   Implemented "Find Related" Logic
+    *   Integrated with Search Controller
+    *   Added Container to Product Template
 
 ---
 
