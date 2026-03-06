@@ -17,11 +17,14 @@ export default class Badges {
             setTimeout(() => {
                 if (!this.stateManager.getState().aliasData) {
                     this.element.innerHTML = '';
+                    this.element.style.visibility = 'hidden';
+                    this.element.style.display = 'flex';
                 }
             }, 500);
             return;
         }
 
+        this.element.style.display = 'flex';
         this.render(aliasData);
         requestAnimationFrame(() => this.element.classList.add('visible'));
     }

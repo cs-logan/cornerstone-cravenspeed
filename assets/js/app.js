@@ -4,7 +4,7 @@ import Global from './theme/global';
 import initGlobalAccessibility from './theme/global/accessibility';
 
 // Import for CravenSpeed search
-// import GlobalSearch from './theme/_addons/global/search/index';
+import GlobalSearch from './theme/_addons/global/search/index'
 
 const getAccount = () => import('./theme/account');
 const getLogin = () => import('./theme/auth');
@@ -75,7 +75,7 @@ window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null
                 if (loadGlobal) {
                     Global.load(context);
                     initGlobalAccessibility();
-                    // GlobalSearch.load(context);
+                    GlobalSearch.load(context);
                 }
 
                 const importPromises = [];

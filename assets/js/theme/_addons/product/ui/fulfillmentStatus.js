@@ -94,10 +94,18 @@ export default class FulfillmentStatus {
 
     render(message) {
         if (this.element) {
-            this.element.textContent = message;
-            this.element.classList.remove('fade-in');
-            void this.element.offsetWidth;
-            this.element.classList.add('fade-in');
+            if (message) {
+                this.element.textContent = message;
+                this.element.style.visibility = 'visible';
+                this.element.style.display = '';
+                this.element.classList.remove('fade-in');
+                void this.element.offsetWidth;
+                this.element.classList.add('fade-in');
+            } else {
+                this.element.textContent = '';
+                this.element.style.visibility = 'hidden';
+                this.element.style.display = '';
+            }
         }
     }
 }

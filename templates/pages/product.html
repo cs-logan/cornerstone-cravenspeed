@@ -1,10 +1,11 @@
 {{#partial "page"}}
+{{inject "productTitle" product.title}}
+{{inject "breadcrumbs" breadcrumbs}}
 <main class="cs-product-archetype">
 
     {{#each product.shipping_messages}}
         {{> components/common/alert/alert-info message}}
     {{/each}}
-    <div id="product-messages"></div>
 
     <article class="cs-product-container" itemscope itemtype="http://schema.org/Product">
 
@@ -23,8 +24,6 @@
                 <header class="cs-product-header">
                     <h1 class="cs-product-title" itemprop="name" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
                         {{product.title}}
-                        {{inject "productTitle" product.title}}
-                        {{inject "breadcrumbs" breadcrumbs}}
                     </h1>
                     <a href="#tab-reviews" class="cs-info-row" id="product-rating" data-product-rating>
                         {{> components/products-cs/rating-cs}}
@@ -34,37 +33,37 @@
                 </header>
 
                 <form class="cs-product-form" id="product-selection" action="{{urls.cart}}" method="post" enctype="multipart/form-data" data-cart-item-add data-product-options-container>
-                    <div id="product-messages" data-product-messages></div>
+                    <div id="product-messages" data-product-messages role="alert" aria-live="assertive"></div>
 
                     <input type="hidden" name="action" value="add">
                     <input type="hidden" name="product_id" value="{{product.id}}">
                     <input type="hidden" name="qty[]" value="1">
 
-                    <div class="cs-form-field" data-product-form-field="make">
+                    <div class="cs-form-field" data-product-form-field="make" style="visibility: hidden;">
                         <label for="make" class="cs-form-label">Make</label>
                         <select name="make" id="make" class="cs-form-select" data-product-option="make" disabled>
                             <option selected>{{lang 'loading'}}...</option>
                         </select>
                     </div>
-                    <div class="cs-form-field" data-product-form-field="model">
+                    <div class="cs-form-field" data-product-form-field="model" style="visibility: hidden;">
                         <label for="model" class="cs-form-label">Model</label>
                         <select name="model" id="model" class="cs-form-select" data-product-option="model" disabled>
                             <option selected>{{lang 'loading'}}...</option>
                         </select>
                     </div>
-                    <div class="cs-form-field" data-product-form-field="year">
+                    <div class="cs-form-field" data-product-form-field="year" style="visibility: hidden;">
                         <label for="year" class="cs-form-label">Year</label>
                         <select name="year" id="year" class="cs-form-select" data-product-option="generation" disabled>
                             <option selected>{{lang 'loading'}}...</option>
                         </select>
                     </div>
-                    <div class="cs-form-field" data-product-form-field="option-one">
+                    <div class="cs-form-field" data-product-form-field="option-one" style="visibility: hidden;">
                         <label class="cs-form-label" for="option-one">Options</label>
                         <select name="Option One" id="option-one" class="cs-form-select" data-product-option="option" disabled>
                             <option selected>{{lang 'loading'}}...</option>
                         </select>
                     </div>
-                    <div class="cs-form-field" data-product-form-field="option-two">
+                    <div class="cs-form-field" data-product-form-field="option-two" style="visibility: hidden;">
                         <select name="Option Two" id="option-two" class="cs-form-select" data-product-option="sub_option" disabled>
                             <option selected>{{lang 'loading'}}...</option>
                         </select>

@@ -22,6 +22,9 @@
 // -----------------------------------------------------------------------------
 
 $cs-product-max-width: 1440px;
+$cs-badge-max-width: 128px;
+$cs-modal-media-width: 220px;
+$cs-button-height: 50px;
 
 @mixin shimmer {
   background: #e0e0e0;
@@ -253,8 +256,7 @@ $cs-product-max-width: 1440px;
 
   .form-field {
     margin: 0;
-    display: flex;
-    align-items: center;
+    // Inherits flex behavior from parent or default
   }
 
   .form-checkbox {
@@ -275,7 +277,7 @@ $cs-product-max-width: 1440px;
 
   #product-add-button {
     width: 100%;
-    min-height: 50px; // Large touch target
+    min-height: $cs-button-height; // Large touch target
     font-size: 1.1rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -333,7 +335,7 @@ $cs-product-max-width: 1440px;
     cursor: pointer;
     transition: all 0.2s ease;
     box-sizing: border-box;
-    max-width: 128px;
+    max-width: $cs-badge-max-width;
 
     &.fade-in {
       animation: fadeIn 0.5s ease-out;
@@ -360,7 +362,7 @@ $cs-product-max-width: 1440px;
 }
 
 // -----------------------------------------------------------------------------
-// 7. Product Description & Details
+// 8. Product Description & Details
 // -----------------------------------------------------------------------------
 .tab-content,
 .modal-content {
@@ -387,7 +389,7 @@ $cs-product-max-width: 1440px;
 }
 
 // -----------------------------------------------------------------------------
-// 8. Desktop Overrides
+// 9. Desktop Overrides
 // -----------------------------------------------------------------------------
 @include breakpoint('medium') {
   .cs-product-container {
@@ -458,7 +460,7 @@ $cs-product-max-width: 1440px;
 }
 
 // =============================================================================
-// 9. Incompatibility Message
+// 10. Incompatibility Message
 // =============================================================================
 #product-messages {
   display: none;
@@ -498,7 +500,7 @@ $cs-product-max-width: 1440px;
 }
 
 // =============================================================================
-// 10. Product Modals
+// 11. Product Modals
 // =============================================================================
 .cs-product-modal {
   background-color: #fff; // Force white background
@@ -550,7 +552,7 @@ $cs-product-max-width: 1440px;
         align-items: flex-start;
 
         .modal-col-media {
-          flex: 0 0 220px;
+          flex: 0 0 $cs-modal-media-width;
         }
       }
     }

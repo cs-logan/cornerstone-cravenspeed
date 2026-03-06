@@ -10,6 +10,7 @@ export default class ProductDetails {
         this.skuElement = document.querySelector('[data-product-sku]');
         this.priceElement = document.querySelector('[data-product-price]');
         this.brandElement = document.querySelector('[data-product-brand]');
+        this.fitmentNotesElement = document.querySelector('[data-fitment-notes]');
 
         this.stateManager.subscribe(this.update.bind(this));
     }
@@ -78,27 +79,52 @@ export default class ProductDetails {
 
     render(data, archetypeData) {
         if (this.descriptionElement) this.descriptionElement.innerHTML = data.description || '';
+        if (this.fitmentNotesElement) {
+            if (data.fitment_notes) {
+                this.fitmentNotesElement.innerHTML = data.fitment_notes;
+                this.fitmentNotesElement.style.visibility = 'visible';
+                this.fitmentNotesElement.style.display = '';
+                this._animate(this.fitmentNotesElement);
+            } else {
+                this.fitmentNotesElement.innerHTML = '';
+                this.fitmentNotesElement.style.visibility = 'hidden';
+                this.fitmentNotesElement.style.display = '';
+            }
+        }
         if (this.instructionsElement) {
             if (data.instructions_url) {
                 this.instructionsElement.innerHTML = this._generateInstructionsHtml(data.instructions_url);
-                this.instructionsElement.style.display = 'flex';
+                this.instructionsElement.style.visibility = 'visible';
+                this.instructionsElement.style.display = '';
                 this._animate(this.instructionsElement);
             } else {
                 this.instructionsElement.innerHTML = '';
-                this.instructionsElement.style.display = 'none';
+                this.instructionsElement.style.visibility = 'hidden';
+                this.instructionsElement.style.display = '';
             }
         }
         if (this.skuElement) {
-            this.skuElement.textContent = data.base_sku || '';
-            if (data.base_sku) this._animate(this.skuElement);
+            if (data.base_sku) {
+                this.skuElement.textContent = data.base_sku;
+                this.skuElement.style.visibility = 'visible';
+                this.skuElement.style.display = '';
+                this._animate(this.skuElement);
+            } else {
+                this.skuElement.textContent = '';
+                this.skuElement.style.visibility = 'hidden';
+                this.skuElement.style.display = '';
+            }
         }
         if (this.brandElement) {
             if (data.brand_name) {
                 this.brandElement.textContent = data.brand_name;
+                this.brandElement.style.visibility = 'visible';
                 this.brandElement.style.display = '';
                 this._animate(this.brandElement);
             } else {
                 this.brandElement.textContent = '';
+                this.brandElement.style.visibility = 'hidden';
+                this.brandElement.style.display = '';
             }
         }
         if (this.priceElement) {
@@ -109,6 +135,8 @@ export default class ProductDetails {
 
             if (!isValid(price)) {
                 this.priceElement.innerHTML = '';
+                this.priceElement.style.visibility = 'hidden';
+                this.priceElement.style.display = '';
             } else {
                 const formattedPrice = this._formatPrice(price);
 
@@ -118,6 +146,8 @@ export default class ProductDetails {
                 } else {
                     this.priceElement.innerHTML = formattedPrice;
                 }
+                this.priceElement.style.visibility = 'visible';
+                this.priceElement.style.display = '';
                 this._animate(this.priceElement);
             }
         }

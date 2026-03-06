@@ -45,6 +45,10 @@
 6. **Objectivity:** Prioritize standard BigCommerce developer best practices and verifiable Stencil documentation.
 7. **Sample Data:** Files in `/sample-data/` are reference copies of CDN files. **Do not modify them.**
 8. **Module Integrity:** When editing `/assets/js/theme/_addons/product`, maintain existing functionality unless explicitly asked to change it.
+9. **Layout Stability (CLS):** 
+    *   **Do not use `display: none`** for elements that populate asynchronously (SKU, Price, Badges, etc.). 
+    *   Use `visibility: hidden` instead to reserve vertical space and prevent layout shifts.
+    *   Ensure containers have `min-height` in SCSS where appropriate.
 9. **Dont Advance** When Gemini completes a task it should ask me what is next, it should not begin work on a new task. 
 
 ---
@@ -56,14 +60,6 @@
 | :--- | :--- | :--- |
 | **Search Module Build** | 🟡 In Progress | Skip for now. Build quick-search with scoring & tokenization. |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
-| **Discuss a Plan to implement the Blem feature** | We often have scratch and dent products available for purchase at a discounted price. The alias data contains a "blem" object. The blem object has "price" "qty_id", and "bigc_id". The price can be used to display and to show how much the customer can save by purchasing the blem. The qty_id can be used to check the inventory data to see if the blem is in stock. The bigc_id is what should be added to the cart if the user wishes to purchase the blem. 
-
-* **Blem Feature MVP:**
-    * When a blem is available. a link/button should appear with the text "Interested in saving $~VALUE~". (data-product-blem)
-    * This link should open the scratchAndDent.html modal
-    * The modal describes the blem system and should also have some method for the user to accept or decline the purchase of the blem instead of a new part. 
-    * If accept, close the modal show the discounted price in the price field with a blem qualifier text. and validate the add to cart form to add the blem item to the cart. Also show an checkbox where the initial blem text was to indicate that the blem is selected and give a way to revert the decision
-    * If deny, close the modal. 
 
 
 
@@ -83,7 +79,9 @@
 | **Show Incompatibility Message** | | Since the previously selected vehicle is saved in persistance and we attempt to pre-select the vehicle when loading a product page, there are some cases where a vehicle will not have compatibility with a given archetype (ie: vehicle is not listed in make_model_index in the archetype data) When this is the case we should indicate to the user that this product is not compatible with their previously selected vehicle. This is handled by productMessages.js ui component. Observe the current layout of the selection fields (make model gen in the first row, option one and option two in the second row) via product.html and _cs-product.scss. When the selected vehicle is not compatible with the current archetype display a message indicating as such. the message should occupy the space that the two option selects would normally occupy (the second row). Work on this task has already been attempted, but Gemini failed to complete it |
 | **Write the Badges UI Component** | Current Task | Recreate the badges feature from the old script. Use your own preferred strategy to do so, you do not need to copy the previous version, just use it for reference to ensure that you match its functionality. Take note of the scss styles in _custom.scss so that they still apply. |
 | **Style Badge Modals** | Current Task | Help me make the badge modals more pleasing to the user. Prioritize mobile presentation.
-| **Implement Sale Price Feature** | ✅ Completed | The aliasData has a field for sale_price. If this is not 0 or null, we should cross out the normal price and display the sale price in line with the normal price. 
+| **Implement Sale Price Feature** | The aliasData has a field for sale_price. If this is not 0 or null, we should cross out the normal price and display the sale price in line with the normal price. 
+| **Implement the Blem feature** | We often have scratch and dent products available for purchase at a discounted price. The alias data contains a "blem" object. The blem object has "price" "qty_id", and "bigc_id". The price can be used to display and to show how much the customer can save by purchasing the blem. The qty_id can be used to check the inventory data to see if the blem is in stock. The bigc_id is what should be added to the cart if the user wishes to purchase the blem. 
+| **Implement Fitment Notes** | The alias data has a field called "fitment_notes". There is a corresponding element in the product.html data-fitment-notes. Let's make sure that field is updated. Lets first discuss if this can be handled in productDetails or if it needs its own ui module based on our current design architecture outlined in PRODUCT_MODULE_PLAN.md
 
 ---
 

@@ -114,7 +114,7 @@ export default class AliasSelection {
         const { archetypeName, option_title, sub_option_title } = archetypeData;
 
         // One-time check on initial load for vehicle compatibility
-        if (this.initialLoad && this.persistedVehicle.generation) {
+        if (this.initialLoad && this.persistedVehicle.generation && !archetypeData.universal_product) {
             const isCompatible = availableOptions.generation && availableOptions.generation.find(g => g.value === this.persistedVehicle.generation);
             if (!isCompatible) {
                 this.productMessages.showMessage('vehicle-incompatible', 'This product is not compatible with your saved vehicle.');
@@ -188,13 +188,8 @@ export default class AliasSelection {
 
         if (universal_product) {
             if (['make', 'model', 'generation'].includes(rawOption)) {
-                wrapper.style.display = 'none';
-                
-                // If wrapper is just the input (no .form-field found), try to hide the label explicitly
-                if (wrapper === input && input.id) {
-                    const label = document.querySelector(`label[for="${input.id}"]`);
-                    if (label) label.style.display = 'none';
-                }
+                wrapper.style.visibility = 'hidden';
+                wrapper.style.display = '';
                 return;
             }
 
