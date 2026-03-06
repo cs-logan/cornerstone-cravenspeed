@@ -105,12 +105,22 @@ export default class SearchEngine {
         if (!registry) return index;
 
         const addIds = (term, ids) => {
-            // Normalize term to match tokenizer: lowercase, remove non-word chars
-            const t = term.toLowerCase().replace(/[^\w]/g, '');
-            if (!t) return;
-            
-            if (!index[t]) index[t] = new Set();
-            ids.forEach(id => index[t].add(id));
+            if (!term) return;
+
+            // Tokenize the term in the same way the main search tokenizer does.
+            // This ensures that a search for "Miata" will match a vehicle named "MX-5 Miata"
+            // by indexing both "mx5" and "miata" as keywords pointing to the same vehicle IDs.
+            const tokens = term.toLowerCase()
+                .replace(/[^\w\s]/g, '') // Clean, but keep spaces for splitting
+                .split(/\s+/)
+                .filter(t => t.length > 0);
+
+            tokens.forEach(token => {
+                if (!index[token]) {
+                    index[token] = new Set();
+                }
+                ids.forEach(id => index[token].add(id));
+            });
         };
 
         // Helper to get IDs for a model
@@ -137,6 +147,12 @@ export default class SearchEngine {
                 const ids = getModelIds(modelSlug);
                 addIds(modelSlug, ids);
                 if (modelData.name) addIds(modelData.name, ids);
+
+                if (modelData.generations) {
+                    Object.entries(modelData.generations).forEach(([genId, genName]) => {
+                        addIds(genName, [genId]);
+                    });
+                }
             });
         }
 

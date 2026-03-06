@@ -40,7 +40,7 @@ export default class QuickSearch {
         const title = product.title || 'Unknown Product';
         const url = product.url || '#';
         const sku = product.sku || '';
-        const price = product.price ? `$${product.price}` : ''; 
+        const price = product.price ? `${product.price}` : ''; 
 
         return `
             <a href="${url}" class="cs-search-result-item">
