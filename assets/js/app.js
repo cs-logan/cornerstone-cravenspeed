@@ -48,7 +48,7 @@ const pageClasses = {
     page: noop,
     product: () => import('./theme/_addons/product/index'),
     amp_product_options: () => import('./theme/product'),
-    search: () => import('./theme/search'),
+    // search: () => import('./theme/search'), 
     rss: noop,
     sitemap: noop,
     newsletter_subscribe: noop,

@@ -112,6 +112,25 @@ I have set up a rough template of the structure.
     * Add a debounced `input` event listener to the search bar.
     * **Execution Flow:** On input, pass the query to the `SearchEngine` → receive the ranked results → pass those results to `QuickSearch` for rendering.
 
+# Phase 3: Full Results Page & Routing
+**Goal:** Replace the default BigCommerce search results page with our client-side rendered results for a consistent experience.
+
+### Step 1: Create the Results Page UI
+* **Action:** Create `ui/resultsPage.js`.
+* **Purpose:** This class manages the DOM for the full search page. It will target the main product listing container, clear it, and render the full list of matches using a grid layout.
+
+### Step 2: Implement URL Routing Logic
+* **Action:** Update `search.js`.
+* **Purpose:** In the `onReady` method, check if `window.location.pathname` is `/search.php`. If so, parse the `search_query` URL parameter.
+
+### Step 3: Execute Full Search
+* **Action:** Update `search.js`.
+* **Purpose:** If a query is found in the URL, trigger `searchEngine.search(query, null)` (null limit for all results) and pass the data to `ResultsPage.render()`.
+
+### Step 4: Handle Search Submission
+* **Action:** Update `search.js`.
+* **Purpose:** Ensure that pressing "Enter" in the quick search input redirects the browser to `/search.php?search_query=...` so the routing logic can take over.
+
 ___
 
 ## Task Organization
@@ -125,7 +144,7 @@ ___
 *   *(Add future ideas or "nice-to-have" features here)*
 
 ## 📍 Current Task (User Only)
-*  **Phase 3: Full Results Page & Routing**
+*  **Phase 4: Related Products (Product Page Context)**
 
 ## ✅ Completed Tasks
 *   **Phase 1: Initialization & Data Fetching**
@@ -138,6 +157,11 @@ ___
     *   Created Quick Search UI
     *   Wired Up Controller
     *   Styling & Tokenization
+*   **Phase 3: Full Results Page & Routing**
+    *   Created Results Page UI
+    *   Implemented URL Routing Logic
+    *   Executed Full Search
+    *   Handled Search Submission
 
 ---
 
