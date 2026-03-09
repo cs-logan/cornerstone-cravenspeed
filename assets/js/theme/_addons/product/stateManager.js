@@ -24,6 +24,7 @@ export default class StateManager {
 
     updateSelection({option, value}) {
         const optionOrder = this._getOptionOrder();
+        console.log(`StateManager: updateSelection ${option} = ${value}`);
         
         this.state.selections[option] = value;
 
@@ -57,6 +58,7 @@ export default class StateManager {
     }
 
     setInitialSelections(selections) {
+        console.log('StateManager: setInitialSelections', selections);
         this.state.selections = selections;
         this._resolveAutoSelections();
         this._notifySubscribers(); // Notify once after all initial selections are set
@@ -164,11 +166,25 @@ export default class StateManager {
                 return currentLevel; // Return the deepest level reached
             }
 
+            console.log(`StateManager: Traversing ${key} -> ${selection}`);
+
             let nextLevel;
             if (currentLevel[selection]) {
                 nextLevel = currentLevel[selection];
+            } else if (key === 'model' && selections.make && currentLevel.models && currentLevel.models[selections.make + selection]) {
+                nextLevel = currentLevel.models[selections.make + selection];
             } else if (currentLevel.models && currentLevel.models[selection]) {
                 nextLevel = currentLevel.models[selection];
+            } else if (key === 'generation' && selections.make && currentLevel.generations && currentLevel.generations[selections.make + selection]) {
+                const genKey = selections.make + selection;
+                if (genKey.endsWith('.json')) {
+                    return genKey;
+                }
+                const nextNode = currentLevel.generations[genKey];
+                if (typeof nextNode === 'string' && nextNode.endsWith('.json')) {
+                    return nextNode;
+                }
+                nextLevel = nextNode;
             } else if (currentLevel.generations && currentLevel.generations[selection]) {
                 if (selection.endsWith('.json')) {
                     return selection;
@@ -187,6 +203,8 @@ export default class StateManager {
                 // Here, the selection is the filename. We have found the alias.
                 return selection;
             } else {
+                console.warn(`StateManager: Traversal failed at ${key}="${selection}".`, 
+                    'Current Level Keys:', Object.keys(currentLevel.models || currentLevel.generations || currentLevel.options || currentLevel));
                 return null; // Invalid path
             }
             currentLevel = nextLevel;
@@ -215,12 +233,16 @@ export default class StateManager {
         const availableOptions = {};
 
         // Helper to safely get options array
-        const getOptions = (node, key) => {
+        const getOptions = (node, key, stripPrefix = null) => {
             if (!node || !node[key]) return [];
             return Object.keys(node[key]).map(k => {
                 const entry = node[key][k];
+                let value = k;
+                if (stripPrefix && k.startsWith(stripPrefix)) {
+                    value = k.substring(stripPrefix.length);
+                }
                 return {
-                    value: k,
+                    value: value,
                     label: (entry && entry.name) ? entry.name : k,
                 };
             }).sort((a, b) => a.label.localeCompare(b.label));
@@ -263,15 +285,26 @@ export default class StateManager {
 
         // 2. Model
         if (currentNode) {
-            availableOptions.model = getOptions(currentNode, 'models');
-            currentNode = (selections.model && currentNode.models) ? currentNode.models[selections.model] : null;
+            availableOptions.model = getOptions(currentNode, 'models', selections.make);
+            if (selections.model && currentNode.models) {
+                currentNode = currentNode.models[selections.model] || 
+                              (selections.make ? currentNode.models[selections.make + selections.model] : null) || 
+                              null;
+            } else {
+                currentNode = null;
+            }
         }
 
         // 3. Generation
         if (currentNode) {
-            availableOptions.generation = getOptions(currentNode, 'generations');
-            const nextNode = (selections.generation && currentNode.generations) ? currentNode.generations[selections.generation] : null;
-            currentNode = (typeof nextNode === 'object') ? nextNode : null;
+            availableOptions.generation = getOptions(currentNode, 'generations', selections.make);
+            if (selections.generation && currentNode.generations) {
+                const nextNode = currentNode.generations[selections.generation] || 
+                                 (selections.make ? currentNode.generations[selections.make + selections.generation] : null);
+                currentNode = (typeof nextNode === 'object') ? nextNode : null;
+            } else {
+                currentNode = null;
+            }
         }
 
         // 4. Option

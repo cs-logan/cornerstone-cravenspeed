@@ -59,12 +59,17 @@
 | Task | Status | Notes |
 | :--- | :--- | :--- |
 | **Implement URL Switching** | ⚪ Considering | `history.pushState` on alias resolution; handle `popstate`. |
-| **Plan for the HOME page | Current Task | planning phase for the home page content
-
 
 
 
 ### ✅ Completed
+| **Plan for the HOME page | Current Task | planning phase for the home page content. What should be on the home page? This will involve modifying the home page template and coming up with a deployment strategy for the home page js.
+| **Save Options in Persistence** | | We are currently saving the vehicle in persistence, lets also save the options. This is a little tricky as the options are dependent on the archetype |
+| **Show Incompatibility Message** | | When the selected vehicle is not compatible with the current archetype display a message indicating as such. |
+| **Style Badge Modals** | | Help me make the badge modals more pleasing to the user. Prioritize mobile presentation. |
+| **Implement Sale Price Feature** | | If aliasData.sale_price is not 0 or null, cross out normal price and display sale price. |
+| **Implement the Blem feature** | | Handle scratch and dent products using the "blem" object in aliasData. |
+| **Implement Fitment Notes** | | Update data-fitment-notes element based on aliasData.fitment_notes. |
 * **Search Module Build:** Full implementation including Quick Search, Results Page, Related Products, and Caching.
 * **Add to Cart Logic:** Form validation and alias-specific submission.
 * **Cart Preview Modal:** Modal logic in `cartManager.js` with loading states.
@@ -78,13 +83,7 @@
 * **Fix Out of Stock functionality** The add to cart button should be disabled if an alias is out of stock
 * **Combine stockInfo and shippingInfo** The shipping info row and the stock info row are semi redundant. If we say something will ship, it should be in stock. Lets combine these rows and ui components into one fulfillmentStatus component and have that take up only one row instead of two.
 * **Investigate Bug with persistence:** Resolved race condition, recursion loop, and auto-selection logic for persistent vehicles.
-| **Save Options in Persistence** | | We are currently saving the vehicle in persistence, lets also save the options. This is a little tricky as the options are dependent on the archetype |
-| **Show Incompatibility Message** | | Since the previously selected vehicle is saved in persistance and we attempt to pre-select the vehicle when loading a product page, there are some cases where a vehicle will not have compatibility with a given archetype (ie: vehicle is not listed in make_model_index in the archetype data) When this is the case we should indicate to the user that this product is not compatible with their previously selected vehicle. This is handled by productMessages.js ui component. Observe the current layout of the selection fields (make model gen in the first row, option one and option two in the second row) via product.html and _cs-product.scss. When the selected vehicle is not compatible with the current archetype display a message indicating as such. the message should occupy the space that the two option selects would normally occupy (the second row). Work on this task has already been attempted, but Gemini failed to complete it |
-| **Write the Badges UI Component** | Current Task | Recreate the badges feature from the old script. Use your own preferred strategy to do so, you do not need to copy the previous version, just use it for reference to ensure that you match its functionality. Take note of the scss styles in _custom.scss so that they still apply. |
-| **Style Badge Modals** | Current Task | Help me make the badge modals more pleasing to the user. Prioritize mobile presentation.
-| **Implement Sale Price Feature** | The aliasData has a field for sale_price. If this is not 0 or null, we should cross out the normal price and display the sale price in line with the normal price. 
-| **Implement the Blem feature** | We often have scratch and dent products available for purchase at a discounted price. The alias data contains a "blem" object. The blem object has "price" "qty_id", and "bigc_id". The price can be used to display and to show how much the customer can save by purchasing the blem. The qty_id can be used to check the inventory data to see if the blem is in stock. The bigc_id is what should be added to the cart if the user wishes to purchase the blem. 
-| **Implement Fitment Notes** | The alias data has a field called "fitment_notes". There is a corresponding element in the product.html data-fitment-notes. Let's make sure that field is updated. Lets first discuss if this can be handled in productDetails or if it needs its own ui module based on our current design architecture outlined in PRODUCT_MODULE_PLAN.md
+* **Write the Badges UI Component:** Recreated badges feature and logic.
 
 ---
 

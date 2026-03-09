@@ -29,11 +29,7 @@ export default class RelatedProducts {
     }
 
     _renderGrid(products) {
-        const gridHTML = `
-            <ul class="productGrid">
-                ${products.map(product => this._buildCard(product)).join('')}
-            </ul>
-        `;
+        const gridHTML = products.map(product => this._buildCard(product)).join('');
         this.container.innerHTML = gridHTML;
     }
 
@@ -43,33 +39,18 @@ export default class RelatedProducts {
         const image = escapeHtml(product.image);
         const price = escapeHtml(product.price);
 
-        // Reusing the standard card structure
         return `
-            <li class="product">
-                <article class="card">
-                    <figure class="card-figure">
-                        <a href="${url}" class="card-figure__link" aria-label="${title}">
-                            <div class="card-img-container">
-                                <img class="card-image lazyload" 
-                                     data-sizes="auto" 
-                                     src="${image}" 
-                                     alt="${title}" 
-                                     title="${title}">
-                            </div>
-                        </a>
-                    </figure>
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <a href="${url}">${title}</a>
-                        </h3>
-                        <div class="card-text" data-test-info-type="price">
-                            <div class="price-section price-section--withoutTax">
-                                <span class="price price--withoutTax">${price}</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </li>
+            <div class="cs-product-card">
+                <a href="${url}">
+                    <img src="${image}" alt="${title}" title="${title}" style="max-width: 100%; height: auto;">
+                </a>
+                <h4 class="cs-card-title">
+                    <a href="${url}" class="cs-card-title-link">${title}</a>
+                </h4>
+                <div class="cs-card-price">
+                    ${price}
+                </div>
+            </div>
         `;
     }
 }

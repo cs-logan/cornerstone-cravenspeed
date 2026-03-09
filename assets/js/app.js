@@ -1,10 +1,11 @@
 __webpack_public_path__ = window.__webpack_public_path__; // eslint-disable-line
 
 import Global from './theme/global';
-import initGlobalAccessibility from './theme/global/accessibility';
+
 
 // Import for CravenSpeed search
 import GlobalSearch from './theme/_addons/global/search/index'
+import initGlobalAccessibility from './theme/global/accessibility';
 
 const getAccount = () => import('./theme/account');
 const getLogin = () => import('./theme/auth');
@@ -56,7 +57,9 @@ const pageClasses = {
     wishlists: () => import('./theme/wishlist'),
 };
 
-const customClasses = {};
+const customClasses = {
+    'pages/home': () => import('./theme/home'),
+};
 
 /**
  * This function gets added to the global window and then called
@@ -67,6 +70,7 @@ const customClasses = {};
  */
 window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null, loadGlobal = true) {
     const context = JSON.parse(contextJSON || '{}');
+    console.log('page type: ', pageType)
 
     return {
         load() {

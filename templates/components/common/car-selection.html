@@ -1,11 +1,20 @@
-<div class="cs-car-picker">
-    <select name="make-name" id="Make" class="makemodel-dropdown" onchange="updateModel(this.value)">
-      <option value="">Select Make</option>
-    </select>
-    <select name="model-name" id="Model" class="makemodel-dropdown" onchange="updateGen(this.value)">
-      <option value="">Select Model</option>
-    </select>
-    <select name="year-name" id="Year" class="makemodel-dropdown" onchange="updateGenCookie(this.value)">
-        <option value="">Select Year</option>
-    </select>
-</div>
+<form class="cs-car-selection" data-car-selection-form>
+    <div class="cs-car-selection-field">
+        <label for="make-select" class="cs-car-selection-label">Select Make</label>
+        <select name="make-name" id="make-select" class="cs-car-selection-dropdown" data-car-selection-field="make">
+            <option value="">Select Make</option>
+        </select>
+    </div>
+    <div class="cs-car-selection-field">
+        <label for="model-select" class="cs-car-selection-label">Select Model</label>
+        <select name="model-name" id="model-select" class="cs-car-selection-dropdown" data-car-selection-field="model">
+            <option value="">Select Model</option>
+        </select>
+    </div>
+    <div class="cs-car-selection-field">
+        <label for="year-select" class="cs-car-selection-label">Select Year</label>
+        <select name="year-name" id="year-select" class="cs-car-selection-dropdown" data-car-selection-field="year">
+            <option value="">Select Year</option>
+        </select>
+    </div>
+</form>
