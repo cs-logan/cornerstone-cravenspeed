@@ -111,7 +111,7 @@ export default class ProductDetails {
                 this._animate(this.skuElement);
             } else {
                 this.skuElement.textContent = '';
-                this.skuElement.style.visibility = 'hidden';
+                this.skuElement.style.visibility = '';
                 this.skuElement.style.display = '';
             }
         }
@@ -123,7 +123,7 @@ export default class ProductDetails {
                 this._animate(this.brandElement);
             } else {
                 this.brandElement.textContent = '';
-                this.brandElement.style.visibility = 'hidden';
+                this.brandElement.style.visibility = '';
                 this.brandElement.style.display = '';
             }
         }
@@ -135,7 +135,7 @@ export default class ProductDetails {
 
             if (!isValid(price)) {
                 this.priceElement.innerHTML = '';
-                this.priceElement.style.visibility = 'hidden';
+                this.priceElement.style.visibility = '';
                 this.priceElement.style.display = '';
             } else {
                 const formattedPrice = this._formatPrice(price);

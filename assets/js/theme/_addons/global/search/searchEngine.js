@@ -54,11 +54,16 @@ export default class SearchEngine {
         let related = [];
 
         if (vehicleId) {
-            // Strategy 1: Prioritize products that fit the selected vehicle
+            // Strategy 1: Prioritize products that fit the selected vehicle OR are universal
             related = this.products.filter(p => {
                 const isNotCurrent = currentProduct ? p.url !== currentProduct.url : true;
-                const hasCompat = p.compatibility_ids && p.compatibility_ids.includes(vehicleId);
-                return isNotCurrent && hasCompat;
+                if (!isNotCurrent) return false;
+
+                const compatIds = p.compatibility_ids || [];
+                const isUniversal = compatIds.length === 0 || (compatIds.length === 1 && compatIds[0] === "");
+                const hasCompat = compatIds.includes(vehicleId);
+
+                return isUniversal || hasCompat;
             });
         } else {
             // Strategy 2: Fallback to products that share ANY compatibility with the current one

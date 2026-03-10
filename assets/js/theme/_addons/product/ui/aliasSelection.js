@@ -1,3 +1,7 @@
+import VehiclePersistence from '../../../_addons/global/vehiclePersistence';
+import OptionsPersistence from '../../../_addons/global/optionsPersistence';
+import GlobalStateManager from '../../../_addons/global/stateManager';
+
 export default class AliasSelection {
     constructor(stateManager, productMessages) {
         this.stateManager = stateManager;
@@ -43,75 +47,35 @@ export default class AliasSelection {
                 const state = this.stateManager.getState();
                 const optionKey = this._resolveOptionKey(rawOption, state.archetypeData);
                 this.stateManager.updateSelection({ option: optionKey, value });
-
-                // Save to persistence
-                this._savePersistence(rawOption, value, state.archetypeData);
             }
         });
     }
 
     _handlePersistence(archetypeData) {
-        if (this.persistenceHandled) return;
-        if (!archetypeData || !archetypeData.archetypeName) return;
+        if (this.persistenceHandled || !archetypeData || !archetypeData.archetypeName) return;
 
         const selections = {};
         
-        // Vehicle persistence
-        const make = localStorage.getItem('cs_garage_make');
-        const model = localStorage.getItem('cs_garage_model');
-        const generation = localStorage.getItem('cs_garage_generation');
-
-        if (make) {
-            selections.make = make;
-            this.persistedVehicle.make = make;
-        }
-        if (model) {
-            selections.model = model;
-            this.persistedVehicle.model = model;
-        }
-        if (generation) {
-            selections.generation = generation;
-            this.persistedVehicle.generation = generation;
+        const globalState = GlobalStateManager.getState();
+        
+        // 1. Vehicle Data from Global State
+        if (globalState.vehicle && globalState.vehicle.selected) {
+            this.persistedVehicle = globalState.vehicle.selected;
+            Object.assign(selections, this.persistedVehicle);
         }
 
-        // Options persistence
-        const { archetypeName, option_title, sub_option_title } = archetypeData;
-        if (option_title) {
-            const optionValue = localStorage.getItem(`cs_options_${archetypeName}_${option_title}`);
-            if (optionValue) selections[option_title] = optionValue;
-        }
-        if (sub_option_title) {
-            const subOptionValue = localStorage.getItem(`cs_options_${archetypeName}_${sub_option_title}`);
-            if (subOptionValue) selections[sub_option_title] = subOptionValue;
+        // 2. Options Data from new persistence module
+        const { archetypeName } = archetypeData;
+        const persistedOptions = OptionsPersistence.load(archetypeName);
+        if (persistedOptions) {
+            Object.assign(selections, persistedOptions);
         }
         
-        // Apply all selections at once
         this.persistenceHandled = true;
         this.stateManager.setInitialSelections(selections);
     }
 
-    _savePersistence(option, value, archetypeData) {
-        const { archetypeName, option_title, sub_option_title } = archetypeData;
-        let key;
-        
-        if (!archetypeName) return;
 
-        if (['make', 'model', 'generation'].includes(option)) {
-            key = `cs_garage_${option}`;
-        } else if (option === 'option' && option_title) {
-            key = `cs_options_${archetypeName}_${option_title}`;
-        } else if (option === 'sub_option' && sub_option_title) {
-            key = `cs_options_${archetypeName}_${sub_option_title}`;
-        }
-
-        if (key) {
-            if (value) {
-                localStorage.setItem(key, value);
-            } else {
-                localStorage.removeItem(key);
-            }
-        }
-    }
 
     update(state) {
         const { availableOptions, selections, archetypeData } = state;
@@ -121,13 +85,35 @@ export default class AliasSelection {
         // Lazy load persistence if it wasn't ready at init
         if (!this.persistenceHandled && archetypeData.archetypeName) {
             this._handlePersistence(archetypeData);
-            return;
+            return; // Exit and wait for re-render triggered by setInitialSelections
         }
 
-        const { archetypeName, option_title, sub_option_title } = archetypeData;
+        const { archetypeName, option_title, sub_option_title, universal_product } = archetypeData;
 
+        // --- Persistence ---
+        if (this.persistenceHandled) {
+            // 1. Handle Vehicle Persistence
+            if (!universal_product) {
+                const { make, model, generation } = selections;
+                VehiclePersistence.save({ make, model, generation });
+            }
+
+            // 2. Handle Option Persistence
+            const optionKeys = [option_title, sub_option_title].filter(Boolean);
+            const optionsToSave = optionKeys.reduce((acc, key) => {
+                if (selections[key]) {
+                    acc[key] = selections[key];
+                }
+                return acc;
+            }, {});
+
+            OptionsPersistence.save(archetypeName, optionsToSave);
+        }
+
+
+        // --- UI Updates ---
         // One-time check on initial load for vehicle compatibility
-        if (this.initialLoad && this.persistedVehicle.generation && !archetypeData.universal_product) {
+        if (this.initialLoad && this.persistedVehicle.generation && !universal_product) {
             const isCompatible = availableOptions.generation && availableOptions.generation.find(g => g.value === this.persistedVehicle.generation);
             if (!isCompatible) {
                 this.productMessages.showMessage('vehicle-incompatible', 'This product is not compatible with your saved vehicle.');
@@ -136,34 +122,6 @@ export default class AliasSelection {
                 }
             }
             this.initialLoad = false;
-        }
-
-        // Sync persistence with current selections (handles auto-selections)
-        // Only sync if we have successfully handled initial persistence to avoid wiping LS during load
-        if (this.persistenceHandled) {
-            const persistKeys = [];
-            // Only sync vehicle data if the product is NOT universal (prevents wiping garage on universal items)
-            if (!archetypeData.universal_product) persistKeys.push('make', 'model', 'generation');
-            
-            if (option_title) persistKeys.push(option_title);
-            if (sub_option_title) persistKeys.push(sub_option_title);
-
-            persistKeys.forEach(key => {
-                let storageKey;
-                if (['make', 'model', 'generation'].includes(key)) {
-                    storageKey = `cs_garage_${key}`;
-                } else if (archetypeName) {
-                    storageKey = `cs_options_${archetypeName}_${key}`;
-                }
-
-                if (storageKey) {
-                    if (selections[key]) {
-                        localStorage.setItem(storageKey, selections[key]);
-                    } else {
-                        localStorage.removeItem(storageKey);
-                    }
-                }
-            });
         }
 
         const inputs = this.container.querySelectorAll('[data-product-option]');

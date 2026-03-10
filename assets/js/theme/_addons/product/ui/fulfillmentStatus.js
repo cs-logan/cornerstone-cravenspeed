@@ -103,7 +103,7 @@ export default class FulfillmentStatus {
                 this.element.classList.add('fade-in');
             } else {
                 this.element.textContent = '';
-                this.element.style.visibility = 'hidden';
+                this.element.style.visibility = '';
                 this.element.style.display = '';
             }
         }

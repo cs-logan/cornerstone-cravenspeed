@@ -1,8 +1,9 @@
 import SearchEngine from '../global/search/searchEngine';
 
 export default class ProductGrid {
-    constructor(context) {
+    constructor(context, stateManager) {
         this.context = context;
+        this.stateManager = stateManager;
         this.container = document.querySelector('[data-home-product-grid]');
         this.header = document.querySelector('[data-home-product-grid-header]');
         this.searchEngine = null;
@@ -11,17 +12,26 @@ export default class ProductGrid {
     }
 
     init() {
-        document.addEventListener('cs:vehicle-selected', (e) => this.handleVehicleSelection(e.detail));
+        if (this.stateManager) {
+            this.stateManager.subscribe(this.handleStateChange.bind(this));
+        }
+        // Initial render based on current state
+        this.handleStateChange(this.stateManager.getState());
     }
 
     setData(data) {
-        this.allProducts = Array.isArray(data.products) ? data.products : Object.values(data.products || {});
         this.searchEngine = new SearchEngine(data);
+        this.allProducts = this.searchEngine.products;
         this.checkAndRender();
     }
 
-    handleVehicleSelection(selection) {
-        this.currentSelection = selection;
+    handleStateChange(state) {
+        const { vehicle } = state;
+        // Prevent re-rendering if the vehicle hasn't changed
+        if (JSON.stringify(vehicle.selected) === JSON.stringify(this.currentSelection)) {
+            return;
+        }
+        this.currentSelection = vehicle.selected;
         this.checkAndRender();
     }
 
@@ -30,25 +40,14 @@ export default class ProductGrid {
 
         if (this.currentSelection) {
             const { make, model, generation } = this.currentSelection;
-            // Use findRelated with an empty URL to find products compatible with the vehicle ID (generation)
-            const vehicleResults = this.searchEngine.findRelated('', generation, Infinity);
-
-            // Filter for universal products
-            const universalProducts = this.allProducts.filter(p => p.universal);
-
-            // Combine and deduplicate based on URL
-            const results = [...vehicleResults];
-            const existingUrls = new Set(vehicleResults.map(p => p.url));
-            universalProducts.forEach(p => {
-                if (!existingUrls.has(p.url)) {
-                    results.push(p);
-                }
-            });
-
+            // findRelated now correctly finds vehicle-specific AND universal products.
+            const results = this.searchEngine.findRelated('', generation, Infinity);
             const vehicleName = this.searchEngine.getVehicleName(make, model, generation);
             this.render(results, vehicleName);
         } else {
-            this.render(this.allProducts);
+            // If no vehicle is selected, show all products sorted by the default order
+            const allProductsSorted = [...this.allProducts].sort((a, b) => (a.sort_order || 10000) - (b.sort_order || 10000));
+            this.render(allProductsSorted);
         }
     }
 
@@ -66,6 +65,7 @@ export default class ProductGrid {
             return;
         }
 
+
         // Render a simple grid of cards
         const html = products.map(p => `
             <div class="cs-product-card">
@@ -81,6 +81,39 @@ export default class ProductGrid {
             </div>
         `).join('');
 
-        this.container.innerHTML = html;
+        const shouldCollapse = products.length > 6;
+        const collapsedClass = shouldCollapse ? 'is-collapsed' : '';
+        const buttonStyle = shouldCollapse ? '' : 'style="display: none;"';
+
+        this.container.innerHTML = `
+            <div class="cs-product-grid-wrapper ${collapsedClass}" id="product-grid-wrapper">
+                <div class="productGrid ${collapsedClass}">${html}</div>
+                <div class="cs-grid-fade"></div>
+            </div>
+            <div class="cs-grid-actions" ${buttonStyle}>
+                <button class="button button--primary" id="grid-toggle-btn">Show All</button>
+            </div>
+        `;
+
+        if (shouldCollapse) {
+            const toggleBtn = this.container.querySelector('#grid-toggle-btn');
+            const wrapper = this.container.querySelector('#product-grid-wrapper');
+            const grid = wrapper.querySelector('.productGrid');
+            if (toggleBtn && wrapper && grid) {
+                toggleBtn.addEventListener('click', () => {
+                    const isCollapsed = wrapper.classList.contains('is-collapsed');
+                    if (isCollapsed) {
+                        wrapper.classList.remove('is-collapsed');
+                        grid.classList.remove('is-collapsed');
+                        toggleBtn.textContent = 'Show Less';
+                    } else {
+                        wrapper.classList.add('is-collapsed');
+                        grid.classList.add('is-collapsed');
+                        toggleBtn.textContent = 'Show All';
+                        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
+        }
     }
 }

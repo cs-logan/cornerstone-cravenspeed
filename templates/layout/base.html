@@ -34,22 +34,6 @@
 
     {{{stylesheet '/assets/css/theme.css'}}}
 
-    {{!-- CravenSpeed Qty Script --}}
-    {{#if page_type '!==' '404'}}
-    <script type="text/javascript" src="/content/cs_search.js" defer></script>
-    <script type="text/javascript" src="https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/cs_search_data.js" defer></script>
-    {{/if}}
-    {{#if page_type '===' 'product'}}
-    <script type="text/javascript" src="https://cravenspeed-cdn.sfo3.cdn.digitaloceanspaces.com/global_inventory.js"></script>
-    {{/if}}
-    {{#if page_type '===' 'default'}}
-    <script src="/content/home.js"></script>
-    {{/if}}
-    <script>
-        let CSoptimized = false;
-    </script>
-    {{!-- End CravenSpeed Qty Scripts --}}
-
     {{{head.scripts}}}
 
         {{~inject 'zoomSize' theme_settings.zoom_size}}

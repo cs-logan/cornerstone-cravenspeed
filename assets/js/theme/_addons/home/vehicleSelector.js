@@ -1,9 +1,12 @@
+import StateManager from '../global/stateManager';
+import VehiclePersistence from '../global/vehiclePersistence';
+
 export default class VehicleSelector {
     constructor(context) {
         this.context = context;
         this.registry = null;
+        this.currentVehicle = null;
 
-        // DOM Elements
         this.form = document.querySelector('[data-car-selection-form]');
         this.makeSelect = document.querySelector('[data-car-selection-field="make"]');
         this.modelSelect = document.querySelector('[data-car-selection-field="model"]');
@@ -12,30 +15,102 @@ export default class VehicleSelector {
 
     init() {
         this.bindEvents();
-        this.loadFromStorage();
+        StateManager.subscribe(this.handleStateChange.bind(this));
     }
 
     bindEvents() {
-        if (this.makeSelect) {
-            this.makeSelect.addEventListener('change', (e) => this.handleMakeChange(e.target.value));
-        }
-        if (this.modelSelect) {
-            this.modelSelect.addEventListener('change', (e) => this.handleModelChange(e.target.value));
-        }
-        if (this.yearSelect) {
-            this.yearSelect.addEventListener('change', (e) => this.handleYearChange(e.target.value));
-        }
+        if (this.makeSelect) this.makeSelect.addEventListener('change', () => this.handleSelectionChange('make'));
+        if (this.modelSelect) this.modelSelect.addEventListener('change', () => this.handleSelectionChange('model'));
+        if (this.yearSelect) this.yearSelect.addEventListener('change', () => this.handleSelectionChange('year'));
     }
 
     setRegistry(registry) {
         this.registry = registry;
         this.populateMakes();
-        this.restoreSelection();
+        // After registry is set, try to apply the current state
+        const currentState = StateManager.getState();
+        if (currentState.vehicle.selected) {
+            this.currentVehicle = currentState.vehicle.selected;
+            this.updateUI(this.currentVehicle);
+        }
+    }
+
+    handleStateChange({ vehicle }) {
+        // Check if vehicle in global state is different from component's current vehicle
+        if (JSON.stringify(vehicle.selected) !== JSON.stringify(this.currentVehicle)) {
+            this.currentVehicle = vehicle.selected;
+            // Ensure registry is loaded before trying to update UI
+            if (this.registry) {
+                this.updateUI(vehicle.selected);
+            }
+        }
+    }
+
+    handleSelectionChange(level) {
+        this.updateAvailableOptions(level);
+
+        const make = this.makeSelect.value;
+        const model = this.modelSelect.value;
+        const generation = this.yearSelect.value;
+
+        // If the final dropdown is selected and valid, save the state
+        if (level === 'year' && make && model && generation) {
+            const selectedVehicle = { make, model, generation };
+            // This now saves to storage AND updates global state
+            VehiclePersistence.save(selectedVehicle);
+        }
+    }
+
+    updateUI(vehicle) {
+        if (!vehicle) {
+            this.populateMakes(); // Resets all fields
+            return;
+        }
+
+        // Set make and update models
+        if (this.makeSelect.value !== vehicle.make) {
+            this.makeSelect.value = vehicle.make;
+        }
+        this.updateAvailableOptions('make');
+
+        // Set model and update years
+        if (this.modelSelect.value !== vehicle.model) {
+            this.modelSelect.value = vehicle.model;
+        }
+        this.updateAvailableOptions('model');
+
+        // Set year
+        if (this.yearSelect.value !== vehicle.generation) {
+            this.yearSelect.value = vehicle.generation;
+        }
+    }
+
+    updateAvailableOptions(level) {
+        if (level === 'make') {
+            this.clearSelect(this.modelSelect, 'Select Model');
+            const makeSlug = this.makeSelect.value;
+            if (makeSlug && this.registry.brands[makeSlug]) {
+                const modelSlugs = this.registry.brands[makeSlug].models || [];
+                const models = modelSlugs.map(slug => this.registry.models[slug] ? { slug, name: this.registry.models[slug].name } : null)
+                    .filter(Boolean).sort((a, b) => a.name.localeCompare(b.name));
+                models.forEach(m => this.addOption(this.modelSelect, m.slug, m.name));
+            }
+        }
+
+        if (level === 'make' || level === 'model') {
+            this.clearSelect(this.yearSelect, 'Select Year');
+            const modelSlug = this.modelSelect.value;
+            if (modelSlug && this.registry.models[modelSlug]) {
+                const generations = this.registry.models[modelSlug].generations || {};
+                const gens = Object.entries(generations).map(([id, name]) => ({ id, name }))
+                    .sort((a, b) => b.name.localeCompare(a.name)); // Sort descending by name
+                gens.forEach(g => this.addOption(this.yearSelect, g.id, g.name));
+            }
+        }
     }
 
     populateMakes() {
         if (!this.registry || !this.registry.brands) return;
-
         this.clearSelect(this.makeSelect, 'Select Make');
         this.clearSelect(this.modelSelect, 'Select Model');
         this.clearSelect(this.yearSelect, 'Select Year');
@@ -43,98 +118,7 @@ export default class VehicleSelector {
         const brands = Object.entries(this.registry.brands)
             .map(([slug, data]) => ({ slug, name: data.name }))
             .sort((a, b) => a.name.localeCompare(b.name));
-
-        brands.forEach(brand => {
-            this.addOption(this.makeSelect, brand.slug, brand.name);
-        });
-    }
-
-    handleMakeChange(makeSlug) {
-        this.clearSelect(this.modelSelect, 'Select Model');
-        this.clearSelect(this.yearSelect, 'Select Year');
-
-        if (!makeSlug || !this.registry.brands[makeSlug]) return;
-
-        const modelSlugs = this.registry.brands[makeSlug].models || [];
-        const models = modelSlugs
-            .map(slug => {
-                const modelData = this.registry.models[slug];
-                return modelData ? { slug, name: modelData.name } : null;
-            })
-            .filter(m => m)
-            .sort((a, b) => a.name.localeCompare(b.name));
-
-        models.forEach(model => {
-            this.addOption(this.modelSelect, model.slug, model.name);
-        });
-    }
-
-    handleModelChange(modelSlug) {
-        this.clearSelect(this.yearSelect, 'Select Year');
-
-        if (!modelSlug || !this.registry.models[modelSlug]) return;
-
-        const generations = this.registry.models[modelSlug].generations || {};
-        const gens = Object.entries(generations)
-            .map(([id, name]) => ({ id, name }))
-            .sort((a, b) => b.name.localeCompare(a.name));
-
-        gens.forEach(gen => {
-            this.addOption(this.yearSelect, gen.id, gen.name);
-        });
-    }
-
-    handleYearChange(genId) {
-        if (genId) {
-            this.saveSelection();
-        }
-    }
-
-    saveSelection() {
-        const make = this.makeSelect.value;
-        const model = this.modelSelect.value;
-        const year = this.yearSelect.value;
-
-        if (make && model && year) {
-            localStorage.setItem('cs_garage_make', make);
-            localStorage.setItem('cs_garage_model', model);
-            localStorage.setItem('cs_garage_generation', year);
-            this.dispatchSelectionEvent();
-        }
-    }
-
-    loadFromStorage() {
-        this.storedMake = localStorage.getItem('cs_garage_make');
-        this.storedModel = localStorage.getItem('cs_garage_model');
-        this.storedGen = localStorage.getItem('cs_garage_generation');
-    }
-
-    restoreSelection() {
-        if (this.storedMake && this.makeSelect.querySelector(`option[value="${this.storedMake}"]`)) {
-            this.makeSelect.value = this.storedMake;
-            this.handleMakeChange(this.storedMake);
-
-            if (this.storedModel && this.modelSelect.querySelector(`option[value="${this.storedModel}"]`)) {
-                this.modelSelect.value = this.storedModel;
-                this.handleModelChange(this.storedModel);
-
-                if (this.storedGen && this.yearSelect.querySelector(`option[value="${this.storedGen}"]`)) {
-                    this.yearSelect.value = this.storedGen;
-                    this.dispatchSelectionEvent();
-                }
-            }
-        }
-    }
-
-    dispatchSelectionEvent() {
-        const event = new CustomEvent('cs:vehicle-selected', {
-            detail: {
-                make: this.makeSelect.value,
-                model: this.modelSelect.value,
-                generation: this.yearSelect.value
-            }
-        });
-        document.dispatchEvent(event);
+        brands.forEach(brand => this.addOption(this.makeSelect, brand.slug, brand.name));
     }
 
     clearSelect(select, defaultText) {

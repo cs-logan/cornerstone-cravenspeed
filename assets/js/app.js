@@ -58,7 +58,7 @@ const pageClasses = {
 };
 
 const customClasses = {
-    'pages/home': () => import('./theme/home'),
+    'pages/home': () => import('./theme/_addons/home/home'),
 };
 
 /**
@@ -70,7 +70,11 @@ const customClasses = {
  */
 window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null, loadGlobal = true) {
     const context = JSON.parse(contextJSON || '{}');
-    console.log('page type: ', pageType)
+
+    // Load vehicle from storage FIRST
+    import('./theme/_addons/global/vehiclePersistence').then(module => {
+        module.default.init();
+    });
 
     return {
         load() {

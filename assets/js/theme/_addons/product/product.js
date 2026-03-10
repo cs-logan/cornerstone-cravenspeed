@@ -1,4 +1,5 @@
-import DataManager from './dataManager';
+import DataManager from '../global/dataManager'; // Import global manager
+import GlobalStateManager from '../global/stateManager';
 import StateManager from './stateManager';
 import FulfillmentStatus from './ui/fulfillmentStatus';
 import AliasSelection from './ui/aliasSelection';
@@ -15,8 +16,9 @@ export default class ProductController {
         this.context = context;
         this.archetypeTitle = this._resolveArchetypeTitle();
         this.archetypeName = this._slugify(this.archetypeTitle);
-        this.dataManager = new DataManager(this.archetypeName);
-        this.currentAlias = null;
+        this.currentAliasFile = null;
+        this.lastKnownVehicle = null;
+        this.lastKnownOptions = null;
     }
 
     onReady() {
@@ -28,9 +30,10 @@ export default class ProductController {
     async loadInitialData() {
         try {
             console.log(`Fetching archetype data for: ${this.archetypeName}`);
+            // Use global DataManager
             const [archetypeData, inventoryData] = await Promise.all([
-                this.dataManager.getArchetypeData(),
-                this.dataManager.getInventoryData()
+                DataManager.getArchetypeData(this.archetypeName),
+                DataManager.getInventoryData(),
             ]);
 
             archetypeData.archetypeName = this.archetypeName;
@@ -48,31 +51,60 @@ export default class ProductController {
             this.badges = new Badges(this.stateManager);
             this.blemProducts = new BlemProducts(this.stateManager);
 
-            this.stateManager.subscribe(this.handleStateChange.bind(this));
+            // Subscribe to local state changes for alias fetching
+            this.stateManager.subscribe(this.handleLocalStateChange.bind(this));
 
-            // Trigger initial check in case alias was resolved during initialization
-            this.handleStateChange(this.stateManager.getState());
+            // Subscribe to global state for vehicle changes
+            GlobalStateManager.subscribe(this.handleGlobalStateChange.bind(this));
+
+            // Initial sync with global state
+            this.handleGlobalStateChange(GlobalStateManager.getState());
             
         } catch (error) {
             console.error(`Failed to load archetype data for ${this.archetypeName}:`, error);
         }
     }
 
-    async handleStateChange(state) {
-        const { currentAlias } = state;
+    handleGlobalStateChange(globalState) {
+        // Vehicle Change Detection
+        const { selected: vehicle } = globalState.vehicle;
+        if (JSON.stringify(vehicle) !== JSON.stringify(this.lastKnownVehicle)) {
+            console.log('ProductController: Global vehicle changed', vehicle);
+            this.lastKnownVehicle = vehicle;
+            this.stateManager.setVehicle(vehicle);
+        }
 
-        if (currentAlias === 'self') return;
+        // Options Change Detection
+        const { options } = globalState;
+        if (options && options[this.archetypeName]) {
+            const archetypeOptions = options[this.archetypeName];
+            if (JSON.stringify(archetypeOptions) !== JSON.stringify(this.lastKnownOptions)) {
+                console.log('ProductController: Global options for archetype changed', archetypeOptions);
+                this.lastKnownOptions = archetypeOptions;
+                this.stateManager.setOptions(archetypeOptions);
+            }
+        }
+    }
 
-        if (currentAlias && currentAlias !== this.currentAlias) {
-            this.currentAlias = currentAlias;
+    async handleLocalStateChange(state) {
+        const { currentAlias: newAliasFile } = state;
+
+        if (newAliasFile === 'self' || newAliasFile === this.currentAliasFile) {
+            return; // No change needed
+        }
+
+        this.currentAliasFile = newAliasFile;
+
+        if (newAliasFile) {
             try {
-                const aliasData = await this.dataManager.getAliasData(currentAlias);
+                // Use the global DataManager to fetch...
+                const aliasData = await DataManager.getAliasData(this.archetypeName, newAliasFile);
+                console.log('Product Page: Alias data from JSON:', aliasData);
+                // ...and push the result into the local state manager.
                 this.stateManager.setAliasData(aliasData);
             } catch (error) {
-                console.error(`Failed to load alias data for ${currentAlias}:`, error);
+                console.error(`Failed to load alias data for ${newAliasFile}:`, error);
             }
-        } else if (!currentAlias) {
-            this.currentAlias = null;
         }
     }
 
@@ -86,29 +118,17 @@ export default class ProductController {
     _resolveArchetypeTitle() {
         if (this.context.productTitle) {
             const title = this.context.productTitle;
-
-            // Breadcrumbs Strategy
-            // We look for a breadcrumb that matches the start of the product title.
-            // This handles cases where the archetype name is a prefix of the alias title.
             if (this.context.breadcrumbs && this.context.breadcrumbs.length) {
-                // Check breadcrumbs from deepest to shallowest, excluding the current page
                 const parents = this.context.breadcrumbs.slice(0, -1).reverse();
-
                 for (const breadcrumb of parents) {
-                    // Remove "Qty - " prefix which appears in some category names
                     const cleanName = breadcrumb.name.replace(/^Qty\s*-\s*/i, '').trim();
-
-                    // If the product title starts with this category name, it's likely the archetype
                     if (cleanName && title.toLowerCase().startsWith(cleanName.toLowerCase())) {
                         return cleanName;
                     }
                 }
             }
-
-            // If no parent breadcrumb matches, assume the current title is the archetype title
             return title;
         }
-
         console.warn('No product title found in context. Defaulting to "Shift Knob".');
         return 'Shift Knob';
     }

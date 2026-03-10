@@ -76,6 +76,62 @@
     }
 }
 
+.cs-product-grid-wrapper {
+    position: relative;
+
+    &.is-collapsed {
+        .cs-grid-fade {
+            display: block;
+        }
+    }
+
+    &:not(.is-collapsed) {
+        .cs-grid-fade {
+            display: none;
+        }
+    }
+
+    .productGrid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: spacing("single");
+
+        // Fix for Foundation clearfix pseudo-elements becoming grid items
+        &::before,
+        &::after {
+            display: none;
+        }
+
+        &.is-collapsed {
+            .cs-product-card:nth-child(n + 7) {
+                display: none;
+            }
+        }
+
+        @include breakpoint("medium") {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+
+.cs-grid-fade {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    pointer-events: none;
+    z-index: 10;
+}
+
+.cs-grid-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: spacing("single");
+}
+
 .cs-car-selection-submit {
     // This button is hidden by default, its functionality will be managed by JavaScript.
     // If it were to be visible, it would be styled as a standard button.

@@ -1,29 +1,34 @@
 import PageManager from '../../page-manager';
 import VehicleSelector from './vehicleSelector';
 import ProductGrid from './productGrid';
-import SearchDataManager from '../global/search/searchDataManager';
-import SearchStateManager from '../global/search/stateManager';
+import DataManager from '../global/dataManager';
+import StateManager from '../global/stateManager';
 
 export default class HomeController extends PageManager {
     constructor(context) {
         super(context);
-        this.stateManager = new SearchStateManager();
-        this.dataManager = new SearchDataManager(this.stateManager);
         this.vehicleSelector = new VehicleSelector(context);
-        this.productGrid = new ProductGrid(context);
+        this.productGrid = new ProductGrid(context, StateManager);
     }
 
     onReady() {
         this.vehicleSelector.init();
         this.productGrid.init();
 
-        this.stateManager.subscribe((state) => {
-            if (state.data) {
-                this.vehicleSelector.setRegistry(state.data.vehicle_registry);
-                this.productGrid.setData(state.data);
+        const handleStateUpdate = (state) => {
+            if (state.search.data) {
+                this.vehicleSelector.setRegistry(state.search.data.vehicle_registry);
+                this.productGrid.setData(state.search.data);
             }
-        });
+        };
 
-        this.dataManager.loadData();
+        StateManager.subscribe(handleStateUpdate);
+
+        const currentState = StateManager.getState();
+        if (currentState.search.data) {
+            handleStateUpdate(currentState);
+        }
+
+        DataManager.loadSearchData();
     }
 }

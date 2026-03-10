@@ -69,6 +69,30 @@ export default class StateManager {
         this._notifySubscribers();
     }
 
+    setOptions(options) {
+        if (!options) return;
+        console.log('ProductStateManager: Setting options', options);
+        Object.assign(this.state.selections, options);
+        this._resolveAutoSelections();
+        this._notifySubscribers();
+    }
+
+    setVehicle(vehicle) {
+        console.log('ProductStateManager: Setting vehicle', vehicle);
+        if (!vehicle) return;
+
+        // Reset selections and apply new vehicle data
+        this.state.selections = { ...vehicle };
+
+        this._resolveAutoSelections();
+
+        if (!this.state.currentAlias) {
+            this.state.aliasData = null;
+        }
+
+        this._notifySubscribers();
+    }
+
     getState() {
         return this.state;
     }

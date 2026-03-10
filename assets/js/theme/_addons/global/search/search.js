@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
-import SearchDataManager from "./searchDataManager";
-import SearchStateManager from "./stateManager";
+import DataManager from "../dataManager"; // Use Global DataManager
+import StateManager from "../stateManager"; // Use Global StateManager
 import SearchEngine from "./searchEngine";
 import QuickSearch from "./ui/quickSearch";
 import ResultsPage from "./ui/resultsPage";
@@ -9,14 +9,16 @@ import RelatedProducts from "./ui/relatedProducts";
 export default class SearchController {
     constructor(context) {
         this.context = context;
-        this.stateManager = new SearchStateManager();
-        this.dataManager = new SearchDataManager(this.stateManager);
+        // Global managers are singletons, no `new` keyword needed
+        this.stateManager = StateManager;
+        this.dataManager = DataManager;
         this.searchEngine = new SearchEngine();
         this.quickSearch = new QuickSearch();
         this.resultsPage = new ResultsPage();
         this.relatedProducts = new RelatedProducts();
         this.$searchInput = document.querySelector('[data-cs-search-input]');
         this.isEngineInitialized = false;
+        this.lastKnownVehicle = null;
 
         // Routing State
         this.urlParams = new URLSearchParams(window.location.search);
@@ -31,17 +33,20 @@ export default class SearchController {
 
         // If we are on the search page OR product page, we need data immediately
         if (this.isSearchPage || this.isProductPage) {
-            this.dataManager.loadData();
+            this.dataManager.loadSearchData(); // Use global method
         }
     }
 
     subscribeToState() {
+        // Subscribe to the global state manager
         this.stateManager.subscribe(this.handleStateChange.bind(this));
     }
 
     handleStateChange(state) {
-        if (state.data && !this.isEngineInitialized) {
-            this.searchEngine = new SearchEngine(state.data);
+        const { search: searchState, vehicle: vehicleState } = state;
+
+        if (searchState.data && !this.isEngineInitialized) {
+            this.searchEngine = new SearchEngine(searchState.data);
             this.isEngineInitialized = true;
 
             // If user typed while loading, update results immediately
@@ -52,15 +57,19 @@ export default class SearchController {
             }
         }
 
-        // Phase 3: Render Full Results if on search page and data is ready
-        if (state.data && this.isSearchPage && this.searchQuery) {
+        // Render Full Results if on search page and data is ready
+        if (searchState.data && this.isSearchPage && this.searchQuery) {
             const results = this.searchEngine.search(this.searchQuery, null); // null limit = all results
             this.resultsPage.render(results, this.searchQuery);
         }
 
-        // Phase 4: Render Related Products if on product page
-        if (state.data && this.isProductPage) {
-            this.updateRelatedProducts();
+        // Render Related Products if on product page, and update when vehicle changes
+        if (searchState.data && this.isProductPage) {
+            const vehicle = vehicleState.selected;
+            if (JSON.stringify(vehicle) !== JSON.stringify(this.lastKnownVehicle)) {
+                this.lastKnownVehicle = vehicle;
+                this.updateRelatedProducts(vehicle);
+            }
         }
     }
 
@@ -68,7 +77,7 @@ export default class SearchController {
         if (!this.$searchInput) return;
 
         this.$searchInput.addEventListener('focus', () => {
-            this.dataManager.loadData();
+            this.dataManager.loadSearchData(); // Use global method
         }, { once: true });
 
         this.$searchInput.addEventListener('input', debounce((e) => {
@@ -77,7 +86,6 @@ export default class SearchController {
             this.quickSearch.update(results, query);
         }, 300));
 
-        // Phase 3: Handle Enter Key for Full Search Redirect
         this.$searchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -88,77 +96,27 @@ export default class SearchController {
             }
         });
 
-        // Phase 4: Listen for vehicle selection changes on Product Page
         if (this.isProductPage) {
-            const optionsContainer = document.querySelector('[data-product-options-container]');
-            const yearSelect = document.getElementById('year');
-
-            if (optionsContainer) {
-                // Use event delegation to match aliasSelection.js behavior
-                optionsContainer.addEventListener('change', (e) => {
-                    if (e.target.id === 'year' || e.target.dataset.productOption === 'generation') {
-                        setTimeout(() => this.updateRelatedProducts(), 100);
-                    }
-                });
-
-                // Also listen for programmatic updates (when options are loaded via JS)
-                const observer = new MutationObserver(() => {
-                    // If the select is enabled and has a valid value, update
-                    if (!yearSelect.disabled && yearSelect.value && !yearSelect.value.includes('Loading')) {
-                        this.updateRelatedProducts();
-                    }
-                });
-                if (yearSelect) {
-                    observer.observe(yearSelect, { childList: true, attributes: true });
-                }
-            }
+            // This is now handled by the global state listener in `handleStateChange`
         }
     }
 
-    updateRelatedProducts() {
+    updateRelatedProducts(vehicle = null) {
         if (!this.isEngineInitialized) return;
 
         const currentUrl = window.location.pathname;
-        const yearSelect = document.getElementById('year');
-        
-        let vehicleId = yearSelect ? yearSelect.value : null;
-        
-        // Filter out default/loading values from DOM
-        if (vehicleId && (vehicleId.includes('Loading') || vehicleId === '')) {
-            vehicleId = null;
-        }
+        const vehicleId = vehicle ? vehicle.generation : null;
 
-        // Fallback to LocalStorage if DOM is not ready or empty
-        if (!vehicleId) {
-            vehicleId = localStorage.getItem('cs_garage_generation');
-        }
-
-        // Get vehicle name for display (e.g. "MINI Cooper F56")
-        // We can construct this from the other selects if they exist
-        let make = document.getElementById('make')?.value;
-        let model = document.getElementById('model')?.value;
-
-        // Fallback for name components
-        if (!make || make.includes('Loading')) make = localStorage.getItem('cs_garage_make');
-        if (!model || model.includes('Loading')) model = localStorage.getItem('cs_garage_model');
-
-        // Clean slugs: Site IDs often include the make prefix (e.g. "mazdamx-5miata"), 
-        // but search index uses clean slugs (e.g. "mx-5miata").
-        let cleanModel = model;
-        if (make) {
-            const cleanMake = make.toLowerCase().replace(/\s+/g, '');
-            
-            if (vehicleId && vehicleId.toLowerCase().startsWith(cleanMake)) {
-                vehicleId = vehicleId.substring(cleanMake.length); // Clean Generation ID
-            }
-            
-            if (model && model.toLowerCase().startsWith(cleanMake)) {
-                cleanModel = model.substring(cleanMake.length); // Clean Model ID
+        let cleanModel = vehicle ? vehicle.model : null;
+        if (vehicle && vehicle.make && vehicle.model) {
+            const cleanMake = vehicle.make.toLowerCase().replace(/\s+/g, '');
+            if (vehicle.model.toLowerCase().startsWith(cleanMake)) {
+                cleanModel = vehicle.model.substring(cleanMake.length);
             }
         }
 
-        const vehicleName = (make && cleanModel && vehicleId) 
-            ? this.searchEngine.getVehicleName(make, cleanModel, vehicleId) 
+        const vehicleName = vehicle 
+            ? this.searchEngine.getVehicleName(vehicle.make, cleanModel, vehicle.generation) 
             : null;
 
         const related = this.searchEngine.findRelated(currentUrl, vehicleId);
