@@ -11,11 +11,12 @@ export default class VehicleSelector {
         this.makeSelect = document.querySelector('[data-car-selection-field="make"]');
         this.modelSelect = document.querySelector('[data-car-selection-field="model"]');
         this.yearSelect = document.querySelector('[data-car-selection-field="year"]');
+        this.unsubscribe = null;
     }
 
     init() {
         this.bindEvents();
-        StateManager.subscribe(this.handleStateChange.bind(this));
+        this.unsubscribe = StateManager.subscribe(this.handleStateChange.bind(this));
     }
 
     bindEvents() {
@@ -134,5 +135,9 @@ export default class VehicleSelector {
         option.textContent = text;
         select.appendChild(option);
         select.disabled = false;
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

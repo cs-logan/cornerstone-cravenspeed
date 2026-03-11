@@ -15,6 +15,8 @@ export default class AddToCart {
         }
 
         this.defaultButtonText = this.button.textContent;
+        this.unsubscribe = null;
+        this.submitHandler = null;
 
         this.init();
     }
@@ -31,10 +33,11 @@ export default class AddToCart {
 
     bindEvents() {
         // Watch for alias changes
-        this.state.subscribe((state) => this.updateButtonState(state));
+        this.unsubscribe = this.state.subscribe((state) => this.updateButtonState(state));
 
         // Intercept form submission
-        this.form.addEventListener('submit', (event) => this.handleSubmit(event));
+        this.submitHandler = (event) => this.handleSubmit(event);
+        this.form.addEventListener('submit', this.submitHandler);
     }
 
     updateButtonState(state) {
@@ -124,5 +127,12 @@ export default class AddToCart {
             .finally(() => {
                 this.button.classList.remove('loading');
             });
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
+        if (this.form && this.submitHandler) {
+            this.form.removeEventListener('submit', this.submitHandler);
+        }
     }
 }

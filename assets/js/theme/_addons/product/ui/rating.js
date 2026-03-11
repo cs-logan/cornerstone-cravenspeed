@@ -7,8 +7,9 @@ export default class RatingDisplay {
 
         // If elements aren't present, do nothing
         if (!this.starContainer || !this.ratingInfo) return;
+        this.unsubscribe = null;
 
-        this.stateManager.subscribe(this.update.bind(this));
+        this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
         
         if (this.ratingLink) {
             this.ratingLink.addEventListener('click', this._handleRatingClick.bind(this));
@@ -67,5 +68,9 @@ export default class RatingDisplay {
             }
             this.ratingInfo.textContent = ` ${average}/5 with ${count} reviews`;
         }
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

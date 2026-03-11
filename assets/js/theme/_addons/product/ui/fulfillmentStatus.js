@@ -2,9 +2,10 @@ export default class FulfillmentStatus {
     constructor(stateManager) {
         this.stateManager = stateManager;
         this.element = document.querySelector('[data-product-fulfillment]');
+        this.unsubscribe = null;
 
         if (this.element) {
-            this.stateManager.subscribe(this.update.bind(this));
+            this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
         }
     }
 
@@ -107,5 +108,9 @@ export default class FulfillmentStatus {
                 this.element.style.display = '';
             }
         }
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

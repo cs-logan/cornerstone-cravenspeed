@@ -19,6 +19,8 @@ export default class ProductController {
         this.currentAliasFile = null;
         this.lastKnownVehicle = null;
         this.lastKnownOptions = null;
+        this.unsubscribeGlobal = null;
+        this.unsubscribeLocal = null;
     }
 
     onReady() {
@@ -52,10 +54,10 @@ export default class ProductController {
             this.blemProducts = new BlemProducts(this.stateManager);
 
             // Subscribe to local state changes for alias fetching
-            this.stateManager.subscribe(this.handleLocalStateChange.bind(this));
+            this.unsubscribeLocal = this.stateManager.subscribe(this.handleLocalStateChange.bind(this));
 
             // Subscribe to global state for vehicle changes
-            GlobalStateManager.subscribe(this.handleGlobalStateChange.bind(this));
+            this.unsubscribeGlobal = GlobalStateManager.subscribe(this.handleGlobalStateChange.bind(this));
 
             // Initial sync with global state
             this.handleGlobalStateChange(GlobalStateManager.getState());
@@ -135,5 +137,13 @@ export default class ProductController {
 
     _slugify(text) {
         return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+
+    /**
+     * Cleanup method to remove event listeners and subscriptions.
+     */
+    destroy() {
+        if (this.unsubscribeGlobal) this.unsubscribeGlobal();
+        if (this.unsubscribeLocal) this.unsubscribeLocal();
     }
 }

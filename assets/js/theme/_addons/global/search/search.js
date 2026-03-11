@@ -19,6 +19,7 @@ export default class SearchController {
         this.$searchInput = document.querySelector('[data-cs-search-input]');
         this.isEngineInitialized = false;
         this.lastKnownVehicle = null;
+        this.unsubscribe = null;
 
         // Routing State
         this.urlParams = new URLSearchParams(window.location.search);
@@ -39,7 +40,7 @@ export default class SearchController {
 
     subscribeToState() {
         // Subscribe to the global state manager
-        this.stateManager.subscribe(this.handleStateChange.bind(this));
+        this.unsubscribe = this.stateManager.subscribe(this.handleStateChange.bind(this));
     }
 
     handleStateChange(state) {
@@ -99,6 +100,10 @@ export default class SearchController {
         if (this.isProductPage) {
             // This is now handled by the global state listener in `handleStateChange`
         }
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 
     updateRelatedProducts(vehicle = null) {

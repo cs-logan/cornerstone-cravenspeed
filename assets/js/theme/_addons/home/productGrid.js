@@ -9,11 +9,12 @@ export default class ProductGrid {
         this.searchEngine = null;
         this.currentSelection = null;
         this.allProducts = [];
+        this.unsubscribe = null;
     }
 
     init() {
         if (this.stateManager) {
-            this.stateManager.subscribe(this.handleStateChange.bind(this));
+            this.unsubscribe = this.stateManager.subscribe(this.handleStateChange.bind(this));
         }
         // Initial render based on current state
         this.handleStateChange(this.stateManager.getState());
@@ -115,5 +116,9 @@ export default class ProductGrid {
                 });
             }
         }
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

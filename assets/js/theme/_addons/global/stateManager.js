@@ -34,9 +34,11 @@ class StateManager {
     /**
      * Subscribe to state changes.
      * @param {function} observer - The callback function to execute when state changes.
+     * @returns {function} - A function to unsubscribe the observer.
      */
     subscribe(observer) {
         this.observers.push(observer);
+        return () => this.unsubscribe(observer);
     }
 
     // TEMPORARY FOR TESTING

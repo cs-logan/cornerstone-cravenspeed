@@ -9,6 +9,7 @@ export default class HomeController extends PageManager {
         super(context);
         this.vehicleSelector = new VehicleSelector(context);
         this.productGrid = new ProductGrid(context, StateManager);
+        this.unsubscribe = null;
     }
 
     onReady() {
@@ -22,7 +23,7 @@ export default class HomeController extends PageManager {
             }
         };
 
-        StateManager.subscribe(handleStateUpdate);
+        this.unsubscribe = StateManager.subscribe(handleStateUpdate);
 
         const currentState = StateManager.getState();
         if (currentState.search.data) {
@@ -30,5 +31,16 @@ export default class HomeController extends PageManager {
         }
 
         DataManager.loadSearchData();
+    }
+
+    /**
+     * Cleanup method for the addon. 
+     * NOTE: Currently unused in standard page loads, but required for
+     * future "URL Switching" / SPA features to prevent memory leaks.
+     */
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
+        if (this.vehicleSelector) this.vehicleSelector.destroy();
+        if (this.productGrid) this.productGrid.destroy();
     }
 }

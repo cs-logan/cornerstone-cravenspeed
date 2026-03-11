@@ -7,6 +7,7 @@ export default class ImageGallery {
         this.slidesContainer = this.galleryElement ? this.galleryElement.querySelector('.slides') : null;
         this.currentGallery = null;
         this.lastAliasData = undefined;
+        this.unsubscribe = null;
 
         // Cache default HTML for reversion
         this.defaultSlidesHTML = this.slidesContainer ? this.slidesContainer.innerHTML : '';
@@ -14,7 +15,7 @@ export default class ImageGallery {
         // Initialize gallery on default content
         this.initCsGallery();
 
-        this.stateManager.subscribe(this.update.bind(this));
+        this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
     }
 
     update(state) {
@@ -95,5 +96,10 @@ export default class ImageGallery {
             containerClass: 'cs-gallery-wrapper',
             altCaption: true
         });
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
+        if (this.currentGallery && typeof this.currentGallery.destroy === 'function') this.currentGallery.destroy();
     }
 }

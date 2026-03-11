@@ -12,7 +12,7 @@ export default class ProductDetails {
         this.brandElement = document.querySelector('[data-product-brand]');
         this.fitmentNotesElement = document.querySelector('[data-fitment-notes]');
 
-        this.stateManager.subscribe(this.update.bind(this));
+        this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
     }
 
     update(state) {
@@ -151,5 +151,9 @@ export default class ProductDetails {
                 this._animate(this.priceElement);
             }
         }
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

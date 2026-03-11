@@ -2,9 +2,10 @@ export default class Badges {
     constructor(stateManager) {
         this.stateManager = stateManager;
         this.element = document.querySelector('[data-product-badges]');
+        this.unsubscribe = null;
 
         if (this.element) {
-            this.stateManager.subscribe(this.update.bind(this));
+            this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
             this.update(this.stateManager.getState());
         }
     }
@@ -100,5 +101,9 @@ export default class Badges {
                 existing.remove();
             }
         }
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

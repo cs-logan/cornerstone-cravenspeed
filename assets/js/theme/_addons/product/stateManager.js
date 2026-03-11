@@ -20,6 +20,7 @@ export default class StateManager {
     
     subscribe(callback) {
         this.subscribers.add(callback);
+        return () => this.subscribers.delete(callback);
     }
 
     updateSelection({option, value}) {

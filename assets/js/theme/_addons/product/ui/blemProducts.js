@@ -11,7 +11,7 @@ export default class BlemProducts {
         this.declineBtn = this.modal.querySelector('#blem-decline');
 
         this._bindEvents();
-        this.stateManager.subscribe(this.update.bind(this));
+        this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
     }
 
     _bindEvents() {
@@ -103,5 +103,9 @@ export default class BlemProducts {
         // Trigger the close button click to close the modal via Foundation without using jQuery directly
         const closeBtn = this.modal.querySelector('.modal-close');
         if (closeBtn) closeBtn.click();
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 }

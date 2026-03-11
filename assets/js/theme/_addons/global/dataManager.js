@@ -19,6 +19,7 @@ class DataManager {
         // Product-specific properties
         this.productBasePath = 'https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com';
         this.jsonCache = new Map(); // For caching product JSONs
+        this.pendingRequests = new Map(); // Track in-flight requests
 
         DataManager.instance = this;
     }
@@ -30,16 +31,28 @@ class DataManager {
         if (this.jsonCache.has(url)) {
             return this.jsonCache.get(url);
         }
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
-            this.jsonCache.set(url, data);
-            return data;
-        } catch (error) {
-            console.error(`[DataManager] Failed to fetch and parse JSON from ${url}`, error);
-            throw error;
+
+        if (this.pendingRequests.has(url)) {
+            return this.pendingRequests.get(url);
         }
+
+        const requestPromise = (async () => {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                this.jsonCache.set(url, data);
+                return data;
+            } catch (error) {
+                console.error(`[DataManager] Failed to fetch and parse JSON from ${url}`, error);
+                throw error;
+            } finally {
+                this.pendingRequests.delete(url);
+            }
+        })();
+
+        this.pendingRequests.set(url, requestPromise);
+        return requestPromise;
     }
 
     /**

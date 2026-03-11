@@ -12,6 +12,8 @@ export default class AliasSelection {
         // Establish event listener on the parent container (Event Delegation)
         this.container = document.querySelector('[data-product-options-container]') || document.body;
         this.form = document.querySelector('.cs-product-form');
+        this.unsubscribe = null;
+        this.changeHandler = null;
         
         this._bindEvents();
         this._initialize();
@@ -19,7 +21,7 @@ export default class AliasSelection {
 
     _initialize() {
         // Subscribe to state changes first
-        this.stateManager.subscribe(this.update.bind(this));
+        this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
 
         // Then, handle persistence and initial state setup
         const initialState = this.stateManager.getState();
@@ -32,7 +34,7 @@ export default class AliasSelection {
     }
 
     _bindEvents() {
-        this.container.addEventListener('change', (e) => {
+        this.changeHandler = (e) => {
             if (e.target.matches('[data-product-option]')) {
                 // When a user starts making a new selection, clear any incompatibility messages
                 this.productMessages.hideMessage('vehicle-incompatible');
@@ -48,7 +50,9 @@ export default class AliasSelection {
                 const optionKey = this._resolveOptionKey(rawOption, state.archetypeData);
                 this.stateManager.updateSelection({ option: optionKey, value });
             }
-        });
+        };
+
+        this.container.addEventListener('change', this.changeHandler);
     }
 
     _handlePersistence(archetypeData) {
@@ -230,5 +234,12 @@ export default class AliasSelection {
         if (rawOption === 'option' && option_title) return option_title;
         if (rawOption === 'sub_option' && sub_option_title) return sub_option_title;
         return rawOption;
+    }
+
+    destroy() {
+        if (this.unsubscribe) this.unsubscribe();
+        if (this.container && this.changeHandler) {
+            this.container.removeEventListener('change', this.changeHandler);
+        }
     }
 }
