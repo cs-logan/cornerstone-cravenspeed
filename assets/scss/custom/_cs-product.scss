@@ -232,7 +232,6 @@ $cs-button-height: 50px;
   font-size: 16px; // Prevent iOS zoom
   width: 100%;
   border: 1px solid #ccc;
-  border-radius: 4px;
   padding: 0 spacing('half');
   background-color: #fff;
 
@@ -314,7 +313,7 @@ $cs-button-height: 50px;
   gap: spacing("half");
   justify-content: center;
   align-items: stretch;
-  height: spacing("single") * 3;
+  height: spacing("single") * 2.5;
   opacity: 0;
   transition: opacity 0.5s ease;
 
@@ -330,8 +329,7 @@ $cs-button-height: 50px;
     align-items: center;
     text-align: center;
     border: 2px solid #d7d7d7;
-    border-radius: 4px;
-    padding: spacing("quarter");
+    padding: 0 spacing("quarter");
     cursor: pointer;
     transition: all 0.2s ease;
     box-sizing: border-box;

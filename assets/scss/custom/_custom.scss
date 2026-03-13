@@ -54,6 +54,25 @@ h6 {
   margin-top: $mobile-spacing;
 }
 
+#cs-search-input, 
+.cs-form-select, 
+.cs-product-archetype button,
+.slide img,
+.slides-wrapper,
+.cs-car-selection-dropdown,
+.cs-blog-thumbnail,
+.cs-product-card {
+  border-radius: spacing("half");
+} 
+
+.cs-product-tabs-container .tab {
+  border-radius: spacing("half") spacing("half") 0 0;
+}
+
+#product-badges > * {
+  border-radius: 9999px;
+}
+
 // -----------------------------------------------------------------------------
 //
 //                                  Utility Classes
@@ -278,8 +297,8 @@ h6 {
 
 #cs-search-input {
   border: none;
-  border-radius: 3px;
   width: 100%;
+  padding: 0 spacing("half");
 }
 
 .autocomplete {
@@ -433,7 +452,6 @@ h6 {
   
   .cs-product-card {
     background-color: #ffffff;
-    border-radius: 4px;
     overflow: hidden;
     transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
     display: flex;
@@ -474,7 +492,7 @@ h6 {
   
       .cs-card-title-link {
         text-decoration: none;
-        color: stencilColor('color-textBase');
+        color: stencilColor('color-primary');
   
         &:hover {
           color: stencilColor('color-textBase--hover');
