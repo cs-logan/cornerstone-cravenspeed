@@ -388,9 +388,64 @@ $cs-button-height: 50px;
   }
 }
 
-#more-products {
-  margin-top: spacing("single");
+// ------------------------------------------------------------------------------------->
+//
+//                              Default Description Styles
+//
+// ------------------------------------------------------------------------------------->
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: spacing("double");
+  max-width: 1440px;
 }
+
+.pdpRow {
+  display: flex;
+  flex-direction: column;
+  gap: spacing("single");
+
+  &:has(> :only-child) {
+    text-align: center;
+
+    >* {
+      grid-column: 1 / -1;
+      margin: 0 auto;
+    }
+  }
+
+  .productText {
+    order: 1;
+  }
+
+  .productGraphic {
+    order: 2;
+  }
+
+  @include breakpoint("medium") {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+
+    &>* {
+      padding: spacing("single");
+    }
+
+    &:nth-child(even) {
+      .productText {
+        order: 2;
+      }
+
+      .productGraphic {
+        order: 1;
+      }
+    }
+
+  }
+}
+
+
 
 // -----------------------------------------------------------------------------
 // 9. Desktop Overrides
@@ -435,7 +490,7 @@ $cs-button-height: 50px;
       margin: 0 auto;
     }
 
-    
+
 
     .cs-product-form {
       display: grid;

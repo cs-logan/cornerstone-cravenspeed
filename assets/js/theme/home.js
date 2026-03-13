@@ -1,5 +1,6 @@
 import PageManager from './page-manager';
 import HomeController from './_addons/home/homeController';
+import VehiclePersistence from './_addons/global/vehiclePersistence';
 
 export default class Home extends PageManager {
     constructor(context) {
@@ -7,7 +8,8 @@ export default class Home extends PageManager {
     }
 
     onReady() {
-        const home = new HomeController(this.context)
+        VehiclePersistence.init();
+        const home = new HomeController(this.context);
         home.onReady();
     }
 }

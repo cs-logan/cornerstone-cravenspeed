@@ -4,7 +4,7 @@ import StateManager from "../stateManager"; // Use Global StateManager
 import SearchEngine from "./searchEngine";
 import QuickSearch from "./ui/quickSearch";
 import ResultsPage from "./ui/resultsPage";
-import RelatedProducts from "./ui/relatedProducts";
+import ProductGrid from "../ui/productGrid";
 
 export default class SearchController {
     constructor(context) {
@@ -15,7 +15,9 @@ export default class SearchController {
         this.searchEngine = new SearchEngine();
         this.quickSearch = new QuickSearch();
         this.resultsPage = new ResultsPage();
-        this.relatedProducts = new RelatedProducts();
+        this.relatedProducts = new ProductGrid({
+            title: 'Related Products',
+        });
         this.$searchInput = document.querySelector('[data-cs-search-input]');
         this.isEngineInitialized = false;
         this.lastKnownVehicle = null;
@@ -125,6 +127,7 @@ export default class SearchController {
             : null;
 
         const related = this.searchEngine.findRelated(currentUrl, vehicleId);
-        this.relatedProducts.render(related, vehicleName);
+        const title = vehicleName ? `More for your ${vehicleName}` : 'Related Products';
+        this.relatedProducts.render(related, title);
     }
 }

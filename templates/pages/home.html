@@ -14,7 +14,7 @@ blog:
 {{#partial "hero"}}
     {{{region name="home_below_menu"}}}
     {{#and carousel carousel.slides.length}}
-        <div class="home-hero" data-home-hero>
+        <section class="home-hero" data-home-hero aria-label="Featured Promotion">
             {{#each carousel.slides}}
                 {{#if @first}}
                     <a href="{{url}}">
@@ -22,22 +22,41 @@ blog:
                     </a>
                 {{/if}}
             {{/each}}
-        </div>
+        </section>
     {{/and}}
     {{{region name="home_below_carousel"}}}
 {{/partial}}
 
 {{#partial "page"}}
-
     {{#each shipping_messages}}
         {{> components/common/alert/alert-info message}}
     {{/each}}
 
-<div class="main full">
-    {{> components/common/car-selection}}
-    <div id="matching-products-header" data-home-product-grid-header></div>
-    <div id="matching-products" data-home-product-grid></div>
-    <div id="stamped-reviews-widget" data-widget-type="wall-photos" data-style-color-star="#c13119" data-style-color-hover="#000000" data-style-color-hover-opacity="60" data-take="20" data-random="true" data-with-photos="true"data-with-photos="true"></div>
+<div class="main full cs-home">
+    <section class="home-section" aria-labelledby="car-selection-heading">
+        <h2 id="car-selection-heading" class="is-srOnly">Select Your Vehicle</h2>
+        {{> components/common/car-selection}}
+    </section>
+
+    <section id="product-grid" class="home-section" aria-label="Matching Products">
+        {{> components/products-cs/product-grid }}
+    </section>
+
+    <section class="home-section" aria-labelledby="customer-reviews-heading">
+        <h2 id="customer-reviews-heading" class="page-heading">From Our Customers</h2>
+        <div id="stamped-reviews-widget" data-widget-type="wall-photos" data-style-color-star="#c13119" data-style-color-hover="#696969" data-take="9"data-with-photos="true"></div>
+    </section>
+
+    {{#if blog.recent_posts}}
+        <section class="cs-blog-posts home-section">
+            <h2 class="page-heading">{{lang 'blog.recent_posts'}}</h2>
+            <div class="cs-blog-grid">
+                {{#each blog.recent_posts}}
+                    {{> components/blog/cs-post post=this}}
+                {{/each}}
+            </div>
+        </section>
+    {{/if}}
 </div>
 {{/partial}}
 {{> layout/base}}

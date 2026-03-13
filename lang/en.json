@@ -17,7 +17,7 @@
         "heading": "Home"
     },
     "blog": {
-        "recent_posts": "Recent Posts",
+        "recent_posts": "Recent Blog Posts",
         "label": "Blog",
         "posted_by": "Posted by {name}",
         "read_more": "read more"
