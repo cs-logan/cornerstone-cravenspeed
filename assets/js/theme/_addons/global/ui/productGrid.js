@@ -35,7 +35,7 @@ export default class ProductGrid {
 
     _renderHeader(title) {
         if (!this.header) return;
-        this.header.innerHTML = `<h3>${escapeHtml(title || this.options.title)}</h3>`;
+        this.header.innerHTML = `${escapeHtml(title || this.options.title)}`;
     }
 
     _renderGrid(products) {

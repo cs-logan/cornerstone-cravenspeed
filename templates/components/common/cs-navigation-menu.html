@@ -2,7 +2,7 @@
     <div class="navPages-quickSearch">
         {{> components/common/cs-quick-search name='nav-menu-quick-search'}}
     </div>
-    <ul class="navPages-list{{#if theme_settings.navigation_design '!==' 'simple'}} navPages-list-depth-max{{/if}}">
+    <ul class="navPages-list{{#if theme_settings.navigation_design '!==' 'simple'}} navPages-list-depth-max{{/if}} cs-nav">
         {{!-- Added a setting to show a link to the home page on the navigation menu --}}
         {{#if theme_settings.show_home_in_nav}}
             <li class="navPages-item">

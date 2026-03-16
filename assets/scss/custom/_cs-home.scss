@@ -15,7 +15,8 @@
 .main.full.cs-home {
     display: flex;
     flex-direction: column;
-    gap: spacing("double");
+    gap: spacing("single");
+    margin: spacing("single") 0;
 }
 
 .main.full.cs-home > * {
@@ -43,7 +44,6 @@
     display: flex;
     flex-direction: column; // Stack on mobile
     gap: spacing("half"); // Spacing between fields
-    padding: spacing("base");
     background-color: stencilColor("color-white"); // Example background
     border-radius: stencilRadius("card"); // Example rounded corners
 

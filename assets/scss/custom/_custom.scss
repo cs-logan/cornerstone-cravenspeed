@@ -272,6 +272,21 @@ h6 {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: spacing("half") auto;
+    gap: spacing("half")
+  }
+}
+
+.navPages-list.cs-nav {
+  @include breakpoint("medium") {
+    display: flex;
+    gap: spacing("half");
+  }
+}
+
+.navPages a {
+  @include breakpoint("medium") {
+    padding: 0;
   }
 }
 
@@ -409,6 +424,7 @@ h6 {
 .cs-product-grid-wrapper {
     position: relative;
     margin-bottom: spacing('single');
+    padding: 0 spacing("half");
   
     &.is-collapsed {
       .cs-grid-fade {
@@ -421,10 +437,16 @@ h6 {
         display: none;
       }
     }
+
+    @include breakpoint("medium") {
+      padding: 0;
+    }
+
   }
   
-  .product-grid-header {
+  .product-grid-header[data-product-grid-header]{
       border-bottom: 2px solid stencilColor('color-primary');
+      margin-top: 0;
       margin-bottom: spacing('single');
   }
   
