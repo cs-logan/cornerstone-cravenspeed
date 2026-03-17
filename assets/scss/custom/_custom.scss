@@ -61,7 +61,8 @@ h6 {
 .slides-wrapper,
 .cs-car-selection-dropdown,
 .cs-blog-thumbnail,
-.cs-product-card {
+.cs-product-card,
+.product-instructions a {
   border-radius: spacing("half");
 } 
 
@@ -217,10 +218,16 @@ h6 {
   max-height: get-height(stencilString('logo_size'));
 }
 
-.svg-logo {
-  //Allows svg logo to shrink on mobile layout
-  width: 100%;
+img.svg-logo {
+  // Allows native img svg logo to scale properly
+  width: auto;
+  height: auto;
   max-width: 100%;
+
+  @include breakpoint('medium') {
+    max-height: get-height(stencilString('logo_size'));
+    max-width: get-width(stencilString('logo_size'));
+  }
 }
 
 .navUser {

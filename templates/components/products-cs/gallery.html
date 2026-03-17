@@ -5,22 +5,26 @@
               {{#if product.images.length '>' '1'}}
                 <div class="slide">
                   <img
-                    src="{{getImage product.images.[1] standard}}"
-                    alt="{{product.main_image.data}}"
+                    src="{{getImage product.images.[1] 'product_size'}}"
+                    srcset="{{getImageSrcset product.images.[1] use_default_sizes=true}}"
+                    sizes="(max-width: 800px) 100vw, 50vw"
+                    alt="{{product.images.[1].alt}}"
                     fetchpriority="high"
                     />
                   </div>
                   
                   {{#each (after product.images 2)}}
                   <div class="slide">
-                    <img loading="lazy" src="{{getImage this standard}}" alt="{{this.alt}}" />
+                    <img loading="lazy" src="{{getImage this 'product_size'}}" srcset="{{getImageSrcset this use_default_sizes=true}}" sizes="(max-width: 800px) 100vw, 50vw" alt="{{this.alt}}" />
                   </div>
                   {{/each}}
                   
                   <div class="slide">
                     <img
-                    src="{{getImage product.main_image standard}}"
-                    alt="{{product.main_image.data}}"
+                    src="{{getImage product.main_image 'product_size'}}"
+                    srcset="{{getImageSrcset product.main_image use_default_sizes=true}}"
+                    sizes="(max-width: 800px) 100vw, 50vw"
+                    alt="{{product.main_image.alt}}"
                     fetchpriority="high"
                   />
                 </div>
@@ -29,9 +33,11 @@
               
                 <div class="slide">
                   <img
-                    loading="lazy"
-                    src="{{getImage product.main_image standard}}"
-                    alt="{{product.main_image.data}}"
+                    src="{{getImage product.main_image 'product_size'}}"
+                    srcset="{{getImageSrcset product.main_image use_default_sizes=true}}"
+                    sizes="(max-width: 800px) 100vw, 50vw"
+                    alt="{{product.main_image.alt}}"
+                    fetchpriority="high"
                   />
                 </div>
                 

@@ -17,6 +17,8 @@ export default class AddToCart {
         this.defaultButtonText = this.button.textContent;
         this.unsubscribe = null;
         this.submitHandler = null;
+        this.scrollHandler = null;
+        this.ticking = false;
 
         this.init();
     }
@@ -29,6 +31,39 @@ export default class AddToCart {
         this.updateButtonState(this.state.getState());
 
         this.bindEvents();
+        this.initStickyBehavior();
+    }
+
+    initStickyBehavior() {
+        this.container = document.getElementById('add-button-wrapper');
+        this.stickyOffset = 15; // Space below button when sticky
+
+        this.scrollHandler = () => {
+            if (!this.ticking) {
+                window.requestAnimationFrame(() => {
+                    this.checkSticky();
+                    this.ticking = false;
+                });
+                this.ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', this.scrollHandler, { passive: true });
+        window.addEventListener('resize', this.scrollHandler, { passive: true });
+        
+        // Initial check
+        this.checkSticky();
+    }
+
+    checkSticky() {
+        if (!this.container) return;
+        const rect = this.container.getBoundingClientRect();
+        
+        if (rect.bottom < window.innerHeight - this.stickyOffset) {
+            this.button.classList.add('is-sticky');
+        } else {
+            this.button.classList.remove('is-sticky');
+        }
     }
 
     bindEvents() {
@@ -85,10 +120,6 @@ export default class AddToCart {
                 if (this.productIdInput) {
                     this.productIdInput.value = targetId;
                 }
-
-                if (wasDisabled) {
-                    this.button.focus();
-                }
             } else {
                 // Alias selected but Out of Stock
                 this.button.disabled = true;
@@ -133,6 +164,10 @@ export default class AddToCart {
         if (this.unsubscribe) this.unsubscribe();
         if (this.form && this.submitHandler) {
             this.form.removeEventListener('submit', this.submitHandler);
+        }
+        if (this.scrollHandler) {
+            window.removeEventListener('scroll', this.scrollHandler);
+            window.removeEventListener('resize', this.scrollHandler);
         }
     }
 }

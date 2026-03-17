@@ -5,6 +5,17 @@
     <title>{{ head.title }}</title>
     {{{ resourceHints }}}
     {{{ head.meta_tags }}}
+
+    <!-- FCP Optimizations: Establish early connections -->
+    <link rel="preconnect" href="https://cdn11.bigcommerce.com" crossorigin>
+
+    <!-- FCP Optimizations: Preload store logo -->
+    {{#if theme_settings.use_svg_logo}}
+        <link rel="preload" as="image" href="{{cdn 'img/logo.svg'}}">
+    {{else if theme_settings.logo_size}}
+        <link rel="preload" as="image" href="{{getImage settings.store_logo.image 'logo_size'}}">
+    {{/if}}
+
     {{{ head.config }}}
     {{#block "head"}} {{/block}}
 
@@ -28,7 +39,7 @@
         </script>
         <script nonce="{{nonce}}" async src="{{cdn 'assets/dist/theme-bundle.head_async.js' resourceHint='preload' as='script'}}"></script>
         
-        {{getFontsCollection font-display='block'}}
+        {{getFontsCollection font-display='swap'}}
         
         <script nonce="{{nonce}}" async src="{{cdn 'assets/dist/theme-bundle.font.js' resourceHint='preload' as='script'}}"></script>
 

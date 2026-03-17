@@ -18,7 +18,14 @@ blog:
             {{#each carousel.slides}}
                 {{#if @first}}
                     <a href="{{url}}">
-                        <img class="cs-hero-image" src="{{image}}" alt="{{heading}}" title="{{heading}}" width="2000" height="834">
+                    <img class="cs-hero-image" 
+                         src="{{getImage image '600w'}}" 
+                         srcset="{{getImageSrcset image use_default_sizes=true}}" 
+                         sizes="100vw" 
+                         alt="{{heading}}" 
+                         title="{{heading}}" 
+                         width="2000" height="834" 
+                         fetchpriority="high">
                     </a>
                 {{/if}}
             {{/each}}

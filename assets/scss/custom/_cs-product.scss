@@ -272,7 +272,7 @@ $cs-button-height: 50px;
 // 6. Add to Cart & Actions
 // -----------------------------------------------------------------------------
 .cs-add-to-cart-container {
-  // margin-top: spacing('half');
+  min-height: $cs-button-height; // Reserve space when button is fixed to prevent layout shifts
 
   #product-add-button {
     width: 100%;
@@ -282,6 +282,7 @@ $cs-button-height: 50px;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 0;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
     &:not(:disabled) {
       background-color: stencilColor("color-primary");
@@ -297,6 +298,21 @@ $cs-button-height: 50px;
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+    }
+
+    &.is-sticky {
+      position: fixed;
+      bottom: 15px;
+      left: spacing("half");
+      width: calc(100% - #{spacing("single")});
+      z-index: 100;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+
+      @include breakpoint("medium") { // Disable stickiness on desktop
+        position: static;
+        width: 100%;
+        box-shadow: none;
+      }
     }
   }
 }
@@ -387,6 +403,7 @@ $cs-button-height: 50px;
   }
 
   .product-instructions {
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
