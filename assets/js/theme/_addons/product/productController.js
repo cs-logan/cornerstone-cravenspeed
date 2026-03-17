@@ -1,5 +1,7 @@
 import DataManager from '../global/dataManager';
 import GlobalStateManager from '../global/stateManager';
+import VehiclePersistence from '../global/vehiclePersistence';
+import OptionsPersistence from '../global/optionsPersistence';
 import StateManager from './stateManager';
 import FulfillmentStatus from './ui/fulfillmentStatus';
 import AliasSelection from './ui/aliasSelection';
@@ -10,6 +12,7 @@ import AddToCart from './ui/addToCart';
 import ProductMessages from './ui/productMessages';
 import Badges from './ui/badges';
 import BlemProducts from './ui/blemProducts';
+import { resolveUrlToSelection } from './utils/urlResolver';
 
 export default class ProductController {
     constructor(context) {
@@ -36,6 +39,22 @@ export default class ProductController {
             ]);
 
             archetypeData.archetypeName = this.archetypeName;
+            
+            const resolvedSelection = resolveUrlToSelection(window.location.pathname, archetypeData);
+
+            if (resolvedSelection && Object.keys(resolvedSelection).length > 0) {
+                const { make, model, generation, ...options } = resolvedSelection;
+
+                // Seed Vehicle Persistence if fitment is present in the URL
+                if (make && model && generation) {
+                    VehiclePersistence.save({ make, model, generation });
+                }
+
+                // Seed Options Persistence if options are present in the URL
+                if (Object.keys(options).length > 0) {
+                    OptionsPersistence.save(this.archetypeName, options);
+                }
+            }
 
             this.stateManager = new StateManager(archetypeData);
             this.stateManager.setInventoryData(inventoryData);
@@ -54,7 +73,18 @@ export default class ProductController {
 
             this.unsubscribeGlobal = GlobalStateManager.subscribe(this.handleGlobalStateChange.bind(this));
 
-            this.handleGlobalStateChange(GlobalStateManager.getState());
+            // Sync local tracking variables with global state before the initial check.
+            // This prevents handleGlobalStateChange from calling setVehicle() and wiping our URL options.
+            const initialGlobalState = GlobalStateManager.getState();
+            this.lastKnownVehicle = initialGlobalState.vehicle?.selected;
+            this.lastKnownOptions = initialGlobalState.options?.[this.archetypeName];
+
+            this.handleGlobalStateChange(initialGlobalState);
+            
+            // Trigger the initial alias data fetch if a valid alias was resolved
+            if (this.stateManager.getState().currentAlias) {
+                this.handleLocalStateChange(this.stateManager.getState());
+            }
             
         } catch (error) {
             console.error(`Failed to load archetype data for ${this.archetypeName}:`, error);
