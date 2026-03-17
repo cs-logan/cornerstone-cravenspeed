@@ -1,0 +1,374 @@
+{
+    "archetype_status": "Active",
+    "option_title": "Engraving Design",
+    "sub_option_title": "Color",
+    "archetype_name": "Swappable Shift Knob Cap",
+    "parent_product_url": "/swappable-shift-knob-cap/",
+    "universal_product": true,
+    "image_array": {
+        "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/175902/swappable_shift_knob_cap_2EKXTRB_21630__44224.1762384196.1280.1280.jpg?c=2",
+        "description": "An array of the CravenSpeed Swappable Shift Knob Caps in various colors.",
+        "display_description": false,
+        "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/175902/swappable_shift_knob_cap_2EKXTRB_21630__44224.1762384196.133.100.jpg?c=2",
+        "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/175902/swappable_shift_knob_cap_2EKXTRB_21630__44224.1762384196.640.480.jpg?c=2",
+        "secondary_images_list": [
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184610/swappable_shift_knob_cap_DB9YWV4_21630__21279.1762384196.1280.1280.jpg?c=2",
+                "description": "Swappable Shift Knob Caps can be custom engraved. Choose from one of our designs or send us your own design and we'll make it a reality",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184610/swappable_shift_knob_cap_DB9YWV4_21630__21279.1762384196.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184610/swappable_shift_knob_cap_DB9YWV4_21630__21279.1762384196.640.480.jpg?c=2",
+                "sort_order": 2
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184612/swappable_shift_knob_cap_SMU57PT_21630__26168.1762384196.1280.1280.jpg?c=2",
+                "description": "Cone assassin custom shift knob cap",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184612/swappable_shift_knob_cap_SMU57PT_21630__26168.1762384196.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184612/swappable_shift_knob_cap_SMU57PT_21630__26168.1762384196.640.480.jpg?c=2",
+                "sort_order": 4
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184614/swappable_shift_knob_cap_JCG43OH_21630__05862.1762384197.1280.1280.jpg?c=2",
+                "description": "Swappable Shift Knob Cap installed on ND Miata MX-5",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184614/swappable_shift_knob_cap_JCG43OH_21630__05862.1762384197.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184614/swappable_shift_knob_cap_JCG43OH_21630__05862.1762384197.640.480.jpg?c=2",
+                "sort_order": 5
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184615/swappable_shift_knob_cap_LW58C93_21630__11432.1762384197.1280.1280.png?c=2",
+                "description": "Swappable Shift Knob Cap internals installation method",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184615/swappable_shift_knob_cap_LW58C93_21630__11432.1762384197.133.100.png?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184615/swappable_shift_knob_cap_LW58C93_21630__11432.1762384197.640.480.png?c=2",
+                "sort_order": 6
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184616/swappable_shift_knob_cap_PDRXZA1_21630__76934.1762384197.1280.1280.jpg?c=2",
+                "description": "Info graphic of a Swappable Shift Knob Cap",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184616/swappable_shift_knob_cap_PDRXZA1_21630__76934.1762384197.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184616/swappable_shift_knob_cap_PDRXZA1_21630__76934.1762384197.640.480.jpg?c=2",
+                "sort_order": 7
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184617/swappable_shift_knob_cap_B0EK21M_21630__08864.1762384197.1280.1280.jpg?c=2",
+                "description": "Swappable Shift Knob Cap Installed on a Toyota GR86, red",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184617/swappable_shift_knob_cap_B0EK21M_21630__08864.1762384197.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184617/swappable_shift_knob_cap_B0EK21M_21630__08864.1762384197.640.480.jpg?c=2",
+                "sort_order": 8
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184618/swappable_shift_knob_cap_LIQPASA_21630__57765.1762384198.1280.1280.jpg?c=2",
+                "description": "Swappable Shift Knob Cap on a Toyota GR86, black",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184618/swappable_shift_knob_cap_LIQPASA_21630__57765.1762384198.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184618/swappable_shift_knob_cap_LIQPASA_21630__57765.1762384198.640.480.jpg?c=2",
+                "sort_order": 9
+            },
+            {
+                "url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184619/swappable_shift_knob_cap_17PS7EF_21630__05055.1762384198.1280.1280.jpg?c=2",
+                "description": "Swappable Shift Knob Cap installed on MINI Cooper F56",
+                "display_description": false,
+                "url_tiny": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184619/swappable_shift_knob_cap_17PS7EF_21630__05055.1762384198.133.100.jpg?c=2",
+                "url_standard": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/184619/swappable_shift_knob_cap_17PS7EF_21630__05055.1762384198.640.480.jpg?c=2",
+                "sort_order": 10
+            }
+        ],
+        "image_count": 9
+    },
+    "archetype_instructions_url": "/shift-knob-cap-install-guide/",
+    "blem_dict": {},
+    "archetype_average_review": "4.92",
+    "archetype_review_count": 49,
+    "search_thumb_image_url": "https://cdn11.bigcommerce.com/s-351ed/products/21630/images/175902/swappable_shift_knob_cap_2EKXTRB_21630__44224.1762384196.1280.1280.jpg?c=2",
+    "make_model_index": {
+        "allvehicles": {
+            "name": "All Vehicles",
+            "models": {
+                "allvehicles": {
+                    "name": "",
+                    "generations": {
+                        "allvehicles": {
+                            "name": " 0 to 0",
+                            "options": {
+                                "allvehicles873": {
+                                    "name": "CravenSpeed 6-Speed",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-blue.json": {
+                                            "name": "Blue"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-6-speed-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles874": {
+                                    "name": "CravenSpeed 5-Speed",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-cravenspeed-5-speed-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles875": {
+                                    "name": "Surplus 6-Speed",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-6-speed-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles876": {
+                                    "name": "Surplus 5-Speed",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-blue.json": {
+                                            "name": "Blue"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-surplus-5-speed-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles877": {
+                                    "name": "VW 6-Speed",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-6-speed-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles878": {
+                                    "name": "VW 5-Speed",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-vw-5-speed-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles879": {
+                                    "name": "Golf",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-golf-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles880": {
+                                    "name": "CONEHUNTER",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-conehunter-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles881": {
+                                    "name": "Custom",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-custom-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                },
+                                "allvehicles882": {
+                                    "name": "Blank",
+                                    "sub_options": {
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-red-powder-coated.json": {
+                                            "name": "Red (Powder Coated)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-red-anodized.json": {
+                                            "name": "Red (Anodized)"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-black.json": {
+                                            "name": "Black"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-stainless-steel.json": {
+                                            "name": "Stainless Steel"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-blue.json": {
+                                            "name": "Blue"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-white.json": {
+                                            "name": "White"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-green.json": {
+                                            "name": "Green"
+                                        },
+                                        "swappable-shift-knob-cap-for-all-vehicles-blank-brown.json": {
+                                            "name": "Brown"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "last_json_update": "03/17/2026 10:11AM Pac"
+}

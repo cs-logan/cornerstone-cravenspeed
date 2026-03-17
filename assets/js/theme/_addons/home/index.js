@@ -7,7 +7,6 @@ export default class Home extends PageManager {
     }
 
     onReady() {
-        console.log("HOME girl")
         const homeController = new HomeController(this.context);
         homeController.onReady();
     }
