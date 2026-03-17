@@ -1,31 +1,73 @@
+/**
+ * Manages the state of the product page, including user selections,
+ * available options, and the currently resolved product variant (alias).
+ * Follows a subscriber pattern to notify other parts of the application
+ * when the state changes.
+ */
 export default class StateManager {
+    /**
+     * @param {object} archetypeData The raw product data from which to derive state.
+     */
     constructor(archetypeData) {
+        /**
+         * @private
+         * @type {Set<Function>}
+         */
         this.subscribers = new Set();
 
+        /**
+         * The single source of truth for the product page's state.
+         * @type {{
+         *   archetypeData: object,
+         *   selections: object.<string, string>,
+         *   currentAlias: string|null,
+         *   aliasData: object|null,
+         *   availableOptions: object.<string, {value: string, label: string}[]>,
+         *   inventory: object|null,
+         *   blemSelected: boolean
+         * }}
+         */
         this.state = {
+            // The root data object for the product archetype.
             archetypeData: archetypeData, 
             
+            // Key-value store of the user's current selections (e.g., { "make": "MINI", "model": "F56" }).
             selections: {},
             
+            // The filename of the currently resolved product variant, e.g., "cs-ab-123.json".
             currentAlias: null,
+            // The fetched data corresponding to the currentAlias.
             aliasData: null,
             
+            // Options available to the user based on the current selections.
             availableOptions: {}, 
+            // Inventory data for the current alias.
             inventory: null,
+            // Flag indicating if the "blemished" (scratch and dent) option is selected.
             blemSelected: false,
         };
 
         this._resolveAutoSelections();
     }
     
+    /**
+     * Subscribes a callback function to be executed whenever the state changes.
+     * @param {Function} callback The function to call with the updated state.
+     * @returns {Function} A function to unsubscribe the callback.
+     */
     subscribe(callback) {
         this.subscribers.add(callback);
         return () => this.subscribers.delete(callback);
     }
 
+    /**
+     * Updates a user's selection for a specific option and recalculates the state.
+     * When a selection changes, it clears all subsequent, dependent selections
+     * to ensure the user is always presented with a valid path.
+     * @param {{option: string, value: string}} selection The option and its new value.
+     */
     updateSelection({option, value}) {
         const optionOrder = this._getOptionOrder();
-        console.log(`StateManager: updateSelection ${option} = ${value}`);
         
         this.state.selections[option] = value;
 
@@ -47,39 +89,64 @@ export default class StateManager {
         this._notifySubscribers();
     }
 
+    /**
+     * Sets the detailed data for the currently resolved product alias.
+     * This is typically called after fetching the alias-specific JSON file.
+     * @param {object} data The alias data.
+     */
     setAliasData(data) {
         this.state.aliasData = data;
         this.state.blemSelected = false;
         this._notifySubscribers();
     }
 
+    /**
+     * Sets the inventory data for the current alias.
+     * @param {object} data The inventory data.
+     */
     setInventoryData(data) {
         this.state.inventory = data;
         this._notifySubscribers();
     }
 
+    /**
+     * Sets the initial state of all selections at once.
+     * Useful for restoring a saved state, like a persisted vehicle, without
+     * triggering multiple sequential updates.
+     * @param {object} selections A complete object of initial selections.
+     */
     setInitialSelections(selections) {
-        console.log('StateManager: setInitialSelections', selections);
         this.state.selections = selections;
         this._resolveAutoSelections();
         this._notifySubscribers(); // Notify once after all initial selections are set
     }
 
+    /**
+     * Toggles the selection of a "blemished" (scratch and dent) product variant.
+     * @param {boolean} isSelected Whether the blemished option is selected.
+     */
     setBlemSelection(isSelected) {
         this.state.blemSelected = isSelected;
         this._notifySubscribers();
     }
 
+    /**
+     * Sets multiple option selections at once and resolves the state.
+     * @param {object} options An object of key-value pairs representing selections.
+     */
     setOptions(options) {
         if (!options) return;
-        console.log('ProductStateManager: Setting options', options);
         Object.assign(this.state.selections, options);
         this._resolveAutoSelections();
         this._notifySubscribers();
     }
 
+    /**
+     * Resets selections and applies new ones based on a vehicle fitment.
+     * This is a primary entry point for vehicle-driven product configuration.
+     * @param {object} vehicle An object containing vehicle fitment data (e.g., make, model).
+     */
     setVehicle(vehicle) {
-        console.log('ProductStateManager: Setting vehicle', vehicle);
         if (!vehicle) return;
 
         // Reset selections and apply new vehicle data
@@ -94,10 +161,20 @@ export default class StateManager {
         this._notifySubscribers();
     }
 
+    /**
+     * Returns a snapshot of the current state.
+     * @returns {object} The current state object.
+     */
     getState() {
         return this.state;
     }
 
+    /**
+     * Finds the starting point for traversal in a "universal" product data structure.
+     * Universal products don't have a standard make/model/generation fitment.
+     * @private
+     * @returns {object|string} The root node for traversal or a direct alias filename.
+     */
     _getUniversalRoot() {
         const { archetypeData } = this.state;
         
@@ -123,6 +200,13 @@ export default class StateManager {
         }
     }
 
+    /**
+     * Traverses the archetype data based on the current selections to find
+     * the deepest corresponding node or a final alias. This is the core logic
+     * that translates user selections into a specific product variant.
+     * @private
+     * @returns {object|string|null} The resulting node, an alias filename, or null if the path is invalid.
+     */
     _traverseSelections() {
         const { selections, archetypeData } = this.state;
         const { make_model_index, option_title, sub_option_title, universal_product } = archetypeData;
@@ -191,8 +275,6 @@ export default class StateManager {
                 return currentLevel; // Return the deepest level reached
             }
 
-            console.log(`StateManager: Traversing ${key} -> ${selection}`);
-
             let nextLevel;
             if (currentLevel[selection]) {
                 nextLevel = currentLevel[selection];
@@ -237,6 +319,13 @@ export default class StateManager {
         return currentLevel;
     }
 
+    /**
+     * Calls the traversal logic and updates the state with the result.
+     * If a valid alias (a filename) is found, it's stored in `state.currentAlias`.
+     * If the traversal results in a "simple" product object with its own data,
+     * it sets that data directly. Otherwise, the alias is cleared.
+     * @private
+     */
     _findAlias() {
         const result = this._traverseSelections();
 
@@ -251,6 +340,12 @@ export default class StateManager {
         }
     }
 
+    /**
+     * Determines which options are available to the user based on the current selections.
+     * For example, after selecting a "make," this method calculates the valid "models"
+     * to show. The results are stored in `state.availableOptions`.
+     * @private
+     */
     _updateAvailableOptions() {
         const { archetypeData, selections } = this.state;
         const { make_model_index, option_title, sub_option_title, universal_product } = archetypeData;
@@ -354,12 +449,23 @@ export default class StateManager {
         this.state.availableOptions = availableOptions;
     }
 
+    /**
+     * Executes all subscribed callback functions, passing them the current state.
+     * This is the mechanism by which other parts of the application learn about state changes.
+     * @private
+     */
     _notifySubscribers() {
         this.subscribers.forEach(callback => {
             callback(this.state);
         });
     }
 
+    /**
+     * Determines the logical order of options for traversal and dependency management.
+     * The order is crucial for clearing dependent dropdowns and for auto-selection.
+     * @private
+     * @returns {string[]} An array of option keys in their logical order.
+     */
     _getOptionOrder() {
         const { option_title, sub_option_title, universal_product } = this.state.archetypeData;
         if (universal_product) {
@@ -369,6 +475,13 @@ export default class StateManager {
         }
     }
 
+    /**
+     * Automatically selects options that have only one possible value.
+     * For instance, if a selected model only has one generation available,
+     * this method will automatically select that generation, simplifying the
+     * user's journey. It loops until no more automatic selections can be made.
+     * @private
+     */
     _resolveAutoSelections() {
         const optionOrder = this._getOptionOrder();
         let changed = true;

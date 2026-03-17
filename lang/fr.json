@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Ravis de vous revoir, {name}",
-        "skip_to_main": "Passer au contenu principal"
+        "skip_to_main": "Passer au contenu principal",
+        "search": "Rechercher",
+        "search_placeholder": "Marque, modèle ou produit..."
     },
     "footer": {
         "title": "Début du pied de page",

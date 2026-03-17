@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "おかえりなさい、{name}",
-        "skip_to_main": "メインコンテンツへスキップ"
+        "skip_to_main": "メインコンテンツへスキップ",
+        "search": "検索",
+        "search_placeholder": "メーカー、モデル、または商品から検索..."
     },
     "footer": {
         "title": "フッター開始",

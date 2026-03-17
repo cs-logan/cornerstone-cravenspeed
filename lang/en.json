@@ -2,7 +2,8 @@
     "header": {
         "welcome_back": "Welcome back, {name}",
         "skip_to_main": "Skip to main content",
-        "search": "Search"
+        "search": "Search",
+        "search_placeholder": "Make, Model or Product..."
     },
     "footer": {
         "title": "Footer Start",

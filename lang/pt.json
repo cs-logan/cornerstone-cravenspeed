@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Que bom ver você de novo, {name}",
-        "skip_to_main": "Ir para o conteúdo principal"
+        "skip_to_main": "Ir para o conteúdo principal",
+        "search": "Pesquisar",
+        "search_placeholder": "Marca, modelo ou produto..."
     },
     "footer": {
         "title": "Iniciar rodapé",

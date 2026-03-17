@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Witaj z powrotem, {name}",
-        "skip_to_main": "Przejdź do głównej treści"
+        "skip_to_main": "Przejdź do głównej treści",
+        "search": "Szukaj",
+        "search_placeholder": "Marka, model lub produkt..."
     },
     "footer": {
         "title": "Stopka Start",

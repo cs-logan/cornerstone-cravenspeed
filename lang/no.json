@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Velkommen tilbake, {name}",
-        "skip_to_main": "Gå til hovedinnhold"
+        "skip_to_main": "Gå til hovedinnhold",
+        "search": "Søk",
+        "search_placeholder": "Merke, modell eller produkt..."
     },
     "footer": {
         "title": "Start på bunntekst",

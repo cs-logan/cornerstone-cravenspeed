@@ -3,7 +3,6 @@ __webpack_public_path__ = window.__webpack_public_path__; // eslint-disable-line
 import Global from './theme/global';
 
 
-// Import for CravenSpeed search
 import GlobalSearch from './theme/_addons/global/search/index'
 import initGlobalAccessibility from './theme/global/accessibility';
 
@@ -49,7 +48,6 @@ const pageClasses = {
     page: noop,
     product: () => import('./theme/_addons/product/index'),
     amp_product_options: () => import('./theme/product'),
-    // search: () => import('./theme/search'), 
     rss: noop,
     sitemap: noop,
     newsletter_subscribe: noop,

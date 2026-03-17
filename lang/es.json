@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Te damos la bienvenida de nuevo, {name}",
-        "skip_to_main": "Ir al contenido principal"
+        "skip_to_main": "Ir al contenido principal",
+        "search": "Buscar",
+        "search_placeholder": "Marca, modelo o producto..."
     },
     "footer": {
         "title": "Inicio de pie de página",

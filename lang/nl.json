@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Welkom terug, {name}",
-        "skip_to_main": "Overslaan en naar hoofdinhoud gaan"
+        "skip_to_main": "Overslaan en naar hoofdinhoud gaan",
+        "search": "Zoeken",
+        "search_placeholder": "Merk, model of product..."
     },
     "footer": {
         "title": "Begin footer",

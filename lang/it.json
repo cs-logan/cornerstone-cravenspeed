@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Lieti di rivederti, {name}",
-        "skip_to_main": "Passa al contenuto principale"
+        "skip_to_main": "Passa al contenuto principale",
+        "search": "Cerca",
+        "search_placeholder": "Marca, modello o prodotto..."
     },
     "footer": {
         "title": "Inizio footer",

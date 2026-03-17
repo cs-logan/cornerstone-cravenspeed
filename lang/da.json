@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Velkommen tilbage, {name}",
-        "skip_to_main": "Spring til hovedindhold"
+        "skip_to_main": "Spring til hovedindhold",
+        "search": "Søg",
+        "search_placeholder": "Mærke, model eller produkt..."
     },
     "footer": {
         "title": "Start af sidefod",

@@ -70,7 +70,6 @@ class DataManager {
             return;
         }
 
-        console.log('[DataManager] Fetching search data from CDN.');
         fetch(this.searchDataUrl)
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);

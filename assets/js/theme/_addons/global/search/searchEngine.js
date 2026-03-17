@@ -127,6 +127,7 @@ export default class SearchEngine {
         const title = product._search_title;
         const sku = product._search_sku;
         const keywords = product._search_keywords;
+        const searchSkus = product._search_skus || [];
 
         // Compatibility Check
         const productIds = product.compatibility_ids || [];
@@ -136,6 +137,7 @@ export default class SearchEngine {
         tokens.forEach(token => {
             // Scoring Weights
             if (sku.includes(token)) score += 20; // High priority for SKU/Part #
+            if (searchSkus.includes(token)) score += 20; // High priority for alias SKUs
             if (title.includes(token)) score += 10;
             if (keywords.some(k => k.includes(token))) score += 5;
 
@@ -182,6 +184,9 @@ export default class SearchEngine {
             p._search_sku = (p.sku || '').toLowerCase();
             p._search_keywords = (typeof p.general_keywords === 'string') 
                 ? p.general_keywords.toLowerCase().split(',').map(k => k.trim()) 
+                : [];
+            p._search_skus = Array.isArray(p.search_skus)
+                ? p.search_skus.map(s => s.toLowerCase())
                 : [];
             return p;
         });

@@ -1,4 +1,4 @@
-import DataManager from '../global/dataManager'; // Import global manager
+import DataManager from '../global/dataManager';
 import GlobalStateManager from '../global/stateManager';
 import StateManager from './stateManager';
 import FulfillmentStatus from './ui/fulfillmentStatus';
@@ -24,15 +24,12 @@ export default class ProductController {
     }
 
     onReady() {
-        console.log('ProductOrchestrator: onReady');
         this.updateHeading();
         this.loadInitialData();
     }
 
     async loadInitialData() {
         try {
-            console.log(`Fetching archetype data for: ${this.archetypeName}`);
-            // Use global DataManager
             const [archetypeData, inventoryData] = await Promise.all([
                 DataManager.getArchetypeData(this.archetypeName),
                 DataManager.getInventoryData(),
@@ -53,13 +50,10 @@ export default class ProductController {
             this.badges = new Badges(this.stateManager);
             this.blemProducts = new BlemProducts(this.stateManager);
 
-            // Subscribe to local state changes for alias fetching
             this.unsubscribeLocal = this.stateManager.subscribe(this.handleLocalStateChange.bind(this));
 
-            // Subscribe to global state for vehicle changes
             this.unsubscribeGlobal = GlobalStateManager.subscribe(this.handleGlobalStateChange.bind(this));
 
-            // Initial sync with global state
             this.handleGlobalStateChange(GlobalStateManager.getState());
             
         } catch (error) {
@@ -68,20 +62,16 @@ export default class ProductController {
     }
 
     handleGlobalStateChange(globalState) {
-        // Vehicle Change Detection
         const { selected: vehicle } = globalState.vehicle;
         if (JSON.stringify(vehicle) !== JSON.stringify(this.lastKnownVehicle)) {
-            console.log('ProductController: Global vehicle changed', vehicle);
             this.lastKnownVehicle = vehicle;
             this.stateManager.setVehicle(vehicle);
         }
 
-        // Options Change Detection
         const { options } = globalState;
         if (options && options[this.archetypeName]) {
             const archetypeOptions = options[this.archetypeName];
             if (JSON.stringify(archetypeOptions) !== JSON.stringify(this.lastKnownOptions)) {
-                console.log('ProductController: Global options for archetype changed', archetypeOptions);
                 this.lastKnownOptions = archetypeOptions;
                 this.stateManager.setOptions(archetypeOptions);
             }
@@ -92,17 +82,14 @@ export default class ProductController {
         const { currentAlias: newAliasFile } = state;
 
         if (newAliasFile === 'self' || newAliasFile === this.currentAliasFile) {
-            return; // No change needed
+            return;
         }
 
         this.currentAliasFile = newAliasFile;
 
         if (newAliasFile) {
             try {
-                // Use the global DataManager to fetch...
                 const aliasData = await DataManager.getAliasData(this.archetypeName, newAliasFile);
-                console.log('Product Page: Alias data from JSON:', aliasData);
-                // ...and push the result into the local state manager.
                 this.stateManager.setAliasData(aliasData);
             } catch (error) {
                 console.error(`Failed to load alias data for ${newAliasFile}:`, error);
@@ -139,9 +126,6 @@ export default class ProductController {
         return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
-    /**
-     * Cleanup method to remove event listeners and subscriptions.
-     */
     destroy() {
         if (this.unsubscribeGlobal) this.unsubscribeGlobal();
         if (this.unsubscribeLocal) this.unsubscribeLocal();

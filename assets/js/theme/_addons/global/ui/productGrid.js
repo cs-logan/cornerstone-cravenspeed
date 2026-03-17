@@ -96,7 +96,7 @@ export default class ProductGrid {
             <div class="cs-product-card">
                 <div class="cs-product-card-image-wrapper">
                     <a href="${url}">
-                        <img class="cs-product-card-image" src="${image}" alt="${title}" title="${title}">
+                        <img class="cs-product-card-image" src="${image}" alt="${title}" title="${title}" width="360" height="270">
                     </a>
                 </div>
                 <div class="cs-product-card-details">

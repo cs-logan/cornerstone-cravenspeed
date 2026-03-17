@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Willkommen zurück, {name}",
-        "skip_to_main": "Zu Hauptinhalt springen"
+        "skip_to_main": "Zu Hauptinhalt springen",
+        "search": "Suche",
+        "search_placeholder": "Marke, Modell oder Produkt..."
     },
     "footer": {
         "title": "Start der Fußzeile",

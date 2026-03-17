@@ -1,7 +1,9 @@
 {
     "header": {
         "welcome_back": "Välkommen tillbaka, {name}",
-        "skip_to_main": "Hoppa till huvudinnehåll"
+        "skip_to_main": "Hoppa till huvudinnehåll",
+        "search": "Sök",
+        "search_placeholder": "Märke, modell eller produkt..."
     },
     "footer": {
         "title": "Sidfot Start",

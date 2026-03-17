@@ -2,7 +2,7 @@
  Import all product specific js
  */
 import PageManager from '../../page-manager';
-import ProductController from './product';
+import ProductController from './productController';
 
 export default class Product extends PageManager {
     constructor(context) {

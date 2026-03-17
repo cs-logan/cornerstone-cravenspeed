@@ -66,13 +66,6 @@ class StateManager {
      * @param {object} newState - The new state to merge with the existing state.
      */
     setState(newState) {
-        if (newState.vehicle) {
-            console.log('GlobalStateManager: Vehicle state updated.', {
-                selected: newState.vehicle.selected,
-                isCompatible: newState.vehicle.isCompatible,
-                page: window.location.pathname,
-            });
-        }
         this.state = { ...this.state, ...newState };
         this.notify();
     }

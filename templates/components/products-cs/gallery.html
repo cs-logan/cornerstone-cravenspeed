@@ -7,20 +7,21 @@
                   <img
                     src="{{getImage product.images.[1] standard}}"
                     alt="{{product.main_image.data}}"
-                  />
-                </div>
-                
-                {{#each (after product.images 2)}}
-                <div class="slide">
-                  <img loading="lazy" src="{{getImage this standard}}" alt="{{this.alt}}" />
-                </div>
-                {{/each}}
-              
-                <div class="slide">
-                  <img
-                    loading="lazy"
+                    fetchpriority="high"
+                    />
+                  </div>
+                  
+                  {{#each (after product.images 2)}}
+                  <div class="slide">
+                    <img loading="lazy" src="{{getImage this standard}}" alt="{{this.alt}}" />
+                  </div>
+                  {{/each}}
+                  
+                  <div class="slide">
+                    <img
                     src="{{getImage product.main_image standard}}"
                     alt="{{product.main_image.data}}"
+                    fetchpriority="high"
                   />
                 </div>
               
