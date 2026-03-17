@@ -137,7 +137,7 @@ export default class SearchEngine {
         tokens.forEach(token => {
             // Scoring Weights
             if (sku.includes(token)) score += 20; // High priority for SKU/Part #
-            if (searchSkus.includes(token)) score += 20; // High priority for alias SKUs
+            if (searchSkus.some(s => s.includes(token))) score += 20; // High priority for alias SKUs
             if (title.includes(token)) score += 10;
             if (keywords.some(k => k.includes(token))) score += 5;
 
@@ -181,12 +181,12 @@ export default class SearchEngine {
         // Pre-compute search fields for performance
         return products.map(p => {
             p._search_title = (p.title || '').toLowerCase();
-            p._search_sku = (p.sku || '').toLowerCase();
+            p._search_sku = (p.sku || '').toLowerCase().replace(/[^\w\s]/g, '');
             p._search_keywords = (typeof p.general_keywords === 'string') 
                 ? p.general_keywords.toLowerCase().split(',').map(k => k.trim()) 
                 : [];
             p._search_skus = Array.isArray(p.search_skus)
-                ? p.search_skus.map(s => s.toLowerCase())
+                ? p.search_skus.map(s => s.toLowerCase().replace(/[^\w\s]/g, ''))
                 : [];
             return p;
         });

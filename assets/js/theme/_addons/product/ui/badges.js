@@ -26,6 +26,7 @@ export default class Badges {
         }
 
         this.element.style.display = 'flex';
+        this.element.style.visibility = 'visible';
         this.render(aliasData);
         requestAnimationFrame(() => this.element.classList.add('visible'));
     }

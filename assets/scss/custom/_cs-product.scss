@@ -306,16 +306,20 @@ $cs-button-height: 50px;
 // -----------------------------------------------------------------------------
 
 #product-badges {
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-wrap: nowrap;
   gap: spacing("half");
   justify-content: center;
   align-items: stretch;
-  height: spacing("single") * 2.5;
+  min-height: spacing("single") * 2.5;
   opacity: 0;
   transition: opacity 0.5s ease;
+
+  @include breakpoint("medium") {
+    width: 70%;
+  }
 
   &.visible {
     opacity: 1;
@@ -329,7 +333,7 @@ $cs-button-height: 50px;
     align-items: center;
     text-align: center;
     border: 2px solid #d7d7d7;
-    padding: 0 spacing("quarter");
+    padding: spacing("quarter");
     cursor: pointer;
     transition: all 0.2s ease;
     box-sizing: border-box;
@@ -346,15 +350,22 @@ $cs-button-height: 50px;
   }
 
   &>* h4 {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 700;
     margin: 0;
     line-height: 1.2;
+    word-break: break-word;
+
+    @include breakpoint("medium") {
+      font-size: 0.85rem;
+    }
   }
 
   img {
-    height: 24px;
-    width: auto;
+    max-height: 24px;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
     margin-bottom: spacing("quarter");
   }
 }
