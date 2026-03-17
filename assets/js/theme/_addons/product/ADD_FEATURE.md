@@ -7,45 +7,46 @@ When a user lands on a product page using an "alias URL" (a URL for a specific v
 - **Archetype URL:** The base product URL, e.g., `/the-billet-tachometer-dial/`.
 - **Alias URL:** A specific variation URL, e.g., `/the-billet-tachometer-dial-for-mazda-mx-5-miata-4th-gen-nd-nd2-2019-2023-red/`.
 - **Data Source:** The `archetype.json` file contains a mapping (`make_model_index`) of all possible aliases. The URL slug directly corresponds to the alias `.json` file name (e.g. `the-billet-...-red.json`).
-- **Control Flow:** The `ProductController` is the central orchestrator. It must identify the URL type, find the matching alias data, and update the application's state.
+- **Control Flow:** The `ProductController` is the central orchestrator. It must extract the current URL slug, ask a resolver utility to search the Archetype JSON for a match, and inject the resulting selections into the application's state.
 
 ---
 
 ## 📋 Step-by-Step Implementation Plan
 
-### Phase 1: Alias Identification Logic
+### Phase 1: URL Parsing & Resolution Logic
 
-1.  **Modify `ProductController.js`:**
-    *   **Get URL Info:** In the controller's main entry point (`onReady` or constructor), get the current `window.location.pathname`.
-    *   **Get Archetype URL:** Access the base product's URL from the page context (`this.context.product.url`).
-    *   **Compare URLs:** Check if the current pathname is different from the archetype's base URL. If it is, we are on an alias page.
-
-2.  **Create a URL Resolver Utility:**
+1.  **Create a URL Resolver Utility:**
     *   Create a new utility file: `_addons/product/utils/urlResolver.js`.
-    *   Write a function `resolveAliasFromUrl(pathname, archetypeUrl)` that:
-        *   Extracts the slug from the `pathname` by removing leading/trailing slashes.
-        *   Formats the slug into the expected alias filename (e.g., `${slug}.json`).
-        *   Returns the identified alias filename (or `null` if it's the base archetype URL).
+    *   Write a function `resolveUrlToSelection(pathname, archetypeData)` that:
+        *   Extracts the raw slug from `pathname` by removing leading/trailing slashes and stripping any query parameters.
+        *   Formats the slug into the expected alias filename (e.g., `the-billet-tach...-red.json`).
 
-3.  **Integrate Resolver into `ProductController.js`:**
-    *   Call the resolver during initialization. If an alias filename is found, we can immediately fetch its data or set it in the `StateManager`.
+2.  **Implement Recursive Search:**
+    *   Within the resolver, write a recursive function to deeply traverse the `archetypeData`.
+    *   **For Fitment Products:** Traverse down the `make_model_index` (Make -> Model -> Gen -> Option 1 -> Option 2).
+    *   **For Universal Products:** Traverse directly through the `options` array since there is no vehicle fitment.
+    *   **The Outcome:** If the `.json` filename is found at a leaf node, return an object mapping the path taken (e.g., `{ make: 'mazda', model: 'mx-5-miata', generation: '4th-gen', option1: 'red' }`). If not found, return `null`.
 
-### Phase 2: State Synchronization
+### Phase 2: Integration with ProductController & State Synchronization
 
-1.  **Find Alias Selection Path:**
-    *   Create a utility function (e.g., `getSelectionForAlias(aliasFilename, archetypeData)`).
-    *   This function traverses the `archetypeData.make_model_index` to find the combination of `make`, `model`, `generation`, and `options` that lead to the matched `aliasFilename`.
-    *   It returns a state `selection` object that matches what the `StateManager` expects.
+1.  **Intercept the URL on Load:**
+    *   In `ProductController.js`, after the initial `archetypeData` is fetched from the DataManager, pass `window.location.pathname` and the `archetypeData` to the new `urlResolver`.
 
-2.  **Update `StateManager` from `ProductController.js`:**
-    *   Inject the resolved `selection` object into the application's state upon load.
-    *   **Important:** All UI components (`AliasSelection`, `ImageGallery`, `ProductDetails`, etc.) will react automatically to this initial state injection, rendering the correct configuration without further manual updates.
+2.  **Handle the Resolution Outcome:**
+    *   **If `null` (Archetype / Invalid Link):** Do nothing special. Proceed with the normal initialization flow (letting global vehicle persistence take over if applicable).
+    *   **If a valid selection object is returned:**
+        *   **Override Global State (Race Condition Fix):** If the product requires fitment, immediately update the `GlobalStateManager` with the resolved vehicle. This ensures the URL overrides any conflicting vehicle the user previously had saved in their garage.
+        *   **Inject Local State:** Pass the full resolved selection (vehicle + options) into the local `StateManager`.
+
+3.  **Rely on Existing Reactivity:**
+    *   Because the `StateManager` is populated with the resolved selections, the existing architecture will automatically trigger the `DataManager` to fetch the alias JSON. All subscribed UI components will update automatically. No manual data fetching is required in the resolver phase.
 
 ---
 
 ## ✅ Acceptance Criteria
 1.  Navigating directly to an alias URL loads the page with the correct options pre-selected.
 2.  Navigating to the base archetype URL loads the page with no options selected (respecting existing vehicle persistence logic).
+3.  Navigating to an alias URL successfully overrides a mismatched vehicle stored in the user's local persistence.
 
 ---
 
