@@ -9,7 +9,6 @@ const VehiclePersistence = {
             if (storedVehicle) {
                 const vehicle = JSON.parse(storedVehicle);
                 // Set state to inform other modules
-                console.log('loading vehicle using storage: ', vehicle);
                 StateManager.setState({ vehicle: { selected: vehicle, isCompatible: true } });
             }
         } catch (e) {

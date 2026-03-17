@@ -56,7 +56,7 @@ const pageClasses = {
 };
 
 const customClasses = {
-    'pages/home': () => import('./theme/_addons/home/home'),
+    'pages/home': () => import('./theme/_addons/home'),
 };
 
 /**

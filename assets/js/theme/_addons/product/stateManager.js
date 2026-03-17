@@ -317,8 +317,6 @@ export default class StateManager {
                 // Here, the selection is the filename. We have found the alias.
                 return selection;
             } else {
-                console.warn(`StateManager: Traversal failed at ${key}="${selection}".`, 
-                    'Current Level Keys:', Object.keys(currentLevel.models || currentLevel.generations || currentLevel.options || currentLevel));
                 return null; // Invalid path
             }
             currentLevel = nextLevel;

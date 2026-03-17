@@ -9,9 +9,6 @@ export default class ImageGallery {
         this.lastAliasData = undefined;
         this.unsubscribe = null;
 
-        // Cache default HTML for reversion
-        this.defaultSlidesHTML = this.slidesContainer ? this.slidesContainer.innerHTML : '';
-
         // Initialize gallery on default content
         this.initCsGallery();
 
@@ -22,12 +19,10 @@ export default class ImageGallery {
         const { aliasData } = state;
         
         if (aliasData === this.lastAliasData) return;
-        this.lastAliasData = aliasData;
 
         if (aliasData && aliasData.image_array) {
+            this.lastAliasData = aliasData;
             this.renderAliasImages(aliasData.image_array);
-        } else {
-            this.revertToDefault();
         }
     }
 
