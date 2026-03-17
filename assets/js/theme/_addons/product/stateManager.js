@@ -47,6 +47,13 @@ export default class StateManager {
             blemSelected: false,
         };
 
+        if (this.state.archetypeData.make_model_index && !this.state.archetypeData.universal_product) {
+            const makes = Object.keys(this.state.archetypeData.make_model_index);
+            if (makes.length === 1 && makes[0] === 'allvehicles') {
+                this.state.archetypeData.universal_product = true;
+            }
+        }
+
         this._resolveAutoSelections();
     }
     
