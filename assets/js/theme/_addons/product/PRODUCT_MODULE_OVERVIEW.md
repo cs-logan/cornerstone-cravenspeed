@@ -18,6 +18,7 @@ The architecture is built on four key concepts:
     *   **`GlobalStateManager`**: Lives outside the product module and holds site-wide state, such as the currently selected vehicle.
     *   **`StateManager` (Local)**: Is specific to the product page. It holds all product-related data, such as the available product variants (aliases), the selected options, and the data for the currently chosen alias.
 *   **Data Abstraction:** All data fetching (from BigCommerce, from custom JSON files, etc.) is handled by a `DataManager`. This separates the application logic from the details of where the data comes from.
+*   **URL Resolution:** A specialized utility (`urlResolver.js`) ensures that direct links to specific aliases (combinations of vehicle and options) automatically pre-select the appropriate state upon load.
 
 ## 3. Data Flow & Lifecycle
 
@@ -28,6 +29,7 @@ Understanding the flow of data is key to understanding the module.
 2.  **`productController.js`**:
     *   Determines the current product "archetype".
     *   Fetches initial required data (archetype information, global inventory) from the `DataManager`.
+        *   **URL Resolution:** Parses the current URL to determine if the user landed on an Alias URL. If so, it uses a utility (`urlResolver.js`) to extract the vehicle/option selections and seeds the `VehiclePersistence` and `OptionsPersistence` layers.
     *   Initializes the local `StateManager` with the archetype data.
     *   Initializes all UI components (from the `/ui` directory), giving each one a reference to the local `StateManager`.
     *   Subscribes to both the `GlobalStateManager` (for vehicle changes) and its own local `StateManager` (for alias changes).
