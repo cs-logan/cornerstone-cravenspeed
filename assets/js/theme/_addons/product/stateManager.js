@@ -495,8 +495,20 @@ export default class StateManager {
             this._findAlias();
             this._updateAvailableOptions();
             for (const key of optionOrder) {
+                const currentSelection = this.state.selections[key];
+                const opts = this.state.availableOptions[key];
+
+                // Prune invalid selections (e.g., from persistent state mismatches)
+                if (currentSelection) {
+                    const isValid = opts && opts.some(opt => opt.value === currentSelection);
+                    if (!isValid) {
+                        delete this.state.selections[key];
+                        changed = true;
+                        break; // Restart loop to rebuild available options
+                    }
+                }
+
                 if (!this.state.selections[key]) {
-                    const opts = this.state.availableOptions[key];
                     if (opts && opts.length === 1) {
                         this.state.selections[key] = opts[0].value;
                         changed = true;
