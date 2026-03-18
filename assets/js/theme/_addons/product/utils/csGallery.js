@@ -26,6 +26,13 @@ export default class CsGallery {
     this.currentSlide = 0;
     this.moveDistance = 100;
     this.isAnimating = false;
+    
+    // Touch swipe variables
+    this.touchThreshold = 50; // minimum px distance for a swipe to register
+    this.touchStartX = 0;
+    this.touchStartY = 0;
+    this.touchEndX = 0;
+    this.touchEndY = 0;
 
     // setup modal elements if modal is selected
     if (this.modal) {
@@ -72,6 +79,16 @@ export default class CsGallery {
 
     if (this.map) {
       this.initMap();
+    }
+
+    // Bind touch events for swipe support (using passive: true for better scroll performance)
+    this.touchStartHandler = this.handleTouchStart.bind(this);
+    this.touchEndHandler = this.handleTouchEnd.bind(this);
+    this.swipeTarget = this.container.querySelector('.slides-wrapper');
+    if (this.swipeTarget) {
+      this.swipeTarget.style.touchAction = 'pan-y';
+      this.swipeTarget.addEventListener('touchstart', this.touchStartHandler, { passive: true });
+      this.swipeTarget.addEventListener('touchend', this.touchEndHandler, { passive: true });
     }
 
     // ensure that the map is visible if the previous gallery only had one image
@@ -121,6 +138,27 @@ export default class CsGallery {
       case 'Escape':
         if (this.modal) this.closeModal();
         break;
+    }
+  }
+
+  handleTouchStart(event) {
+    this.touchStartX = event.changedTouches[0].clientX;
+    this.touchStartY = event.changedTouches[0].clientY;
+  }
+
+  handleTouchEnd(event) {
+    this.touchEndX = event.changedTouches[0].clientX;
+    this.touchEndY = event.changedTouches[0].clientY;
+    this.handleSwipe();
+  }
+
+  handleSwipe() {
+    const diffX = this.touchStartX - this.touchEndX;
+    const diffY = this.touchStartY - this.touchEndY;
+
+    // Ensure horizontal swipe is dominant and exceeds the distance threshold
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > this.touchThreshold) {
+      this.handleNavigation(diffX > 0 ? 'next' : 'previous');
     }
   }
 
@@ -287,6 +325,12 @@ export default class CsGallery {
     // Remove keydown event listener from document
     if (this.keyControls) {
       document.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    // Remove touch event listeners
+    if (this.swipeTarget) {
+      this.swipeTarget.removeEventListener('touchstart', this.touchStartHandler);
+      this.swipeTarget.removeEventListener('touchend', this.touchEndHandler);
     }
 
     // Clear modal if modal is enabled
