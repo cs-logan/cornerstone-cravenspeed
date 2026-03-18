@@ -54,11 +54,14 @@ export default class VehicleSelector {
         const model = this.modelSelect.value;
         const generation = this.yearSelect.value;
 
-        // If the final dropdown is selected and valid, save the state
-        if (level === 'year' && make && model && generation) {
+        if (make && model && generation) {
             const selectedVehicle = { make, model, generation };
-            // This now saves to storage AND updates global state
+            this.currentVehicle = selectedVehicle; // Prevent component UI reset
             VehiclePersistence.save(selectedVehicle);
+        } else if (this.currentVehicle !== null) {
+            // Clear global state if the user changes an active selection to incomplete
+            this.currentVehicle = null; // Prevent component UI reset
+            VehiclePersistence.save(null);
         }
     }
 

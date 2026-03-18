@@ -99,19 +99,20 @@ export default class SearchEngine {
         let genName = genSlug;
 
         // Brand
-        if (registry.brands && registry.brands[makeSlug]) {
+        if (makeSlug && registry.brands && registry.brands[makeSlug]) {
             makeName = registry.brands[makeSlug].name || makeSlug;
         }
 
         // Model & Generation
-        if (registry.models && registry.models[modelSlug]) {
+        if (modelSlug && registry.models && registry.models[modelSlug]) {
             modelName = registry.models[modelSlug].name || modelSlug;
-            if (registry.models[modelSlug].generations && registry.models[modelSlug].generations[genSlug]) {
+            if (genSlug && registry.models[modelSlug].generations && registry.models[modelSlug].generations[genSlug]) {
                 genName = registry.models[modelSlug].generations[genSlug];
             }
         }
 
-        return `${makeName} ${modelName} ${genName}`;
+        const parts = [makeName, modelName, genName].filter(Boolean);
+        return parts.length > 0 ? parts.join(' ') : null;
     }
 
     tokenize(query) {

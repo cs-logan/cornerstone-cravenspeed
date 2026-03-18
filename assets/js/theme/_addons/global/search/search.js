@@ -112,17 +112,18 @@ export default class SearchController {
         if (!this.isEngineInitialized) return;
 
         const currentUrl = window.location.pathname;
-        const vehicleId = vehicle ? vehicle.generation : null;
+        const isVehicleComplete = vehicle && vehicle.make && vehicle.model && vehicle.generation;
+        const vehicleId = isVehicleComplete ? vehicle.generation : null;
 
-        let cleanModel = vehicle ? vehicle.model : null;
-        if (vehicle && vehicle.make && vehicle.model) {
+        let cleanModel = isVehicleComplete ? vehicle.model : null;
+        if (isVehicleComplete) {
             const cleanMake = vehicle.make.toLowerCase().replace(/\s+/g, '');
             if (vehicle.model.toLowerCase().startsWith(cleanMake)) {
                 cleanModel = vehicle.model.substring(cleanMake.length);
             }
         }
 
-        const vehicleName = vehicle 
+        const vehicleName = isVehicleComplete 
             ? this.searchEngine.getVehicleName(vehicle.make, cleanModel, vehicle.generation) 
             : null;
 

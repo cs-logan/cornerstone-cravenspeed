@@ -52,7 +52,9 @@ export default class HomeController extends PageManager {
     checkAndRender() {
         if (!this.searchEngine) return;
 
-        if (this.currentSelection) {
+        const isVehicleComplete = this.currentSelection && this.currentSelection.make && this.currentSelection.model && this.currentSelection.generation;
+
+        if (isVehicleComplete) {
             const { make, model, generation } = this.currentSelection;
             const results = this.searchEngine.findRelated('', generation, Infinity);
             const vehicleName = this.searchEngine.getVehicleName(make, model, generation);

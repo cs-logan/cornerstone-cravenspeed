@@ -89,6 +89,3 @@
 
 ## 📜 Full Context Request
 **Note to Gemini:** Please ingest all files mentioned in the "Project Map." Analyze the relationships between the frontend and backend before suggesting code changes. 
-
-## 🔄 Restart Prompt
-Please review `GEMINI.md`. Ingest any mentioned files in this document or `PRODUCT_MODULE_PLAN.md`. Check the task section to inform yourself on what we will be working on next.
