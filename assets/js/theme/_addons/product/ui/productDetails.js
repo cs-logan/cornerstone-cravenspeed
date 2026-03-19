@@ -70,6 +70,12 @@ export default class ProductDetails {
         return `<a href="${url}" target="_blank" class="button button--primary">View Instructions</a>`;
     }
 
+    _decodeHTML(html) {
+        if (!html) return '';
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.documentElement.textContent;
+    }
+
     _animate(element) {
         if (!element) return;
         element.classList.remove('fade-in');
@@ -117,14 +123,14 @@ export default class ProductDetails {
         }
         if (this.brandElement) {
             if (data.brand_name) {
-                this.brandElement.textContent = data.brand_name;
+                this.brandElement.textContent = this._decodeHTML(data.brand_name);
                 this.brandElement.style.visibility = 'visible';
                 this.brandElement.style.display = '';
                 this._animate(this.brandElement);
             } else {
                 this.brandElement.textContent = '';
-                this.brandElement.style.visibility = '';
-                this.brandElement.style.display = '';
+                this.brandElement.style.visibility = 'hidden';
+                this.brandElement.style.display = 'none';
             }
         }
         if (this.priceElement) {
