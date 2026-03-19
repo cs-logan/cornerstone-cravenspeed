@@ -145,6 +145,7 @@ The product page is a 100% custom implementation replacing default BigCommerce S
 8. **Sample Data.** Files in `/sample-data/` are reference copies of CDN files. **Do not modify them.**
 9. **SKU Handling.** Use the 8-character logic when referencing inventory items.
 10. **Iterative Workflow.** Complete one task, then ask for the next. Do not begin work on new tasks automatically.
+11. **Commit Messages.** Do not include a `Co-Authored-By` line in commit messages.
 
 ### SCSS Linting Rules (stylelint)
 Adhere to these rules in all SCSS edits to pass the CI lint check:
