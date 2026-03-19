@@ -111,7 +111,7 @@ export default class CsGallery {
           this.handleNavigation('previous');
           break;
         case 'slide':
-          if (this.modal) {
+          if (this.modal && !this.galleryModal.open) {
             this.initModal();
           }
           break;
@@ -251,6 +251,15 @@ export default class CsGallery {
     this.galleryModal.style.display = 'flex';
     this.galleryModal.showModal();
 
+    this.backdropHandler = (e) => {
+        e.stopPropagation();
+        const isImage = e.target.tagName === 'IMG';
+        const isNav = !!e.target.closest('[data-gallery-item="next"], [data-gallery-item="previous"]');
+        const isMap = !!e.target.closest('.gallery-map');
+        if (!isImage && !isNav && !isMap) this.closeModal();
+    };
+    this.galleryModal.addEventListener('click', this.backdropHandler);
+
     this.modalGallery = new this.constructor({
         containerClass: 'cs-modal-gallery',
         modal: false,
@@ -268,6 +277,10 @@ export default class CsGallery {
   }
 
   closeModal() {
+    if (this.backdropHandler) {
+        this.galleryModal.removeEventListener('click', this.backdropHandler);
+        this.backdropHandler = null;
+    }
     if (this.modalGallery) {
         this.modalGallery.destroy();
         this.modalGallery = null;
