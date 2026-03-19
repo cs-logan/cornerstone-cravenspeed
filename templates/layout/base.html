@@ -8,12 +8,24 @@
 
     <!-- FCP Optimizations: Establish early connections -->
     <link rel="preconnect" href="https://cdn11.bigcommerce.com" crossorigin>
+    {{#if page_type '===' 'product'}}
+    <link rel="preconnect" href="https://craven-cdn-archetypes.sfo3.cdn.digitaloceanspaces.com" crossorigin>
+    {{/if}}
 
     <!-- FCP Optimizations: Preload store logo -->
     {{#if theme_settings.use_svg_logo}}
         <link rel="preload" as="image" href="{{cdn 'img/logo.svg'}}">
     {{else if theme_settings.logo_size}}
         <link rel="preload" as="image" href="{{getImage settings.store_logo.image 'logo_size'}}">
+    {{/if}}
+
+    <!-- LCP Optimizations: Preload product hero image -->
+    {{#if page_type '===' 'product'}}
+    <link rel="preload" as="image"
+      href="{{#if product.images.length '>' '1'}}{{getImage product.images.[1] 'product_size'}}{{else}}{{getImage product.main_image 'product_size'}}{{/if}}"
+      imagesrcset="{{#if product.images.length '>' '1'}}{{getImageSrcset product.images.[1] use_default_sizes=true}}{{else}}{{getImageSrcset product.main_image use_default_sizes=true}}{{/if}}"
+      imagesizes="(max-width: 800px) 100vw, 50vw"
+      fetchpriority="high">
     {{/if}}
 
     {{{ head.config }}}
