@@ -3,7 +3,7 @@ export default class ProductDetails {
         this.stateManager = stateManager;
         this.lastAliasData = undefined;
         this.lastInventory = undefined;
-        
+
         // Selectors
         this.descriptionElement = document.querySelector('[data-product-description]');
         this.instructionsElement = document.querySelector('[data-product-instructions]');
@@ -16,7 +16,9 @@ export default class ProductDetails {
     }
 
     update(state) {
-        const { aliasData, inventory, archetypeData, blemSelected } = state;
+        const {
+            aliasData, inventory, archetypeData, blemSelected,
+        } = state;
 
         // Optimization: Only update DOM if relevant state (aliasData or inventory) has changed
         if (aliasData === this.lastAliasData && inventory === this.lastInventory && blemSelected === this.lastBlemSelected) return;
@@ -28,7 +30,7 @@ export default class ProductDetails {
 
         if (aliasData) {
             dataToRender = { ...aliasData };
-            
+
             // Override price if blem is selected
             if (blemSelected && aliasData.blem) {
                 dataToRender.price = aliasData.blem.price;
@@ -53,7 +55,7 @@ export default class ProductDetails {
 
     _getStockMessage(item) {
         const { av, a2b } = item;
-        
+
         if (av > 10) return 'Plenty in stock';
         if (av > 0) return `Only ${av} left. Order soon!`;
         if (a2b > 0) return 'In Stock'; // Made to order
@@ -83,7 +85,7 @@ export default class ProductDetails {
         element.classList.add('fade-in');
     }
 
-    render(data, archetypeData) {
+    render(data) {
         if (this.descriptionElement) this.descriptionElement.innerHTML = data.description || '';
         if (this.fitmentNotesElement) {
             if (data.fitment_notes) {
@@ -136,7 +138,7 @@ export default class ProductDetails {
         if (this.priceElement) {
             const price = data.price;
             const salePrice = data.sale_price;
-            
+
             const isValid = (p) => p !== undefined && p !== null && p !== 0 && p !== '0' && !(typeof p === 'string' && p.includes('$0.00'));
 
             if (!isValid(price)) {

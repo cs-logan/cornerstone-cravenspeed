@@ -35,7 +35,7 @@ export default class ResultsPage {
                 ${count} results for '${safeQuery}'
             </h1>
         `;
-        
+
         if (this.heading) {
             this.heading.innerHTML = headingHTML;
         }

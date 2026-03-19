@@ -1,10 +1,10 @@
 import { debounce } from 'lodash';
-import DataManager from "../dataManager"; // Use Global DataManager
-import StateManager from "../stateManager"; // Use Global StateManager
-import SearchEngine from "./searchEngine";
-import QuickSearch from "./ui/quickSearch";
-import ResultsPage from "./ui/resultsPage";
-import ProductGrid from "../ui/productGrid";
+import DataManager from '../dataManager'; // Use Global DataManager
+import StateManager from '../stateManager'; // Use Global StateManager
+import SearchEngine from './searchEngine';
+import QuickSearch from './ui/quickSearch';
+import ResultsPage from './ui/resultsPage';
+import ProductGrid from '../ui/productGrid';
 
 export default class SearchController {
     constructor(context) {
@@ -123,8 +123,8 @@ export default class SearchController {
             }
         }
 
-        const vehicleName = isVehicleComplete 
-            ? this.searchEngine.getVehicleName(vehicle.make, cleanModel, vehicle.generation) 
+        const vehicleName = isVehicleComplete
+            ? this.searchEngine.getVehicleName(vehicle.make, cleanModel, vehicle.generation)
             : null;
 
         const related = this.searchEngine.findRelated(currentUrl, vehicleId);

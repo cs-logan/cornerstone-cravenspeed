@@ -45,7 +45,7 @@ function bindModalAccessibilityEvents() {
 
     // 2. Event Capturing for CLOSING (Prevent "aria-hidden" warning)
     // We must blur focus *before* Foundation sets aria-hidden="true".
-    
+
     const blurIfInModal = () => {
         const active = document.activeElement;
         if (active && active.closest('[data-reveal]')) {

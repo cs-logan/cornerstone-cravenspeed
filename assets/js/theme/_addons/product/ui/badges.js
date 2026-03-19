@@ -41,7 +41,7 @@ export default class Badges {
                 el.setAttribute('data-reveal-id', 'usa-message');
                 return el;
             },
-            'prepend'
+            'prepend',
         );
 
         // 2. Lifetime Warranty Badge (CravenSpeed Brand)
@@ -53,7 +53,7 @@ export default class Badges {
                 el.setAttribute('data-reveal-id', 'warranty-message');
                 return el;
             },
-            'after-usa'
+            'after-usa',
         );
 
         // 3. Free Shipping Badge (Always displayed)
@@ -65,7 +65,7 @@ export default class Badges {
                 el.setAttribute('data-reveal-id', 'shipping-message');
                 return el;
             },
-            'append'
+            'append',
         );
     }
 
@@ -97,10 +97,8 @@ export default class Badges {
                     }
                 }
             }
-        } else {
-            if (existing) {
-                existing.remove();
-            }
+        } else if (existing) {
+            existing.remove();
         }
     }
 

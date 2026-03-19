@@ -62,12 +62,12 @@ export default class FulfillmentStatus {
             hour: 'numeric',
             minute: 'numeric',
             weekday: 'short',
-            hour12: false
+            hour12: false,
         });
 
         const parts = pacificFormatter.formatToParts(now);
-        const pacificHour = parseInt(parts.find(p => p.type === 'hour').value);
-        const pacificMinute = parseInt(parts.find(p => p.type === 'minute').value);
+        const pacificHour = parseInt(parts.find(p => p.type === 'hour').value, 10);
+        const pacificMinute = parseInt(parts.find(p => p.type === 'minute').value, 10);
         const weekday = parts.find(p => p.type === 'weekday').value; // 'Sun','Mon',...'Sat'
 
         const isBefore2PM = pacificHour < 14 || (pacificHour === 14 && pacificMinute === 0);

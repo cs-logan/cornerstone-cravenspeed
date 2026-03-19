@@ -68,7 +68,7 @@ $cs-button-height: 50px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  color: stencilColor("color-textBase");
+  color: stencilColor('color-textBase');
 
   h1,
   h2,
@@ -83,7 +83,7 @@ $cs-button-height: 50px;
 }
 
 .cs-product-above-fold-layout {
-  margin: spacing("half");
+  margin: spacing('half');
 }
 
 // -----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ $cs-button-height: 50px;
 }
 
 .gallery-caption {
-  height: spacing("double");
+  height: spacing('double');
 }
 
 // -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ $cs-button-height: 50px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: spacing("quarter");
+  margin-top: spacing('quarter');
   gap: spacing('quarter');
 
   .cs-product-header {
@@ -120,7 +120,7 @@ $cs-button-height: 50px;
   .cs-product-meta-row {
     display: flex;
     justify-content: flex-start;
-    gap: spacing("quarter");
+    gap: spacing('quarter');
     align-items: center;
   }
 
@@ -131,7 +131,7 @@ $cs-button-height: 50px;
   #product-brand,
   #product-sku,
   #product-fulfillment {
-    color: stencilColor("color-textSecondary");
+    color: stencilColor('color-textSecondary');
   }
 
   .cs-product-title {
@@ -160,8 +160,8 @@ $cs-button-height: 50px;
     }
 
     .rating-count {
-      margin-left: spacing("half");
-      color: stencilColor("color-textBase");
+      margin-left: spacing('half');
+      color: stencilColor('color-textBase');
     }
 
   }
@@ -188,7 +188,7 @@ $cs-button-height: 50px;
     font-size: 1.5rem;
     font-weight: 700;
     min-height: 1.875rem;
-    color: stencilColor("color-primary");
+    color: stencilColor('color-primary');
     display: flex;
     align-items: center;
     line-height: 1.2;
@@ -213,7 +213,7 @@ $cs-button-height: 50px;
   flex-direction: column;
   gap: spacing('half');
   width: 100%;
-  color: stencilColor("color-textBase");
+  color: stencilColor('color-textBase');
 }
 
 .cs-form-field {
@@ -236,8 +236,8 @@ $cs-button-height: 50px;
   background-color: #fff;
 
   &:focus {
-    border-color: stencilColor("color-primary");
-    box-shadow: 0 0 4px stencilColor("color-primary");
+    border-color: stencilColor('color-primary');
+    box-shadow: 0 0 4px stencilColor('color-primary');
     outline: none;
   }
 
@@ -249,7 +249,7 @@ $cs-button-height: 50px;
 }
 
 #product-blem {
-  min-height: spacing("single");
+  min-height: spacing('single');
   display: flex;
   align-items: center;
 
@@ -264,7 +264,7 @@ $cs-button-height: 50px;
 
   .form-label {
     margin-bottom: 0;
-    margin-left: spacing("quarter");
+    margin-left: spacing('quarter');
   }
 }
 
@@ -285,9 +285,9 @@ $cs-button-height: 50px;
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
     &:not(:disabled) {
-      background-color: stencilColor("color-primary");
+      background-color: stencilColor('color-primary');
       color: #fff;
-      border-color: stencilColor("color-primary");
+      border-color: stencilColor('color-primary');
 
       &:hover,
       &:focus {
@@ -303,12 +303,12 @@ $cs-button-height: 50px;
     &.is-sticky {
       position: fixed;
       bottom: 15px;
-      left: spacing("half");
-      width: calc(100% - #{spacing("single")});
+      left: spacing('half');
+      width: calc(100% - #{spacing('single')});
       z-index: 100;
       box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
 
-      @include breakpoint("medium") { // Disable stickiness on desktop
+      @include breakpoint('medium') { // Disable stickiness on desktop
         position: static;
         width: 100%;
         box-shadow: none;
@@ -326,14 +326,14 @@ $cs-button-height: 50px;
   margin: 0 auto;
   display: flex;
   flex-wrap: nowrap;
-  gap: spacing("half");
+  gap: spacing('half');
   justify-content: center;
   align-items: stretch;
-  min-height: spacing("single") * 2.5;
+  min-height: spacing('single') * 2.5;
   opacity: 0;
   transition: opacity 0.5s ease;
 
-  @include breakpoint("medium") {
+  @include breakpoint('medium') {
     width: 70%;
   }
 
@@ -341,7 +341,7 @@ $cs-button-height: 50px;
     opacity: 1;
   }
 
-  &>* {
+  > * {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -349,7 +349,7 @@ $cs-button-height: 50px;
     align-items: center;
     text-align: center;
     border: 2px solid #d7d7d7;
-    padding: spacing("quarter");
+    padding: spacing('quarter');
     cursor: pointer;
     transition: all 0.2s ease;
     box-sizing: border-box;
@@ -360,20 +360,20 @@ $cs-button-height: 50px;
     }
 
     &:hover {
-      border-color: stencilColor("color-primary");
+      border-color: stencilColor('color-primary');
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
   }
 
-  &>* .badge-text {
+  > * .badge-text {
     font-size: 0.75rem;
-    font-family: stencilFontFamily("headings-font");
-    font-weight: stencilFontWeight("headings-font");
+    font-family: stencilFontFamily('headings-font');
+    font-weight: stencilFontWeight('headings-font');
     margin: 0;
     line-height: 1.2;
     word-break: break-word;
 
-    @include breakpoint("medium") {
+    @include breakpoint('medium') {
       font-size: 0.85rem;
     }
   }
@@ -383,7 +383,7 @@ $cs-button-height: 50px;
     height: auto;
     max-width: 100%;
     object-fit: contain;
-    margin-bottom: spacing("quarter");
+    margin-bottom: spacing('quarter');
   }
 }
 
@@ -392,7 +392,6 @@ $cs-button-height: 50px;
 // -----------------------------------------------------------------------------
 .tab-content,
 .modal-content {
-
   h3,
   h4 {
     border-bottom: 2px solid stencilColor('color-primary');
@@ -400,7 +399,7 @@ $cs-button-height: 50px;
   }
 
   .pdpRow {
-    padding: 0 spacing("half");
+    padding: 0 spacing('half');
   }
 
   .product-instructions {
@@ -424,14 +423,14 @@ $cs-button-height: 50px;
 .descriptionContainer {
   display: flex;
   flex-direction: column;
-  gap: spacing("double");
+  gap: spacing('double');
   max-width: 1440px;
 }
 
 .pdpRow {
   display: flex;
   flex-direction: column;
-  gap: spacing("single");
+  gap: spacing('single');
 
   &:has(> :only-child) {
     text-align: center;
@@ -446,28 +445,28 @@ $cs-button-height: 50px;
     order: 1;
     display: flex;
     flex-direction: column;
-    gap: spacing("quarter");
+    gap: spacing('quarter');
 
-    &>*:first-child {
+    > *:first-child {
       margin-top: 0;
     }
   }
 
   .productText h3 {
-    margin-top: spacing("quarter");
+    margin-top: spacing('quarter');
   }
 
   .productGraphic {
     order: 2;
   }
 
-  @include breakpoint("medium") {
+  @include breakpoint('medium') {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
 
-    &>* {
-      padding: spacing("single");
+    > * {
+      padding: spacing('single');
     }
 
     &:nth-child(even) {
@@ -495,7 +494,7 @@ $cs-button-height: 50px;
       grid-template-columns: 1.4fr 1fr;
       width: 100%;
       max-width: $cs-product-max-width;
-      margin: spacing("double") auto;
+      margin: spacing('double') auto;
       gap: spacing('double');
     }
 
@@ -543,20 +542,20 @@ $cs-button-height: 50px;
         justify-content: flex-end;
       }
 
-      [data-product-form-field="make"] {
+      [data-product-form-field='make'] {
         grid-column: span 3;
       }
 
-      [data-product-form-field="model"] {
+      [data-product-form-field='model'] {
         grid-column: span 4;
       }
 
-      [data-product-form-field="year"] {
+      [data-product-form-field='year'] {
         grid-column: span 5;
       }
 
-      [data-product-form-field="option-one"],
-      [data-product-form-field="option-two"] {
+      [data-product-form-field='option-one'],
+      [data-product-form-field='option-two'] {
         grid-column: span 6;
       }
     }
@@ -570,9 +569,9 @@ $cs-button-height: 50px;
   display: none;
 
   .cs-product-message--vehicle-incompatible {
-    border-left: 4px solid stencilColor("color-warning");
-    background-color: stencilColor("color-warningLight");
-    color: stencilColor("color-warning");
+    border-left: 4px solid stencilColor('color-warning');
+    background-color: stencilColor('color-warningLight');
+    color: stencilColor('color-warning');
     padding: spacing('half');
     text-align: center;
     width: 100%;
@@ -588,8 +587,8 @@ $cs-button-height: 50px;
     display: block;
   }
 
-  [data-product-form-field="option-one"],
-  [data-product-form-field="option-two"] {
+  [data-product-form-field='option-one'],
+  [data-product-form-field='option-two'] {
     display: none;
   }
 }
@@ -611,47 +610,47 @@ $cs-button-height: 50px;
   border-radius: 4px;
 
   .modal-content {
-    padding: spacing("single");
-    padding-top: spacing("double"); // Clear close button
+    padding: spacing('single');
+    padding-top: spacing('double'); // Clear close button
     color: #333; // Force dark text for contrast
 
-    @include breakpoint("medium") {
-      padding: spacing("double");
-      padding-top: spacing("double");
+    @include breakpoint('medium') {
+      padding: spacing('double');
+      padding-top: spacing('double');
     }
 
     h4 {
       font-weight: 700;
       margin-top: 0;
-      margin-bottom: spacing("half");
+      margin-bottom: spacing('half');
       color: #000;
-      padding-right: spacing("double"); // Ensure title doesn't hit close button
+      padding-right: spacing('double'); // Ensure title doesn't hit close button
     }
 
     p,
     li {
       font-size: 1rem;
       line-height: 1.6;
-      margin-bottom: spacing("half");
+      margin-bottom: spacing('half');
     }
 
     ul {
-      margin-left: spacing("single");
+      margin-left: spacing('single');
     }
 
     a {
-      color: stencilColor("color-primary");
+      color: stencilColor('color-primary');
     }
 
     // Layouts
     .modal-layout {
       display: flex;
       flex-direction: column;
-      gap: spacing("single");
+      gap: spacing('single');
     }
 
     .modal-layout--two-col {
-      @include breakpoint("medium") {
+      @include breakpoint('medium') {
         flex-direction: row;
         align-items: flex-start;
 
@@ -666,9 +665,9 @@ $cs-button-height: 50px;
     }
 
     .modal-col-media {
-      margin-top: spacing("half");
+      margin-top: spacing('half');
 
-      @include breakpoint("medium") {
+      @include breakpoint('medium') {
         margin-top: 0;
       }
 
@@ -679,10 +678,10 @@ $cs-button-height: 50px;
     }
 
     .modal-footer {
-      margin-top: spacing("single");
+      margin-top: spacing('single');
       display: flex;
       justify-content: flex-end;
-      gap: spacing("half");
+      gap: spacing('half');
     }
   }
 }

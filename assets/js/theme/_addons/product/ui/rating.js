@@ -10,7 +10,7 @@ export default class RatingDisplay {
         this.unsubscribe = null;
 
         this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
-        
+
         if (this.ratingLink) {
             this.ratingLink.addEventListener('click', this._handleRatingClick.bind(this));
         }
@@ -32,7 +32,7 @@ export default class RatingDisplay {
         if (reviewsLink) {
             const reviewsTitle = reviewsLink.parentNode;
             reviewsTitle.classList.add('is-active');
-            
+
             const reviewsTab = document.querySelector('#tab-reviews');
             if (reviewsTab) reviewsTab.classList.add('is-active');
 
@@ -46,7 +46,7 @@ export default class RatingDisplay {
         if (!archetypeData) return;
 
         const { archetype_average_review, archetype_review_count } = archetypeData;
-        
+
         // Reset stars to empty state
         const stars = Array.from(this.starContainer.children);
         stars.forEach(star => {

@@ -54,8 +54,8 @@ h6 {
   margin-top: $mobile-spacing;
 }
 
-#cs-search-input, 
-.cs-form-select, 
+#cs-search-input,
+.cs-form-select,
 .cs-product-archetype button,
 .slide img,
 .slides-wrapper,
@@ -64,11 +64,11 @@ h6 {
 .cs-product-card,
 .product-instructions a,
 .productGraphic > * {
-  border-radius: spacing("half");
-} 
+  border-radius: spacing('half');
+}
 
 .cs-product-tabs-container .tab {
-  border-radius: spacing("half") spacing("half") 0 0;
+  border-radius: spacing('half') spacing('half') 0 0;
 }
 
 #product-badges > * {
@@ -114,7 +114,7 @@ h6 {
 
 //Overrides header bottom border in _header.scss line 38
 .header {
-  border-bottom: none;
+  border-bottom: 0;
 }
 
 // Begin Header Top-------------------------------------------------------------
@@ -253,7 +253,7 @@ img.svg-logo {
 }
 
 .navUser-action-divider {
-  color: stencilColor("color-white");
+  color: stencilColor('color-white');
 }
 
 .navUser-item--cart {
@@ -280,20 +280,20 @@ img.svg-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: spacing("half") auto;
-    gap: spacing("half")
+    margin: spacing('half') auto;
+    gap: spacing('half');
   }
 }
 
 .navPages-list.cs-nav {
-  @include breakpoint("medium") {
+  @include breakpoint('medium') {
     display: flex;
-    gap: spacing("half");
+    gap: spacing('half');
   }
 }
 
 .navPages a {
-  @include breakpoint("medium") {
+  @include breakpoint('medium') {
     padding: 0;
   }
 }
@@ -309,7 +309,7 @@ img.svg-logo {
     display: block;
     flex: 1;
     max-width: 25rem;
-    border: none;
+    border: 0;
     padding: 0;
   }
 }
@@ -319,9 +319,9 @@ img.svg-logo {
 }
 
 #cs-search-input {
-  border: none;
+  border: 0;
   width: 100%;
-  padding: 0 spacing("half");
+  padding: 0 spacing('half');
 }
 
 .autocomplete {
@@ -337,11 +337,11 @@ img.svg-logo {
   right: 0;
   font-size: 1rem;
   // border: 2px solid stencilColor("navPages-subMenu-backgroundColor");
-  border-top: none;
+  border-top: 0;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   background-color: stencilColor('navPages-subMenu-backgroundColor');
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px, rgba(0, 0, 0, 0.23) 0 3px 6px;
 }
 
 .blocklink div {
@@ -430,138 +430,137 @@ img.svg-logo {
 //
 // -----------------------------------------------------------------------------
 .cs-product-grid-wrapper {
-    position: relative;
-    margin-bottom: spacing('single');
-    padding: 0 spacing("half");
-  
-    &.is-collapsed {
-      .cs-grid-fade {
-        display: block;
-      }
-    }
-  
-    &:not(.is-collapsed) {
-      .cs-grid-fade {
-        display: none;
-      }
-    }
+  position: relative;
+  margin-bottom: spacing('single');
+  padding: 0 spacing('half');
 
-    @include breakpoint("medium") {
-      padding: 0;
+  &.is-collapsed {
+    .cs-grid-fade {
+      display: block;
     }
+  }
 
-  }
-  
-  .product-grid-header[data-product-grid-header]{
-      border-bottom: 2px solid stencilColor('color-primary');
-      margin-top: 0;
-      margin-bottom: spacing('single');
-  }
-  
-  .productGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: spacing('single');
-    
-    // Fix for Foundation clearfix pseudo-elements becoming grid items
-    &::before,
-    &::after {
+  &:not(.is-collapsed) {
+    .cs-grid-fade {
       display: none;
     }
+  }
 
-    @include breakpoint('small') {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  
-    &.is-collapsed {
-      .cs-product-card:nth-child(n + 7) {
-        display: none;
-      }
-    }
+  @include breakpoint('medium') {
+    padding: 0;
   }
-  
-  .cs-product-card {
-    background-color: #ffffff;
-    overflow: hidden;
-    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
-    display: flex;
-    flex-direction: column;
-  
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-  
-    .cs-product-card-image-wrapper {
-      position: relative;
-      padding-top: 75%; // Aspect Ratio 1:1
-      overflow: hidden;
-    }
-  
-    .cs-product-card-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  
-    .cs-product-card-details {
-      padding: spacing('half');
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      justify-content: space-between;
-    }
-  
-    .cs-card-title {
-      font-size: stencilNumber('fontSize-root');
-      font-weight: fontWeight('normal');
-      margin: 0 0 spacing('quarter') 0;
-  
-      .cs-card-title-link {
-        text-decoration: none;
-        color: stencilColor('color-primary');
-  
-        &:hover {
-          color: stencilColor('color-textBase--hover');
-        }
-      }
-    }
-  
-    .cs-card-price {
-      font-weight: fontWeight('bold');
-      color: stencilColor('color-price');
-      min-height: 1.5rem;
-      flex-shrink: 0;
-      font-size: stencilNumber('fontSize-root');
-      line-height: 1.5;
-      display: block;
-      margin-top: auto;
-    }
-  }
-  
-  .cs-grid-fade {
+}
+
+.product-grid-header[data-product-grid-header] {
+  border-bottom: 2px solid stencilColor('color-primary');
+  margin-top: 0;
+  margin-bottom: spacing('single');
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing('single');
+
+  // Fix for Foundation clearfix pseudo-elements becoming grid items
+  &::before,
+  &::after {
     display: none;
+  }
+
+  @include breakpoint('small') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &.is-collapsed {
+    .cs-product-card:nth-child(n + 7) {
+      display: none;
+    }
+  }
+}
+
+.cs-product-card {
+  background-color: #fff;
+  overflow: hidden;
+  transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .cs-product-card-image-wrapper {
+    position: relative;
+    padding-top: 75%; // Aspect Ratio 1:1
+    overflow: hidden;
+  }
+
+  .cs-product-card-image {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 100px;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f5f5f5 100%);
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .cs-grid-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: spacing('single');
+    height: 100%;
+    object-fit: contain;
   }
 
+  .cs-product-card-details {
+    padding: spacing('half');
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .cs-card-title {
+    font-size: stencilNumber('fontSize-root');
+    font-weight: fontWeight('normal');
+    margin: 0 0 spacing('quarter');
+
+    .cs-card-title-link {
+      text-decoration: none;
+      color: stencilColor('color-primary');
+
+      &:hover {
+        color: stencilColor('color-textBase--hover');
+      }
+    }
+  }
+
+  .cs-card-price {
+    font-weight: fontWeight('bold');
+    color: stencilColor('color-price');
+    min-height: 1.5rem;
+    flex-shrink: 0;
+    font-size: stencilNumber('fontSize-root');
+    line-height: 1.5;
+    display: block;
+    margin-top: auto;
+  }
+}
+
+.cs-grid-fade {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f5f5f5 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cs-grid-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: spacing('single');
+}
+
 #more-products {
-  margin-top: spacing("single");
+  margin-top: spacing('single');
 
   .productGrid {
     padding: 0;
@@ -624,7 +623,7 @@ img.svg-logo {
 #cinchRowTwo {
   display: flex;
   flex: 1;
-  margin: 2em 2em;
+  margin: 2em;
   gap: 1rem;
   justify-content: center;
   align-items: center;
@@ -646,7 +645,7 @@ img.svg-logo {
   max-width: 100%;
   display: flex;
   flex: 1;
-  margin: 2em 2em;
+  margin: 2em;
   justify-content: center;
   align-items: center;
   flex-direction: row;
@@ -673,7 +672,7 @@ img.svg-logo {
   #cinchRowTwo,
   #cinchRowThree {
     flex-direction: column;
-    margin: 0em;
+    margin: 0;
   }
 
   #whatCinch,
@@ -1152,7 +1151,7 @@ img.svg-logo {
 #cs-team-photo {
   width: 100%;
   height: 600px;
-  background-image: url(https://www.cravenspeed.com/product_images/uploaded_images/group-1.jpg);
+  background-image: url('https://www.cravenspeed.com/product_images/uploaded_images/group-1.jpg');
   background-repeat: no-repeat;
   background-position: bottom center;
   background-size: cover;
@@ -1188,7 +1187,6 @@ img.svg-logo {
 }
 
 .cs-profile-info {
-
   h3,
   h4 {
     margin: 0;
@@ -1282,7 +1280,7 @@ h4 {
   }
 
   .make-model-list li {
-    border: 2px solid #222222;
+    border: 2px solid #222;
     border-radius: 10px;
     text-align: center;
     min-width: 0;
@@ -1291,7 +1289,7 @@ h4 {
   }
 
   .make-model-list li a {
-    padding: .5rem 0;
+    padding: 0.5rem 0;
     display: block;
     font-size: 1.5rem;
     text-decoration: none;
@@ -1468,7 +1466,7 @@ h4 {
   display: none;
   background-color: stencilColor('color-white');
   border: 2px solid stencilColor('color-secondary');
-  border-top: none;
+  border-top: 0;
 
   a {
     color: stencilColor('color-textBase');
@@ -1875,7 +1873,7 @@ ul.policyInfo {
 }
 
 .note-text {
-  color: #000000;
+  color: #000;
   font-weight: bold;
 }
 
@@ -1939,7 +1937,7 @@ li.mobile-number {
     text-decoration: none;
     font-size: 24px;
     font-weight: bold;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 5px;
     display: inline;
     align-self: center;

@@ -42,7 +42,7 @@ const OptionsPersistence = {
             console.error('Failed to load options from storage', e);
             return null;
         }
-    }
+    },
 };
 
 export default OptionsPersistence;

@@ -31,8 +31,8 @@ export default class Product extends PageManager {
         // Init collapsible
         collapsibleFactory();
 
-        //Only create productDetails if not using CS custom product template
-        if(!document.querySelector("#cs-product-container")) {
+        // Only create productDetails if not using CS custom product template
+        if (!document.querySelector('#cs-product-container')) {
             this.productDetails = new ProductDetails($('.productView'), this.context, window.BCData.product_attributes);
             this.productDetails.setProductVariant();
         }

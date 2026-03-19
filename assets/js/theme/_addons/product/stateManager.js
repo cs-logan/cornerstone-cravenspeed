@@ -28,19 +28,19 @@ export default class StateManager {
          * }}
          */
         this.state = {
-            // The root data object for the product archetype.
-            archetypeData: archetypeData, 
-            
+            // The root data object for the product archetype (shorthand).
+            archetypeData,
+
             // Key-value store of the user's current selections (e.g., { "make": "MINI", "model": "F56" }).
             selections: {},
-            
+
             // The filename of the currently resolved product variant, e.g., "cs-ab-123.json".
             currentAlias: null,
             // The fetched data corresponding to the currentAlias.
             aliasData: null,
-            
+
             // Options available to the user based on the current selections.
-            availableOptions: {}, 
+            availableOptions: {},
             // Inventory data for the current alias.
             inventory: null,
             // Flag indicating if the "blemished" (scratch and dent) option is selected.
@@ -56,7 +56,7 @@ export default class StateManager {
 
         this._resolveAutoSelections();
     }
-    
+
     /**
      * Subscribes a callback function to be executed whenever the state changes.
      * @param {Function} callback The function to call with the updated state.
@@ -73,9 +73,9 @@ export default class StateManager {
      * to ensure the user is always presented with a valid path.
      * @param {{option: string, value: string}} selection The option and its new value.
      */
-    updateSelection({option, value}) {
+    updateSelection({ option, value }) {
         const optionOrder = this._getOptionOrder();
-        
+
         this.state.selections[option] = value;
 
         // Clear subsequent selections
@@ -184,7 +184,7 @@ export default class StateManager {
      */
     _getUniversalRoot() {
         const { archetypeData } = this.state;
-        
+
         // If flat structure (no make_model_index), return root
         if (!archetypeData.make_model_index) return archetypeData;
 
@@ -193,7 +193,7 @@ export default class StateManager {
             // e.g. allvehicles -> allvehicles -> allvehicles
             const make = Object.values(archetypeData.make_model_index)[0];
             const model = Object.values(make.models)[0];
-            
+
             // Check if the generation key is the alias itself (no-option universal products)
             const genKey = Object.keys(model.generations)[0];
             if (genKey && genKey.endsWith('.json')) {
@@ -216,7 +216,9 @@ export default class StateManager {
      */
     _traverseSelections() {
         const { selections, archetypeData } = this.state;
-        const { make_model_index, option_title, sub_option_title, universal_product } = archetypeData;
+        const {
+            make_model_index, option_title, sub_option_title, universal_product,
+        } = archetypeData;
 
         if (universal_product) {
             let currentLevel = this._getUniversalRoot();
@@ -244,9 +246,8 @@ export default class StateManager {
                         return nextNode;
                     }
                     currentLevel = nextNode;
-                } else {
-                    return null;
                 }
+                return null;
             }
 
             // 2. Sub-Options
@@ -256,9 +257,8 @@ export default class StateManager {
 
                 if (currentLevel.sub_options && currentLevel.sub_options[selection]) {
                     return selection;
-                } else {
-                    return null;
                 }
+                return null;
             }
 
             // No options? Check for direct alias
@@ -353,7 +353,9 @@ export default class StateManager {
      */
     _updateAvailableOptions() {
         const { archetypeData, selections } = this.state;
-        const { make_model_index, option_title, sub_option_title, universal_product } = archetypeData;
+        const {
+            make_model_index, option_title, sub_option_title, universal_product,
+        } = archetypeData;
 
         const availableOptions = {};
 
@@ -367,7 +369,7 @@ export default class StateManager {
                     value = k.substring(stripPrefix.length);
                 }
                 return {
-                    value: value,
+                    value,
                     label: (entry && entry.name) ? entry.name : k,
                 };
             }).sort((a, b) => a.label.localeCompare(b.label));
@@ -412,8 +414,8 @@ export default class StateManager {
         if (currentNode) {
             availableOptions.model = getOptions(currentNode, 'models', selections.make);
             if (selections.model && currentNode.models) {
-                currentNode = currentNode.models[selections.model] || 
-                              (selections.make ? currentNode.models[selections.make + selections.model] : null) || 
+                currentNode = currentNode.models[selections.model] ||
+                              (selections.make ? currentNode.models[selections.make + selections.model] : null) ||
                               null;
             } else {
                 currentNode = null;
@@ -424,7 +426,7 @@ export default class StateManager {
         if (currentNode) {
             availableOptions.generation = getOptions(currentNode, 'generations', selections.make);
             if (selections.generation && currentNode.generations) {
-                const nextNode = currentNode.generations[selections.generation] || 
+                const nextNode = currentNode.generations[selections.generation] ||
                                  (selections.make ? currentNode.generations[selections.make + selections.generation] : null);
                 currentNode = (typeof nextNode === 'object') ? nextNode : null;
             } else {
@@ -435,7 +437,7 @@ export default class StateManager {
         // 4. Option
         if (currentNode && option_title) {
             availableOptions[option_title] = getOptions(currentNode, 'options');
-            
+
             const selectedOption = selections[option_title];
             if (selectedOption && currentNode.options && currentNode.options[selectedOption]) {
                 const nextNode = currentNode.options[selectedOption];
@@ -475,9 +477,8 @@ export default class StateManager {
         const { option_title, sub_option_title, universal_product } = this.state.archetypeData;
         if (universal_product) {
             return [option_title, sub_option_title].filter(Boolean);
-        } else {
-            return ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
         }
+        return ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
     }
 
     /**

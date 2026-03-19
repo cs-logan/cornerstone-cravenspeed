@@ -77,7 +77,7 @@ export default class BlemProducts {
 
     _renderLink(savings) {
         const formattedSavings = savings.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-        
+
         // We use data-reveal-id to leverage Foundation's built-in modal trigger
         this.container.innerHTML = `
             <a href="#" data-reveal-id="${this.modalId}" class="blem-link">

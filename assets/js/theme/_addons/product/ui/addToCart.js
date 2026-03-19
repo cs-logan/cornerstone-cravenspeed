@@ -50,7 +50,7 @@ export default class AddToCart {
 
         window.addEventListener('scroll', this.scrollHandler, { passive: true });
         window.addEventListener('resize', this.scrollHandler, { passive: true });
-        
+
         // Initial check
         this.checkSticky();
     }
@@ -58,7 +58,7 @@ export default class AddToCart {
     checkSticky() {
         if (!this.container) return;
         const rect = this.container.getBoundingClientRect();
-        
+
         if (rect.bottom < window.innerHeight - this.stickyOffset) {
             this.button.classList.add('is-sticky');
         } else {
@@ -110,8 +110,6 @@ export default class AddToCart {
             }
 
             if (isStocked) {
-                const wasDisabled = this.button.disabled;
-
                 // Enable button
                 this.button.disabled = false;
                 this.button.textContent = this.defaultButtonText;
@@ -148,12 +146,8 @@ export default class AddToCart {
         const formData = new FormData(this.form);
 
         this.cartManager.addToCart(formData)
-            .then((response) => {
-                // Modal logic is handled in CartManager
-            })
             .catch((error) => {
                 console.error('Error adding to cart:', error);
-                // TODO: Handle error UI
             })
             .finally(() => {
                 this.button.classList.remove('loading');

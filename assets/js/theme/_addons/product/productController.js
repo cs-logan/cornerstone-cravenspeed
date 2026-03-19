@@ -39,11 +39,13 @@ export default class ProductController {
             ]);
 
             archetypeData.archetypeName = this.archetypeName;
-            
+
             const resolvedSelection = resolveUrlToSelection(window.location.pathname, archetypeData);
 
             if (resolvedSelection && Object.keys(resolvedSelection).length > 0) {
-                const { make, model, generation, ...options } = resolvedSelection;
+                const {
+                    make, model, generation, ...options
+                } = resolvedSelection;
 
                 // Seed Vehicle Persistence if fitment is present in the URL
                 if (make && model && generation) {
@@ -80,12 +82,11 @@ export default class ProductController {
             this.lastKnownOptions = initialGlobalState.options?.[this.archetypeName];
 
             this.handleGlobalStateChange(initialGlobalState);
-            
+
             // Trigger the initial alias data fetch if a valid alias was resolved
             if (this.stateManager.getState().currentAlias) {
                 this.handleLocalStateChange(this.stateManager.getState());
             }
-            
         } catch (error) {
             console.error(`Failed to load archetype data for ${this.archetypeName}:`, error);
         }

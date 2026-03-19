@@ -29,12 +29,12 @@ export class MobileMenuToggle {
         headerSelector = '.header',
         menuSelector = '#menu',
         scrollViewSelector = '.navPages',
-        supportInfoSelector = '.support-info' //cs added the support info element to the mobile menu toggle
+        supportInfoSelector = '.support-info', // cs added the support info element to the mobile menu toggle
     } = {}) {
         this.$body = $('body');
         this.$menu = $(menuSelector);
         this.$navList = $('.navPages-list.navPages-list-depth-max');
-        this.$supportInfo = $(supportInfoSelector);  //cs added the support info element to the mobile menu toggle
+        this.$supportInfo = $(supportInfoSelector); // cs added the support info element to the mobile menu toggle
         this.$header = $(headerSelector);
         this.$scrollView = $(scrollViewSelector, this.$menu);
         this.$subMenus = this.$navList.find('.navPages-action');
@@ -121,7 +121,7 @@ export class MobileMenuToggle {
 
         this.$menu.addClass('is-open');
 
-        this.$supportInfo.addClass('is-open'); //added the support info element to the mobile menu toggle
+        this.$supportInfo.addClass('is-open'); // added the support info element to the mobile menu toggle
 
         this.$header.addClass('is-open');
         this.$scrollView.scrollTop(0);
@@ -140,7 +140,7 @@ export class MobileMenuToggle {
 
         this.$menu.removeClass('is-open');
 
-        this.$supportInfo.removeClass('is-open'); //added the support info element to the mobile menu toggle
+        this.$supportInfo.removeClass('is-open'); // added the support info element to the mobile menu toggle
 
         this.$header.removeClass('is-open');
 

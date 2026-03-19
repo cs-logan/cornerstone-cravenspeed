@@ -28,7 +28,7 @@ const VehiclePersistence = {
         } catch (e) {
             console.error('Failed to save vehicle to storage', e);
         }
-    }
+    },
 };
 
 export default VehiclePersistence;

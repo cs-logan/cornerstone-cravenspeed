@@ -8,8 +8,6 @@ import 'slick-carousel';
 import { setCarouselState, onSlickCarouselChange, onUserCarouselChange } from '../common/carousel';
 
 export default function (context) {
-    console.log("quick view")
-
     const modal = defaultModal();
 
     $('body').on('click', '.quickview', event => {

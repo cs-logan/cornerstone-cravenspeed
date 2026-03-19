@@ -95,7 +95,7 @@ export default class VehicleSelector {
             const makeSlug = this.makeSelect.value;
             if (makeSlug && this.registry.brands[makeSlug]) {
                 const modelSlugs = this.registry.brands[makeSlug].models || [];
-                const models = modelSlugs.map(slug => this.registry.models[slug] ? { slug, name: this.registry.models[slug].name } : null)
+                const models = modelSlugs.map(slug => (this.registry.models[slug] ? { slug, name: this.registry.models[slug].name } : null))
                     .filter(Boolean).sort((a, b) => a.name.localeCompare(b.name));
                 models.forEach(m => this.addOption(this.modelSelect, m.slug, m.name));
             }

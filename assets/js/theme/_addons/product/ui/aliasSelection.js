@@ -14,7 +14,7 @@ export default class AliasSelection {
         this.form = document.querySelector('.cs-product-form');
         this.unsubscribe = null;
         this.changeHandler = null;
-        
+
         this._bindEvents();
         this._initialize();
     }
@@ -59,9 +59,9 @@ export default class AliasSelection {
         if (this.persistenceHandled || !archetypeData || !archetypeData.archetypeName) return;
 
         const selections = {};
-        
+
         const globalState = GlobalStateManager.getState();
-        
+
         // 1. Vehicle Data from Global State
         if (globalState.vehicle && globalState.vehicle.selected) {
             this.persistedVehicle = globalState.vehicle.selected;
@@ -74,16 +74,14 @@ export default class AliasSelection {
         if (persistedOptions) {
             Object.assign(selections, persistedOptions);
         }
-        
+
         this.persistenceHandled = true;
         this.stateManager.setInitialSelections(selections);
     }
 
-
-
     update(state) {
         const { availableOptions, selections, archetypeData } = state;
-        
+
         if (!archetypeData) return;
 
         // Lazy load persistence if it wasn't ready at init
@@ -92,7 +90,9 @@ export default class AliasSelection {
             return; // Exit and wait for re-render triggered by setInitialSelections
         }
 
-        const { archetypeName, option_title, sub_option_title, universal_product } = archetypeData;
+        const {
+            archetypeName, option_title, sub_option_title, universal_product,
+        } = archetypeData;
 
         // --- Persistence ---
         if (this.persistenceHandled) {
@@ -141,14 +141,6 @@ export default class AliasSelection {
             this._updateVisibility(input, rawOption, parentKey, selections, optionsData, archetypeData);
             this._updateInputOptions(input, rawOption, optionKey, optionsData, currentVal);
         });
-
-        const nextInput = Array.from(inputs).find(input => !input.disabled && !input.value);
-        if (nextInput) {
-            // nextInput.focus();
-        } else {
-            const addToCart = document.getElementById('product-add-button');
-            // if (addToCart) addToCart.focus();
-        }
     }
 
     _getParentKey(rawOption, archetypeData) {
@@ -164,7 +156,7 @@ export default class AliasSelection {
         const wrapper = input.closest('.cs-form-field') || input.closest('.form-field') || input;
         const isJsonEndpoint = optionsData && optionsData.length === 1 && optionsData[0].value.endsWith('.json');
         const { universal_product } = archetypeData;
-        
+
         let shouldShow = false;
 
         if (universal_product) {
@@ -178,17 +170,13 @@ export default class AliasSelection {
             // First option (usually depends on generation)
             if (parentKey === 'generation') {
                 if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
-            } 
-            // Sub-options (depend on parent option)
-            else if (parentKey && selections[parentKey]) {
+            } else if (parentKey && selections[parentKey]) { // Sub-options (depend on parent option)
                 if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
             }
-        } else {
-            if (['make', 'model', 'generation'].includes(rawOption)) {
-                shouldShow = true;
-            } else if (parentKey && selections[parentKey]) {
-                if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
-            }
+        } else if (['make', 'model', 'generation'].includes(rawOption)) {
+            shouldShow = true;
+        } else if (parentKey && selections[parentKey]) {
+            if (optionsData && optionsData.length > 0 && !isJsonEndpoint) shouldShow = true;
         }
 
         wrapper.style.display = '';
@@ -204,22 +192,21 @@ export default class AliasSelection {
 
     _updateInputOptions(input, rawOption, optionKey, optionsData, currentVal) {
         if (optionsData && optionsData.length > 0) {
-            
             const placeholder = this._getPlaceholder(rawOption);
 
             // Reset options, keeping a default placeholder
             input.innerHTML = `<option value="">${placeholder}</option>`;
-            
+
             optionsData.forEach(opt => {
                 const isSelected = opt.value === currentVal;
                 const optionEl = document.createElement('option');
                 optionEl.value = opt.value;
                 optionEl.textContent = opt.label;
                 if (isSelected) optionEl.selected = true;
-                
+
                 input.appendChild(optionEl);
             });
-            
+
             input.disabled = false;
         } else {
             // Disable downstream inputs that don't have data yet

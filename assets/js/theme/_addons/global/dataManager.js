@@ -128,7 +128,7 @@ class DataManager {
         const url = `${this.productBasePath}/${archetypeName}/${aliasFilename}`;
         return this._fetchJSON(url);
     }
-    
+
     /**
      * Fetches the main archetype data file. Does not update state directly.
      * @param {string} archetypeName - The archetype name to fetch.

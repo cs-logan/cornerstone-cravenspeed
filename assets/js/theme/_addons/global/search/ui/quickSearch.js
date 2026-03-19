@@ -33,16 +33,16 @@ export default class QuickSearch {
             </div>
             ${footerHtml}
         `;
-        
+
         this.show();
     }
 
     buildCard(product) {
-        const image = escapeHtml(product.thumbnail || product.image || ''); 
+        const image = escapeHtml(product.thumbnail || product.image || '');
         const title = escapeHtml(product.title || 'Unknown Product');
         const url = escapeHtml(product.url || '#');
         const sku = escapeHtml(product.sku || '');
-        const price = product.price ? escapeHtml(`${product.price}`) : ''; 
+        const price = product.price ? escapeHtml(`${product.price}`) : '';
 
         return `
             <a href="${url}" class="cs-search-result-item">

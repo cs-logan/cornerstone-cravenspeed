@@ -19,9 +19,9 @@ export default function ($element) {
         tab: {
             active_class: 'is-active',
 
-            //tab settings added by CravenSpeed
-            deep_linking : true,
-            scroll_to_content : true
+            // tab settings added by CravenSpeed
+            deep_linking: true,
+            scroll_to_content: true,
         },
     });
 

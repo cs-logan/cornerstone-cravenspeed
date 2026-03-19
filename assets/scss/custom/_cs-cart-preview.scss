@@ -5,9 +5,9 @@
 //
 
 @include breakpoint('medium') {
-    .modal-body .previewCart {
-        .productView {
-            flex-direction: row;
-        }
+  .modal-body .previewCart {
+    .productView {
+      flex-direction: row;
     }
+  }
 }

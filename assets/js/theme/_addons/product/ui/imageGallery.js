@@ -20,7 +20,7 @@ export default class ImageGallery {
 
     update(state) {
         const { aliasData } = state;
-        
+
         if (aliasData === this.lastAliasData) return;
 
         if (aliasData && aliasData.image_array) {
@@ -37,12 +37,12 @@ export default class ImageGallery {
         if (imageData.secondary_images_list) {
             imageArray.push(...imageData.secondary_images_list);
         }
-        
+
         // Add main image
         imageArray.push({
             url: imageData.url,
             description: imageData.description,
-            display_description: imageData.display_description
+            display_description: imageData.display_description,
         });
 
         // Helper to extract BigCommerce image ID from URL for accurate diffing
@@ -63,7 +63,7 @@ export default class ImageGallery {
 
         imageArray.forEach((imageObj, index) => {
             let slide = currentSlides[index];
-            
+
             if (!slide) {
                 slide = document.createElement('div');
                 slide.classList.add('slide');
@@ -86,7 +86,7 @@ export default class ImageGallery {
                 img.removeAttribute('srcset'); // Strip native srcset so browser respects the new src
                 img.src = newUrl;
                 img.alt = imageObj.description || '';
-                
+
                 if (imageObj.display_description) {
                     img.setAttribute('data-caption', '');
                 } else {
@@ -132,7 +132,7 @@ export default class ImageGallery {
     initCsGallery() {
         this.currentGallery = new CsGallery({
             containerClass: 'cs-gallery-wrapper',
-            altCaption: true
+            altCaption: true,
         });
     }
 

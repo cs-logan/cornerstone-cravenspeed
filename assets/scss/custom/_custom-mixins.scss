@@ -10,7 +10,7 @@
 //
 // -----------------------------------------------------------------------------
 
-$outline-color:  #ff0000;
+$outline-color:  #f00;
 $button-border-radius: 20px;
 
 // -----------------------------------------------------------------------------
@@ -19,7 +19,7 @@ $button-border-radius: 20px;
 //
 // -----------------------------------------------------------------------------
 
-$banner-total-padding:                spacing("half");
+$banner-total-padding:                spacing('half');
 
 // -----------------------------------------------------------------------------
 //
@@ -33,36 +33,36 @@ $nav-icon-size:                                 20px;
 $screen-height-min:                             615px;
 
 @mixin short {
-    @media (max-height: #{$screen-height-min}) {
-        @content;
-    }
- }
+  @media (max-height: #{$screen-height-min}) {
+    @content;
+  }
+}
 
- //height reference for breakpoint medium + header top height
- $header-logo-height: get-height(stencilString("logo_size"));
- $header-top-height: calc(#{$header-logo-height} + #{spacing("double")});
+//height reference for breakpoint medium + header top height
+$header-logo-height: get-height(stencilString('logo_size'));
+$header-top-height: calc(#{$header-logo-height} + #{spacing('double')});
  
 
 
- //height reference for navPages
- $navPages-height: spacing("half") + spacing("single") + (spacing("half") + spacing("quarter"));
- $cs-search-input-height: 33px;
- $autocomplete-items-top: calc((#{$navPages-height} / 2) - (#{$cs-search-input-height} / 2) + #{$cs-search-input-height});
+//height reference for navPages
+$navPages-height: spacing('half') + spacing('single') + (spacing('half') + spacing('quarter'));
+$cs-search-input-height: 33px;
+$autocomplete-items-top: calc((#{$navPages-height} / 2) - (#{$cs-search-input-height} / 2) + #{$cs-search-input-height});
 
 //full header height
-$header-height: calc(#{$header-logo-height} + #{spacing("double")} + #{$navPages-height});
- // -----------------------------------------------------------------------------
+$header-height: calc(#{$header-logo-height} + #{spacing('double')} + #{$navPages-height});
+// -----------------------------------------------------------------------------
 //
 //                                  PRODUCT
 //
 // -----------------------------------------------------------------------------
 
-$mobile-spacing: spacing("half");
-$product-button-height: spacing("double");
+$mobile-spacing: spacing('half');
+$product-button-height: spacing('double');
 $product-button-width: 100%;
 $slick-slide-height: 65vmin;
 $slick-arrows-position: spacing('half');
-$slick-arrows-position-desktop: spacing("double");
+$slick-arrows-position-desktop: spacing('double');
 $slick-arrows-size: 40px;
 $slick-dots-min-height: 2rem;
 $images-width-medium: 550px;
@@ -76,7 +76,7 @@ $product-description-width-small: 700px;
 //
 // -----------------------------------------------------------------------------
 
-$product-messages-height: spacing("double");
+$product-messages-height: spacing('double');
 $product-above-max-width: 1400px;
 $product-above-photo-max-width: 750px;
 $product-selection-max-width: 400px;

@@ -14,7 +14,7 @@ export default class SearchEngine {
     search(query, limit = null) {
         const tokens = this.tokenize(query);
         if (!tokens.length) return [];
-        
+
         if (this.products.length === 0) {
             return [];
         }
@@ -44,10 +44,10 @@ export default class SearchEngine {
     findRelated(currentUrl, vehicleId = null, limit = 12) {
         // Normalize currentUrl to match keys (ensure trailing slash if keys have them, or strip)
         // The JSON keys have trailing slashes (e.g. "/product/").
-        const normalizedUrl = currentUrl.endsWith('/') ? currentUrl : currentUrl + '/';
-        
+        const normalizedUrl = currentUrl.endsWith('/') ? currentUrl : `${currentUrl}/`;
+
         const currentProduct = this.products.find(p => p.url === normalizedUrl);
-        
+
         // If no vehicle selected AND no current product found, we can't do anything.
         if (!currentProduct && !vehicleId) return [];
 
@@ -60,7 +60,7 @@ export default class SearchEngine {
                 if (!isNotCurrent) return false;
 
                 const compatIds = p.compatibility_ids || [];
-                const isUniversal = compatIds.length === 0 || (compatIds.length === 1 && compatIds[0] === "");
+                const isUniversal = compatIds.length === 0 || (compatIds.length === 1 && compatIds[0] === '');
                 const hasCompat = compatIds.includes(vehicleId);
 
                 return isUniversal || hasCompat;
@@ -70,10 +70,10 @@ export default class SearchEngine {
             if (!currentProduct) return [];
 
             const currentIds = currentProduct.compatibility_ids || [];
-            related = this.products.filter(p => 
-                p.url !== currentProduct.url && 
-                p.compatibility_ids && 
-                p.compatibility_ids.some(id => currentIds.includes(id))
+            related = this.products.filter(p =>
+                p.url !== currentProduct.url &&
+                p.compatibility_ids &&
+                p.compatibility_ids.some(id => currentIds.includes(id)),
             );
         }
 
@@ -85,15 +85,15 @@ export default class SearchEngine {
 
     /**
      * Returns a human-readable vehicle string from slugs
-     * @param {string} makeSlug 
-     * @param {string} modelSlug 
-     * @param {string} genSlug 
+     * @param {string} makeSlug
+     * @param {string} modelSlug
+     * @param {string} genSlug
      * @returns {string|null}
      */
     getVehicleName(makeSlug, modelSlug, genSlug) {
         if (!this.data || !this.data.vehicle_registry) return null;
         const registry = this.data.vehicle_registry;
-        
+
         let makeName = makeSlug;
         let modelName = modelSlug;
         let genName = genSlug;
@@ -133,7 +133,7 @@ export default class SearchEngine {
         // Compatibility Check
         const productIds = product.compatibility_ids || [];
         // Universal if empty array or array with empty string
-        const isUniversal = productIds.length === 0 || (productIds.length === 1 && productIds[0] === "");
+        const isUniversal = productIds.length === 0 || (productIds.length === 1 && productIds[0] === '');
 
         tokens.forEach(token => {
             // Scoring Weights
@@ -159,20 +159,13 @@ export default class SearchEngine {
         let products = [];
         if (!data) return [];
 
-        // Case 1: Data is the array (Flat list)
-        if (Array.isArray(data)) {
+        if (Array.isArray(data)) { // Case 1: Data is the array (Flat list)
             products = data;
-        }
-        // Case 2: Data has a products key
-        else if (data && data.products) {
-            if (Array.isArray(data.products)) {
+        } else if (data && data.products) {
+            if (Array.isArray(data.products)) { // Case 2: Data has a products key
                 products = data.products;
-            }
-            // Case 3: Products is an object map (URL -> Product)
-            else if (typeof data.products === 'object') {
-                products = Object.entries(data.products).map(([url, product]) => {
-                    return { ...product, url: url };
-                });
+            } else if (typeof data.products === 'object') { // Case 3: Products is an object map (URL -> Product)
+                products = Object.entries(data.products).map(([url, product]) => ({ ...product, url }));
             }
         } else {
             console.warn('SearchEngine: Could not parse products from data', data);
@@ -180,17 +173,17 @@ export default class SearchEngine {
         }
 
         // Pre-compute search fields for performance
-        return products.map(p => {
-            p._search_title = (p.title || '').toLowerCase();
-            p._search_sku = (p.sku || '').toLowerCase().replace(/[^\w\s]/g, '');
-            p._search_keywords = (typeof p.general_keywords === 'string') 
-                ? p.general_keywords.toLowerCase().split(',').map(k => k.trim()) 
-                : [];
-            p._search_skus = Array.isArray(p.search_skus)
+        return products.map(p => ({
+            ...p,
+            _search_title: (p.title || '').toLowerCase(),
+            _search_sku: (p.sku || '').toLowerCase().replace(/[^\w\s]/g, ''),
+            _search_keywords: (typeof p.general_keywords === 'string')
+                ? p.general_keywords.toLowerCase().split(',').map(k => k.trim())
+                : [],
+            _search_skus: Array.isArray(p.search_skus)
                 ? p.search_skus.map(s => s.toLowerCase().replace(/[^\w\s]/g, ''))
-                : [];
-            return p;
-        });
+                : [],
+        }));
     }
 
     _buildVehicleIndex(registry) {
@@ -228,7 +221,7 @@ export default class SearchEngine {
             Object.entries(registry.brands).forEach(([brandSlug, brandData]) => {
                 const modelSlugs = brandData.models || [];
                 const brandIds = modelSlugs.reduce((acc, slug) => acc.concat(getModelIds(slug)), []);
-                
+
                 addIds(brandSlug, brandIds);
                 if (brandData.name) addIds(brandData.name, brandIds);
             });

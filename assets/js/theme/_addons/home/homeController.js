@@ -32,7 +32,7 @@ export default class HomeController extends PageManager {
 
         DataManager.loadSearchData();
     }
-    
+
     handleStateChange(state) {
         const { search, vehicle } = state;
 
@@ -45,7 +45,7 @@ export default class HomeController extends PageManager {
         if (JSON.stringify(vehicle.selected) !== JSON.stringify(this.currentSelection)) {
             this.currentSelection = vehicle.selected;
         }
-        
+
         this.checkAndRender();
     }
 
@@ -67,7 +67,7 @@ export default class HomeController extends PageManager {
     }
 
     /**
-     * Cleanup method for the addon. 
+     * Cleanup method for the addon.
      * NOTE: Currently unused in standard page loads, but required for
      * future "URL Switching" / SPA features to prevent memory leaks.
      */

@@ -1,185 +1,189 @@
 /* Apply styles to size your gallery container */
 .product-image-gallery {
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    user-select: none;
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  user-select: none;
 }
 
 .slides-wrapper {
-    width: 100%;
-    margin: 0 auto;
-    box-sizing: content-box;
-    overflow: hidden;
-    position: relative;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: content-box;
+  overflow: hidden;
+  position: relative;
 }
 
 .slides {
-    /* set the aspect ratio of the visible slides */
-    aspect-ratio: 4 / 3;
-    display: flex;
-    transition: transform .3s;
+  /* set the aspect ratio of the visible slides */
+  aspect-ratio: 4 / 3;
+  display: flex;
+  transition: transform 0.3s;
 }
 
 .slide {
-    width: 100%;
-    height: 100%;
-    flex: 1 0 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 1px;
+  width: 100%;
+  height: 100%;
+  flex: 1 0 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1px;
 }
 
 .slide img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 
 .gallery-nav {
-    /* Container for logic, no layout impact */
+  /* Container for logic, no layout impact */
 }
 
 .gallery-previous {
-    left: 10px;
+  left: 10px;
 }
 
 .gallery-next {
-    right: 10px;
+  right: 10px;
 }
 
 .gallery-arrow {
-    @include square(24px);
-    color: #333;
-    transition: color 0.3s ease;
+  @include square(24px);
+  color: #333;
+  transition: color 0.3s ease;
 }
 
 .gallery-previous,
 .gallery-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border: 0;
+  cursor: pointer;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
 
-    &:hover, &:focus-visible {
-        background-color: #fff;
-        .gallery-arrow {
-            color: stencilColor("color-primary");
-        }
+  &:hover,
+  &:focus-visible {
+    background-color: #fff;
+
+    .gallery-arrow {
+      color: stencilColor('color-primary');
     }
+  }
 }
 
 
 .gallery-map {
-    position: absolute;
-    bottom: 1rem;
-    width: 100%;
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    pointer-events: none;
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .gallery-map > svg.active > circle {
-    /* set the color of the active dot */
-    fill: stencilColor("color-primary");
+  /* set the color of the active dot */
+  fill: stencilColor('color-primary');
 }
 
 .gallery-map-bar {
-    height: 10px;
-    width: 30%;
-    background-color: rgba(0, 0, 0, 0.598);
-    border-radius: 5px;
+  height: 10px;
+  width: 30%;
+  background-color: rgba(0, 0, 0, 0.598);
+  border-radius: 5px;
 }
 
 .gallery-map-indicator {
-    position: relative;
-    height: 10px;
-    border-radius: 5px;
-    /* set the color of the indicator in bar mode */
-    background-color: stencilColor("color-primary");
-    transition: transform .5s;
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  /* set the color of the indicator in bar mode */
+  background-color: stencilColor('color-primary');
+  transition: transform 0.5s;
 }
 
 .gallery-modal {
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  .modal-content-wrapper {
+    display: flex;
+    max-width: 100%;
+  }
+
+  .modal-content {
     max-width: 100%;
     max-height: 100%;
-    padding: 0;
-    margin: 0;
-    border: none;
-    justify-content: center;
+    display: flex;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    overflow: hidden;
 
-    .modal-content-wrapper {
-        display: flex;
-        max-width: 100%;
+    img {
+      width: auto;
+      height: auto;
+      max-width: 100vw;
+      max-height: 100vh;
+      object-fit: contain;
+      display: block;
     }
+  }
 
-    .modal-content {
-        max-width: 100%;
-        max-height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
+  .modal-close,
+  .gallery-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        img {
-            width: auto;
-            height: auto;
-            max-width: 100vw;
-            max-height: 100vh;
-            object-fit: contain;
-            display: block;
-        }
+    &:hover,
+    &:focus-visible {
+      .gallery-arrow {
+        color: stencilColor('color-primary');
+      }
     }
-
-    .modal-close, .gallery-modal-close {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background-color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &:hover, &:focus-visible {
-            .gallery-arrow {
-                color: stencilColor("color-primary");
-            }
-        }
-    }
+  }
 }
 
 .gallery-caption {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 1s linear, visibility 0s 1s;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s linear, visibility 0s 1s;
 }
 
 .gallery-caption.active {
-    transition-delay: 0s;
-    opacity: 1;
-    visibility: visible;
+  transition-delay: 0s;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* show any number of slides, just include the appropriate visible-slides class
@@ -192,42 +196,42 @@
 */
 
 .visible-slides-2 {
-    width: calc(100% / 2);
-    flex: 1 0 calc(100% / 2);
+  width: calc(100% / 2);
+  flex: 1 0 calc(100% / 2);
 }
 
 .visible-slides-3 {
-    width: calc(100% / 3);
-    flex: 1 0 calc(100% / 3);
+  width: calc(100% / 3);
+  flex: 1 0 calc(100% / 3);
 }
 
 .visible-slides-4 {
-    width: calc(100% / 4);
-    flex: 1 0 calc(100% / 4);
+  width: calc(100% / 4);
+  flex: 1 0 calc(100% / 4);
 }
 
 /* overrides for collection mode */
 
 .collection > .gallery {
-    margin-bottom: calc(1rem + 8px);
-    aspect-ratio: auto;
+  margin-bottom: calc(1rem + 8px);
+  aspect-ratio: auto;
 }
 
 .collection .slide {
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto;
-    padding: .5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  padding: 0.5rem;
 }
 
 .collection .slide img {
-    width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    flex-grow: 1;
-    height: auto;
+  width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  flex-grow: 1;
+  height: auto;
 }
 
 .slide-details > * {
-    margin: 0;
+  margin: 0;
 }
