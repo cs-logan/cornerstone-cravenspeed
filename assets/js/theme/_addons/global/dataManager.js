@@ -68,18 +68,22 @@ class DataManager {
         if (cachedData) {
             console.log('[DataManager] Search Data Loaded from cache. Last full update:', cachedData.last_json_full_update);
             StateManager.setState({ search: { ...StateManager.getState().search, data: cachedData, isLoading: false } });
-            return;
         }
 
+        // We fire the fetch even if we loaded from localStorage.
+        // The browser's native fetch API will automatically respect the CDN's max-age=60 and stale-while-revalidate headers.
         fetch(this.searchDataUrl)
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.json();
             })
             .then(data => {
-                console.log('[DataManager] Search Data Loaded from network. Last full update:', data.last_json_full_update);
                 this._saveToCache(data);
-                StateManager.setState({ search: { ...StateManager.getState().search, data, isLoading: false } });
+                // Only update the state and log if we didn't already load it instantly from local cache
+                if (!cachedData) {
+                    console.log('[DataManager] Search Data Loaded from network. Last full update:', data.last_json_full_update);
+                    StateManager.setState({ search: { ...StateManager.getState().search, data, isLoading: false } });
+                }
             })
             .catch(error => {
                 console.error('[DataManager] Fetch error for search data', error);

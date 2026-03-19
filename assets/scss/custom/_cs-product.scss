@@ -108,19 +108,19 @@ $cs-button-height: 50px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: spacing("half");
-  gap: spacing('half');
+  margin-top: spacing("quarter");
+  gap: spacing('quarter');
 
   .cs-product-header {
     display: flex;
     flex-direction: column;
-    gap: spacing('half');
+    gap: spacing('quarter');
   }
 
   .cs-product-meta-row {
     display: flex;
     justify-content: flex-start;
-    gap: spacing("half");
+    gap: spacing("quarter");
     align-items: center;
   }
 
@@ -365,9 +365,10 @@ $cs-button-height: 50px;
     }
   }
 
-  &>* h4 {
+  &>* .badge-text {
     font-size: 0.75rem;
-    font-weight: 700;
+    font-family: stencilFontFamily("headings-font");
+    font-weight: stencilFontWeight("headings-font");
     margin: 0;
     line-height: 1.2;
     word-break: break-word;

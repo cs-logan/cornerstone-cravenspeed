@@ -37,7 +37,7 @@ export default class Badges {
             'made-in-usa-badge',
             !!data.made_in_usa,
             () => {
-                const el = this._createBadge('<img src="/product_images/uploaded_images/flag.png" alt="Made in USA"><h4>MADE IN USA</h4>');
+                const el = this._createBadge('<img src="/product_images/uploaded_images/flag.png" alt="Made in USA"><span class="badge-text">MADE IN USA</span>');
                 el.setAttribute('data-reveal-id', 'usa-message');
                 return el;
             },
@@ -49,7 +49,7 @@ export default class Badges {
             'warranty-badge',
             data.brand_name === 'CravenSpeed',
             () => {
-                const el = this._createBadge('<h4>LIFETIME&nbsp;<br>WARRANTY</h4>');
+                const el = this._createBadge('<span class="badge-text">LIFETIME&nbsp;<br>WARRANTY</span>');
                 el.setAttribute('data-reveal-id', 'warranty-message');
                 return el;
             },
@@ -61,7 +61,7 @@ export default class Badges {
             'free-shipping-badge',
             true,
             () => {
-                const el = this._createBadge('<h4>FREE US&nbsp;<br>SHIPPING</h4>');
+                const el = this._createBadge('<span class="badge-text">FREE US&nbsp;<br>SHIPPING</span>');
                 el.setAttribute('data-reveal-id', 'shipping-message');
                 return el;
             },

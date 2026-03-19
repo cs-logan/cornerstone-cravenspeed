@@ -6,6 +6,9 @@ export default class ImageGallery {
         this.galleryElement = document.querySelector('.cs-gallery-wrapper');
         this.slidesContainer = this.galleryElement ? this.galleryElement.querySelector('.slides') : null;
         this.currentGallery = null;
+        if (this.slidesContainer) {
+            this.defaultSlidesHTML = this.slidesContainer.innerHTML;
+        }
         this.lastAliasData = undefined;
         this.unsubscribe = null;
 
@@ -29,11 +32,6 @@ export default class ImageGallery {
     renderAliasImages(imageData) {
         if (!this.slidesContainer) return;
 
-        // Destroy existing gallery instance
-        if (this.currentGallery) {
-            this.currentGallery.destroy();
-        }
-
         // Construct image array (Secondary images + Main image at the end, per product-current.js logic)
         const imageArray = [];
         if (imageData.secondary_images_list) {
@@ -47,30 +45,75 @@ export default class ImageGallery {
             display_description: imageData.display_description
         });
 
-        // Build HTML
-        this.slidesContainer.innerHTML = '';
+        // Helper to extract BigCommerce image ID from URL for accurate diffing
+        // Matches the directory ID immediately preceding the filename
+        // Native: /products/123/456/file.jpg | QTY JSON: /products/123/images/456/file.jpg
+        const getImgId = (url) => {
+            const match = url ? url.match(/\/(\d+)\/[^\/]+\.(?:jpg|jpeg|png|webp|gif)/i) : null;
+            return match ? match[1] : (url || '').split('?')[0];
+        };
 
-        // Trigger fade-in animation
-        this.slidesContainer.classList.remove('fade-in');
-        void this.slidesContainer.offsetWidth; // Force reflow
-        this.slidesContainer.classList.add('fade-in');
+        const currentSlides = Array.from(this.slidesContainer.querySelectorAll('.slide'));
+        let needsReinit = false;
+        let isDifferent = false;
 
-        imageArray.forEach(image => {
-            const slide = document.createElement('div');
-            slide.classList.add('slide');
+        if (currentSlides.length !== imageArray.length) {
+            needsReinit = true;
+        }
+
+        imageArray.forEach((imageObj, index) => {
+            let slide = currentSlides[index];
             
-            const img = document.createElement('img');
-            img.src = image.url;
-            img.alt = image.description || '';
-            if (image.display_description) {
-                img.setAttribute('data-caption', '');
+            if (!slide) {
+                slide = document.createElement('div');
+                slide.classList.add('slide');
+                const img = document.createElement('img');
+                slide.appendChild(img);
+                this.slidesContainer.appendChild(slide);
+                currentSlides.push(slide); // Track new slide for cleanup logic
+                needsReinit = true;
             }
-            
-            slide.appendChild(img);
-            this.slidesContainer.appendChild(slide);
+
+            const img = slide.querySelector('img');
+            if (!img) return;
+
+            const newUrl = imageObj.url || '';
+            const currentId = getImgId(img.src);
+            const newId = getImgId(newUrl);
+
+            if (currentId !== newId || !img.src) {
+                isDifferent = true;
+                img.removeAttribute('srcset'); // Strip native srcset so browser respects the new src
+                img.src = newUrl;
+                img.alt = imageObj.description || '';
+                
+                if (imageObj.display_description) {
+                    img.setAttribute('data-caption', '');
+                } else {
+                    img.removeAttribute('data-caption');
+                }
+            }
         });
 
-        this.initCsGallery();
+        // Remove extra slides
+        while (currentSlides.length > imageArray.length) {
+            const extraSlide = currentSlides.pop();
+            extraSlide.remove();
+            needsReinit = true;
+            isDifferent = true;
+        }
+
+        if (needsReinit || isDifferent) {
+            if (this.currentGallery) {
+                this.currentGallery.destroy();
+            }
+
+            this.slidesContainer.classList.remove('fade-in');
+            void this.slidesContainer.offsetWidth; // Force reflow
+            this.slidesContainer.classList.add('fade-in');
+
+            this.initCsGallery();
+        }
     }
 
     revertToDefault() {
