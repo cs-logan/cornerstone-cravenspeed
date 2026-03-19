@@ -70,9 +70,9 @@ class DataManager {
             StateManager.setState({ search: { ...StateManager.getState().search, data: cachedData, isLoading: false } });
         }
 
-        // We fire the fetch even if we loaded from localStorage.
-        // The browser's native fetch API will automatically respect the CDN's max-age=60 and stale-while-revalidate headers.
-        fetch(this.searchDataUrl)
+        // Always revalidate against the CDN, bypassing browser disk cache.
+        // cache: 'no-cache' forces a conditional request so we always see new deploys.
+        fetch(this.searchDataUrl, { cache: 'no-cache' })
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.json();
