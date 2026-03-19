@@ -15,6 +15,7 @@ export default class HomeController extends PageManager {
             showLessText: 'Show Less',
         });
         this.searchEngine = null;
+        this.searchDataVersion = null;
         this.currentSelection = null;
         this.allProducts = [];
         this.unsubscribe = null;
@@ -36,10 +37,14 @@ export default class HomeController extends PageManager {
     handleStateChange(state) {
         const { search, vehicle } = state;
 
-        if (search.data && !this.searchEngine) {
-            this.searchEngine = new SearchEngine(search.data);
-            this.allProducts = this.searchEngine.products;
-            this.vehicleSelector.setRegistry(search.data.vehicle_registry);
+        if (search.data) {
+            const dataVersion = search.data.last_json_full_update;
+            if (dataVersion !== this.searchDataVersion) {
+                this.searchDataVersion = dataVersion;
+                this.searchEngine = new SearchEngine(search.data);
+                this.allProducts = this.searchEngine.products;
+                this.vehicleSelector.setRegistry(search.data.vehicle_registry);
+            }
         }
 
         if (JSON.stringify(vehicle.selected) !== JSON.stringify(this.currentSelection)) {

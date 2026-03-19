@@ -79,11 +79,8 @@ class DataManager {
             })
             .then(data => {
                 this._saveToCache(data);
-                // Only update the state and log if we didn't already load it instantly from local cache
-                if (!cachedData) {
-                    console.log('[DataManager] Search Data Loaded from network. Last full update:', data.last_json_full_update);
-                    StateManager.setState({ search: { ...StateManager.getState().search, data, isLoading: false } });
-                }
+                console.log('[DataManager] Search Data Loaded from network. Last full update:', data.last_json_full_update);
+                StateManager.setState({ search: { ...StateManager.getState().search, data, isLoading: false } });
             })
             .catch(error => {
                 console.error('[DataManager] Fetch error for search data', error);
