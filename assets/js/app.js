@@ -3,7 +3,7 @@ __webpack_public_path__ = window.__webpack_public_path__; // eslint-disable-line
 import Global from './theme/global';
 
 
-import GlobalSearch from './theme/_addons/global/search/index'
+import GlobalSearch from './theme/_addons/global/search/index';
 import initGlobalAccessibility from './theme/global/accessibility';
 
 const getAccount = () => import('./theme/account');
