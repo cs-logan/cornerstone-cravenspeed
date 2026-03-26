@@ -55,9 +55,12 @@ const pageClasses = {
     wishlists: () => import('./theme/wishlist'),
 };
 
+// Custom template overrides: when a template key is present here, it suppresses the
+// default pageClasses loader so the addon product module does not run for these pages.
 const customClasses = {
     'pages/home': () => import('./theme/_addons/home'),
     'pages/custom/product/bc-default': () => import('./theme/product'),
+    'pages/custom/product/non-qty-product': noop,
 };
 
 /**
@@ -87,13 +90,17 @@ window.stencilBootstrap = function stencilBootstrap(pageType, contextJSON = null
 
                 const importPromises = [];
 
-                // Find the appropriate page loader based on pageType
-                const pageClassImporter = pageClasses[pageType];
-                if (typeof pageClassImporter === 'function') {
-                    importPromises.push(pageClassImporter());
+                // If a custom template entry exists, it overrides the pageClasses loader.
+                // Otherwise, fall back to the pageType-based loader.
+                const isCustomTemplate = context.template in customClasses;
+                if (!isCustomTemplate) {
+                    const pageClassImporter = pageClasses[pageType];
+                    if (typeof pageClassImporter === 'function') {
+                        importPromises.push(pageClassImporter());
+                    }
                 }
 
-                // See if there is a page class default for a custom template
+                // Load the custom template module (may be noop/null for suppression-only entries)
                 const customTemplateImporter = customClasses[context.template];
                 if (typeof customTemplateImporter === 'function') {
                     importPromises.push(customTemplateImporter());
