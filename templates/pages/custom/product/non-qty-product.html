@@ -1,0 +1,82 @@
+---
+product:
+    videos:
+        limit: {{theme_settings.productpage_videos_count}}
+    reviews:
+        limit: {{theme_settings.productpage_reviews_count}}
+    related_products:
+        limit: {{theme_settings.productpage_related_products_count}}
+    similar_by_views:
+        limit: {{theme_settings.productpage_similar_by_views_count}}
+---
+{{inject "breadcrumbs" breadcrumbs}}
+
+{{#partial "page"}}
+<main class="cs-product-archetype">
+
+    {{#each product.shipping_messages}}
+        {{> components/common/alert/alert-info message}}
+    {{/each}}
+
+    <article class="cs-product-container" itemscope itemtype="http://schema.org/Product">
+
+        <div class="cs-product-above-fold-layout">
+
+            <section class="cs-product-gallery-wrapper" aria-label="Product Media">
+                {{> components/products-cs/gallery}}
+            </section>
+
+            <section class="cs-product-info-wrapper" aria-label="Product Information">
+                <div class="cs-product-meta-row">
+                    <h2 class="cs-info-row" id="product-sku">{{product.sku}}</h2>
+                    <h2 class="cs-info-row" id="product-brand">{{product.brand.name}}</h2>
+                </div>
+
+                <header class="cs-product-header">
+                    <h1 class="cs-product-title" itemprop="name">{{product.title}}</h1>
+                    <a href="#tab-reviews" class="cs-info-row" id="product-rating">
+                        {{> components/products-cs/rating-cs}}
+                    </a>
+                    <h2 class="cs-info-row-double" id="product-price">
+                        {{#or customer (unless settings.hide_price_from_guests)}}
+                            {{#if product.price.with_tax}}
+                                {{product.price.with_tax.formatted}}
+                            {{else}}
+                                {{product.price.without_tax.formatted}}
+                            {{/if}}
+                        {{else}}
+                            {{lang 'common.login_for_pricing'}}
+                        {{/or}}
+                    </h2>
+                </header>
+
+                <form class="cs-product-form nqp-form" action="{{urls.cart}}" method="post" enctype="multipart/form-data" data-cart-item-add>
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="product_id" value="{{product.id}}">
+
+                    {{#each product.options}}
+                        {{{dynamicComponent 'components/products/options'}}}
+                    {{/each}}
+
+                    <div class="cs-add-to-cart-container">
+                        <button id="product-add-button" type="submit" class="button">{{lang 'products.add_to_cart'}}</button>
+                    </div>
+                </form>
+
+                {{> components/products-cs/modals/usaMessage}}
+                {{> components/products-cs/modals/warrantyMessage}}
+                {{> components/products-cs/modals/shippingMessage}}
+            </section>
+
+        </div>
+
+        <section class="cs-product-tabs-container" aria-label="Product Details">
+            {{> components/products-cs/description-tabs-nqp}}
+        </section>
+
+    </article>
+</main>
+
+{{> components/products/schema}}
+{{/partial}}
+{{> layout/base}}

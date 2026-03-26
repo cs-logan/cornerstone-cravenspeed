@@ -13,8 +13,6 @@ product:
 
 {{#partial "page"}}
 
-    {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
-
     {{#each product.shipping_messages}}
         {{> components/common/alert/alert-info message}}
     {{/each}}

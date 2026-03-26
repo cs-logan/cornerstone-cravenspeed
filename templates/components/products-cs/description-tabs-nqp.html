@@ -1,0 +1,55 @@
+<ul class="tabs" data-tab data-smooth-scroll>
+
+        <li class="tab is-active">
+            <a class="tab-title" href="#tab-description">{{lang 'products.description'}}</a>
+        </li>
+
+        <li class="tab">
+            <a class="tab-title" href="#tab-reviews">{{lang 'products.reviews.header'}}</a>
+        </li>
+
+        <li class="tab">
+            <a class="tab-title" href="#tab-shipping">Shipping</a>
+        </li>
+
+        <li class="tab">
+            <a class="tab-title" href="#tab-more-products">More Products</a>
+        </li>
+
+</ul>
+<div class="tabs-contents">
+
+        <div class="tab-content is-active" id="tab-description">
+            {{> components/products-cs/description-cs}}
+        </div>
+
+        <div class="tab-content" id="tab-reviews">
+            {{> components/products-cs/reviews-cs}}
+        </div>
+
+        <div class="tab-content" id="tab-shipping">
+            {{> components/common/shipping-info}}
+        </div>
+
+        {{#if product.warranty}}
+        <div class="tab-content {{#unless product.description}}is-active{{/unless}}" id="tab-warranty">
+            {{{product.warranty}}}
+        </div>
+        {{/if}}
+
+        <div class="tab-content" id="tab-more-products">
+            {{#if product.related_products}}
+            <div class="cs-product-grid-wrapper">
+                <h2 class="product-grid-header">More Products</h2>
+                <ul class="productGrid">
+                    {{#each product.related_products}}
+                    <li>
+                        {{> components/products/card settings=../settings theme_settings=../theme_settings event="list" position=(add @index 1)}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/if}}
+        </div>
+
+</div>

@@ -603,7 +603,44 @@ $cs-button-height: 50px;
 }
 
 // =============================================================================
-// 11. Product Modals
+// 11. Non-QTY Product Form (native BC option elements inside CS form)
+// =============================================================================
+.nqp-form {
+  .form-field[data-product-attribute] {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: spacing('quarter');
+
+    small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: stencilColor('color-textSecondary');
+    }
+  }
+
+  .form-input {
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 0 spacing('half');
+
+    &:focus {
+      border-color: stencilColor('color-primary');
+      box-shadow: 0 0 4px stencilColor('color-primary');
+      outline: none;
+    }
+  }
+}
+
+// =============================================================================
+// 12. Product Modals
 // =============================================================================
 .cs-product-modal {
   background-color: #fff; // Force white background

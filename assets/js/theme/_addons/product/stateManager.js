@@ -246,8 +246,9 @@ export default class StateManager {
                         return nextNode;
                     }
                     currentLevel = nextNode;
+                } else {
+                    return null;
                 }
-                return null;
             }
 
             // 2. Sub-Options
