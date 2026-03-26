@@ -248,6 +248,13 @@ $cs-button-height: 50px;
   }
 }
 
+.cs-awaiting-input {
+  .cs-form-select {
+    border-color: stencilColor('color-primary');
+    box-shadow: 0 0 4px stencilColor('color-primary');
+  }
+}
+
 #product-blem {
   min-height: spacing('single');
   display: flex;
@@ -271,6 +278,18 @@ $cs-button-height: 50px;
 // -----------------------------------------------------------------------------
 // 6. Add to Cart & Actions
 // -----------------------------------------------------------------------------
+@keyframes csButtonPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+  100% { transform: scale(1); }
+}
+
+.cs-button-pop {
+  // We apply this class via JS the moment the button becomes enabled
+  animation: csButtonPop 0.4s ease-in-out;
+  animation-iteration-count: 1;
+}
+
 .cs-add-to-cart-container {
   min-height: $cs-button-height; // Reserve space when button is fixed to prevent layout shifts
 
@@ -354,6 +373,8 @@ $cs-button-height: 50px;
     transition: all 0.2s ease;
     box-sizing: border-box;
     max-width: $cs-badge-max-width;
+    background-color: transparent;
+    color: inherit;
 
     &.fade-in {
       animation: fadeIn 0.5s ease-out;
@@ -563,16 +584,15 @@ $cs-button-height: 50px;
 }
 
 // =============================================================================
-// 10. Incompatibility Message
+// 10. Product Messages
 // =============================================================================
 #product-messages {
   display: none;
+  // Accounts for missing .cs-form-label height (0.9rem * 1.5 line-height = 1.35rem) + margin-bottom
+  margin-top: calc(1.35rem + #{spacing('quarter')});
 
-  .cs-product-message--vehicle-incompatible {
-    border-left: 4px solid stencilColor('color-warning');
-    background-color: stencilColor('color-warningLight');
-    color: stencilColor('color-warning');
-    padding: spacing('half');
+  .cs-product-message {
+    padding: 0 spacing('half');
     text-align: center;
     width: 100%;
     min-height: 44px;
@@ -580,9 +600,22 @@ $cs-button-height: 50px;
     align-items: center;
     justify-content: center;
   }
+
+  .cs-product-message--vehicle-incompatible {
+    border-left: 4px solid stencilColor('color-warning');
+    background-color: stencilColor('color-warningLight');
+    color: stencilColor('color-warning');
+  }
+
+  .cs-product-message--awaiting-vehicle {
+    border-left: 4px solid stencilColor('color-info');
+    background-color: stencilColor('color-infoLight');
+    color: stencilColor('color-textBase');
+  }
 }
 
-.cs-product-form.has-incompatibility-message {
+.cs-product-form.has-incompatibility-message,
+.cs-product-form.is-awaiting-vehicle {
   #product-messages {
     display: block;
   }
@@ -594,7 +627,8 @@ $cs-button-height: 50px;
 }
 
 @include breakpoint('medium') {
-  .cs-product-form.has-incompatibility-message {
+  .cs-product-form.has-incompatibility-message,
+  .cs-product-form.is-awaiting-vehicle {
     #product-messages {
       grid-row: 2;
       grid-column: 1 / -1;

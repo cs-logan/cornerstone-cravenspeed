@@ -33,8 +33,6 @@
                 </header>
 
                 <form class="cs-product-form" id="product-selection" action="{{urls.cart}}" method="post" enctype="multipart/form-data" data-cart-item-add data-product-options-container>
-                    <div id="product-messages" data-product-messages role="alert" aria-live="assertive"></div>
-
                     <input type="hidden" name="action" value="add">
                     <input type="hidden" name="product_id" value="{{product.id}}">
                     <input type="hidden" name="qty[]" value="1">
@@ -57,6 +55,9 @@
                             <option selected>{{lang 'common.loading'}}...</option>
                         </select>
                     </div>
+
+                    <div id="product-messages" data-product-messages role="alert" aria-live="assertive"></div>
+
                     <div class="cs-form-field" data-product-form-field="option-one" style="visibility: hidden;">
                         <label class="cs-form-label" for="option-one">Options</label>
                         <select name="Option One" id="option-one" class="cs-form-select" data-product-option="option" disabled>

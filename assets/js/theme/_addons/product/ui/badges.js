@@ -70,7 +70,8 @@ export default class Badges {
     }
 
     _createBadge(html) {
-        const el = document.createElement('div');
+        const el = document.createElement('button');
+        el.type = 'button';
         el.classList.add('fade-in');
         el.innerHTML = html;
         return el;

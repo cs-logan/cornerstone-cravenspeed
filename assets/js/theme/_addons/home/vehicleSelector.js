@@ -48,15 +48,11 @@ export default class VehicleSelector {
     }
 
     handleSelectionChange(level) {
-        console.log('level: ', level);
         this.updateAvailableOptions(level);
 
         const make = this.makeSelect.value;
         const model = this.modelSelect.value;
         const generation = this.yearSelect.value;
-
-        console.log(`make: ${make}, model: ${model} generation: ${generation}`);
-        console.log('this.currentVehicle: ', this.currentVehicle);
 
         if (make && model && generation) {
             const selectedVehicle = { make, model, generation };
@@ -119,8 +115,8 @@ export default class VehicleSelector {
                     .sort((a, b) => b.name.localeCompare(a.name)); // Sort descending by name
                 gens.forEach(g => this.addOption(this.yearSelect, g.id, g.name));
 
-                // Auto-select if there is only one generation available
-                if (gens.length === 1) {
+                // Auto-select the newest generation (first in the descending sorted list)
+                if (gens.length > 0) {
                     this.yearSelect.value = gens[0].id;
                 }
             }
@@ -134,6 +130,7 @@ export default class VehicleSelector {
         this.clearSelect(this.yearSelect, 'Select Year');
 
         const brands = Object.entries(this.registry.brands)
+            .filter(([slug]) => slug !== 'allvehicles')
             .map(([slug, data]) => ({ slug, name: data.name }))
             .sort((a, b) => a.name.localeCompare(b.name));
         brands.forEach(brand => this.addOption(this.makeSelect, brand.slug, brand.name));

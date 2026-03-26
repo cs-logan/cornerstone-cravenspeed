@@ -128,6 +128,10 @@ export default class AliasSelection {
             this.initialLoad = false;
         }
 
+        let nextInputFound = false;
+        let waitingOnVehicle = false;
+        const isIncompatible = this.form && this.form.classList.contains('has-incompatibility-message');
+
         const inputs = this.container.querySelectorAll('[data-product-option]');
         inputs.forEach(input => {
             const rawOption = input.dataset.productOption;
@@ -140,7 +144,31 @@ export default class AliasSelection {
 
             this._updateVisibility(input, rawOption, parentKey, selections, optionsData, archetypeData);
             this._updateInputOptions(input, rawOption, optionKey, optionsData, currentVal);
+
+            const wrapper = input.closest('.cs-form-field') || input.closest('.form-field') || input;
+            wrapper.classList.remove('cs-awaiting-input');
+
+            const isVisible = wrapper.style.visibility !== 'hidden';
+            const hasData = optionsData && optionsData.length > 0;
+
+            // Highlight the very first visible, enabled field that is awaiting user selection (unless there's an active error)
+            if (!nextInputFound && isVisible && hasData && !currentVal && !isIncompatible) {
+                wrapper.classList.add('cs-awaiting-input');
+                nextInputFound = true;
+
+                if (rawOption === 'make') {
+                    waitingOnVehicle = true;
+                }
+            }
         });
+
+        if (waitingOnVehicle && !universal_product) {
+            this.productMessages.showMessage('awaiting-vehicle', 'Select a vehicle to continue');
+            if (this.form) this.form.classList.add('is-awaiting-vehicle');
+        } else {
+            this.productMessages.hideMessage('awaiting-vehicle');
+            if (this.form) this.form.classList.remove('is-awaiting-vehicle');
+        }
     }
 
     _getParentKey(rawOption, archetypeData) {

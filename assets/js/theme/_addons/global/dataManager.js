@@ -66,7 +66,7 @@ class DataManager {
 
         const cachedData = this._loadFromCache();
         if (cachedData) {
-            console.log('[DataManager] Search Data Loaded from cache. Last full update:', cachedData.last_json_full_update);
+            console.log('[DataManager] Search Data Loaded from cache. Last full update:', cachedData.vehicle_registry.last_registry_update);
             StateManager.setState({ search: { ...StateManager.getState().search, data: cachedData, isLoading: false } });
         }
 
@@ -79,7 +79,7 @@ class DataManager {
             })
             .then(data => {
                 this._saveToCache(data);
-                console.log('[DataManager] Search Data Loaded from network. Last full update:', data.last_json_full_update);
+                console.log('[DataManager] Search Data Loaded from network. Last full update:', data.vehicle_registry.last_registry_update);
                 StateManager.setState({ search: { ...StateManager.getState().search, data, isLoading: false } });
             })
             .catch(error => {

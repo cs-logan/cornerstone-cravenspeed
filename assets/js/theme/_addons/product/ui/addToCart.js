@@ -110,9 +110,17 @@ export default class AddToCart {
             }
 
             if (isStocked) {
+                const wasDisabled = this.button.disabled;
+
                 // Enable button
                 this.button.disabled = false;
                 this.button.textContent = this.defaultButtonText;
+
+                if (wasDisabled) {
+                    this.button.classList.remove('cs-button-pop');
+                    void this.button.offsetWidth; // Force reflow to restart animation
+                    this.button.classList.add('cs-button-pop');
+                }
 
                 // Update the hidden product_id field with the Alias ID (swapping out the Archetype ID)
                 if (this.productIdInput) {
