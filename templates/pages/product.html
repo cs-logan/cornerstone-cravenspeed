@@ -7,7 +7,7 @@
         {{> components/common/alert/alert-info message}}
     {{/each}}
 
-    <article class="cs-product-container" itemscope itemtype="http://schema.org/Product">
+    <article class="cs-product-container">
 
         <div class="cs-product-above-fold-layout">
 
@@ -22,7 +22,7 @@
                     <h2 class="cs-info-row" id="product-brand" data-product-brand>{{product.brand.name}}</h2>
                 </div>
                 <header class="cs-product-header">
-                    <h1 class="cs-product-title" itemprop="name" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
+                    <h1 class="cs-product-title" data-product-title="{{product.title}}" data-product-category="{{product.category}}">
                         {{product.title}}
                     </h1>
                     <a href="#tab-reviews" class="cs-info-row" id="product-rating" data-product-rating>
