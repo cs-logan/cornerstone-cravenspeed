@@ -45,7 +45,7 @@
         {{/and}}
         "offers": {
             "@type": "Offer",
-            "priceCurrency": "{{currency_selector.active_currency_code}}",
+            "priceCurrency": "{{#if currency_selector.active_currency_code}}{{currency_selector.active_currency_code}}{{else}}USD{{/if}}",
             {{#if product.price.price_range}}
             "minPrice": "{{#if product.price.price_range.min.with_tax}}{{product.price.price_range.min.with_tax.value}}{{else}}{{product.price.price_range.min.without_tax.value}}{{/if}}",
             "maxPrice": "{{#if product.price.price_range.max.with_tax}}{{product.price.price_range.max.with_tax.value}}{{else}}{{product.price.price_range.max.without_tax.value}}{{/if}}",
@@ -54,8 +54,7 @@
             {{/if}}
             "itemCondition" : "https://schema.org/{{#if product.condition}}{{product.condition}}{{else}}New{{/if}}Condition",
             "availability" : "https://schema.org/{{#if product.pre_order}}PreOrder{{else if product.out_of_stock}}OutOfStock{{else if product.can_purchase '===' false}}OutOfStock{{else}}InStock{{/if}}",
-            "url" : "{{product.url}}",
-            "priceValidUntil": "{{moment (moment add='31536000000') 'YYYY-MM-DD' }}"
+            "url" : "{{product.url}}"
         }
     }
 </script>
