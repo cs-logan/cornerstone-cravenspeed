@@ -12,6 +12,7 @@ import AddToCart from './ui/addToCart';
 import ProductMessages from './ui/productMessages';
 import Badges from './ui/badges';
 import BlemProducts from './ui/blemProducts';
+import SchemaManager from './ui/schemaManager';
 import { resolveUrlToSelection } from './utils/urlResolver';
 
 export default class ProductController {
@@ -70,6 +71,7 @@ export default class ProductController {
             this.addToCart = new AddToCart(this.stateManager);
             this.badges = new Badges(this.stateManager);
             this.blemProducts = new BlemProducts(this.stateManager);
+            this.schemaManager = new SchemaManager(this.stateManager);
 
             this.unsubscribeLocal = this.stateManager.subscribe(this.handleLocalStateChange.bind(this));
 
@@ -160,5 +162,6 @@ export default class ProductController {
     destroy() {
         if (this.unsubscribeGlobal) this.unsubscribeGlobal();
         if (this.unsubscribeLocal) this.unsubscribeLocal();
+        if (this.schemaManager) this.schemaManager.destroy();
     }
 }

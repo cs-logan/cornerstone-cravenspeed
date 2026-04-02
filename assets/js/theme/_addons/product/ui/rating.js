@@ -4,7 +4,6 @@ export default class RatingDisplay {
         this.starContainer = document.querySelector('#star-rating');
         this.ratingInfo = document.querySelector('#rating-info');
         this.ratingLink = document.querySelector('#product-rating');
-        this.schemaPatched = false;
 
         // If elements aren't present, do nothing
         if (!this.starContainer || !this.ratingInfo) return;
@@ -68,41 +67,7 @@ export default class RatingDisplay {
                 stars[i].classList.add('icon--ratingFull');
             }
             this.ratingInfo.textContent = ` ${average}/5 with ${count} reviews`;
-            this._patchSchemaRating(average, count);
         }
-    }
-
-    _patchSchemaRating(ratingValue, reviewCount) {
-        if (this.schemaPatched) return;
-
-        const schemaScripts = document.querySelectorAll('script[type="application/ld+json"]');
-        let productScript = null;
-        let productSchema = null;
-
-        schemaScripts.forEach((script) => {
-            try {
-                const data = JSON.parse(script.textContent);
-                if (data['@type'] === 'Product' && !productScript) {
-                    productScript = script;
-                    productSchema = data;
-                }
-            } catch (e) {
-                // skip unparseable scripts
-            }
-        });
-
-        if (!productScript || !productSchema) return;
-
-        productSchema.aggregateRating = {
-            '@type': 'AggregateRating',
-            'ratingValue': String(ratingValue),
-            'reviewCount': String(reviewCount),
-            'bestRating': '5',
-            'worstRating': '1',
-        };
-
-        productScript.textContent = JSON.stringify(productSchema);
-        this.schemaPatched = true;
     }
 
     destroy() {
