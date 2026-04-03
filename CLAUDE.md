@@ -186,7 +186,6 @@ Adhere to these rules in all JS edits to pass the CI lint check:
 | Task | Status | Notes |
 | :--- | :--- | :--- |
 | **Implement URL Switching** | Considering | `history.pushState` on alias resolution; handle `popstate`. |
-| **DataManager Cache Fix** | Pending | Use `fetch(url, { cache: 'no-cache' })` and always update state from network response (remove `if (!cachedData)` guard). |
 
 ### Completed
 | Task | Notes |
@@ -213,3 +212,4 @@ Adhere to these rules in all JS edits to pass the CI lint check:
 | **Combine stockInfo/shippingInfo** | Combined into single `fulfillmentStatus` component row. |
 | **Persistence Race Condition** | Resolved race condition, recursion loop, and auto-selection logic. |
 | **Badges UI Component** | Recreated badges feature and logic. |
+| **DataManager Cache Fix** | Complete | Use `fetch(url, { cache: 'no-cache' })` and always update state from network response (remove `if (!cachedData)` guard). |

@@ -42,13 +42,8 @@ export default class ResultsPage {
     }
 
     _renderGrid(products) {
-        // We use the standard .productGrid class to inherit theme styles
-        const gridHTML = `
-            <ul class="productGrid">
-                ${products.map(product => this._buildCard(product)).join('')}
-            </ul>
-        `;
-        this.container.innerHTML = gridHTML;
+        const gridHTML = products.map(product => this._buildCard(product)).join('');
+        this.container.innerHTML = `<div class="productGrid">${gridHTML}</div>`;
     }
 
     _renderNoResults(query) {
@@ -74,36 +69,24 @@ export default class ResultsPage {
         const title = escapeHtml(product.title);
         const url = escapeHtml(product.url);
         const image = escapeHtml(product.image);
-        const price = escapeHtml(product.price);
+        const price = product.price;
 
-        // Semantic HTML structure matching Cornerstone's components/products/card.html
-        // Uses 'lazyload' class for lazysizes to pick up (if configured in theme)
         return `
-            <li class="product">
-                <article class="card">
-                    <figure class="card-figure">
-                        <a href="${url}" class="card-figure__link" aria-label="${title}">
-                            <div class="card-img-container">
-                                <img class="card-image lazyload" 
-                                     data-sizes="auto" 
-                                     src="${image}" 
-                                     alt="${title}" 
-                                     title="${title}">
-                            </div>
-                        </a>
-                    </figure>
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <a href="${url}">${title}</a>
-                        </h3>
-                        <div class="card-text" data-test-info-type="price">
-                            <div class="price-section price-section--withoutTax">
-                                <span class="price price--withoutTax">${price}</span>
-                            </div>
-                        </div>
+            <div class="cs-product-card">
+                <div class="cs-product-card-image-wrapper">
+                    <a href="${url}">
+                        <img class="cs-product-card-image" src="${image}" alt="${title}" title="${title}" width="360" height="270">
+                    </a>
+                </div>
+                <div class="cs-product-card-details">
+                    <h2 class="cs-card-title">
+                        <a href="${url}" class="cs-card-title-link">${title}</a>
+                    </h2>
+                    <div class="cs-card-price">
+                        ${price}
                     </div>
-                </article>
-            </li>
+                </div>
+            </div>
         `;
     }
 }
