@@ -33,12 +33,7 @@ export default class SchemaManager {
         const {
             archetype_average_review: ratingValue,
             archetype_review_count: reviewCount,
-            alias_price_low: rawLowPrice,
-            alias_price_high: rawHighPrice,
         } = archetypeData;
-
-        const lowPrice = rawLowPrice != null ? String(rawLowPrice).replace('$', '') : null;
-        const highPrice = rawHighPrice != null ? String(rawHighPrice).replace('$', '') : null;
 
         const count = parseInt(reviewCount, 10) || 0;
 
@@ -49,18 +44,6 @@ export default class SchemaManager {
                 reviewCount: String(count),
                 bestRating: '5',
                 worstRating: '1',
-            };
-        }
-
-        if (lowPrice != null && highPrice != null) {
-            const existing = productSchema.offers || {};
-            productSchema.offers = {
-                '@type': 'AggregateOffer',
-                lowPrice: String(lowPrice),
-                highPrice: String(highPrice),
-                priceCurrency: existing.priceCurrency || 'USD',
-                availability: existing.availability,
-                url: existing.url,
             };
         }
 

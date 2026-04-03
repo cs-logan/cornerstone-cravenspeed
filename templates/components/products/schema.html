@@ -43,6 +43,76 @@
         {{/each}}
         ],
         {{/and}}
+        {{#filter product.custom_fields 'alias_price_low' property='name'}}
+        "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "{{value}}",
+            {{#filter ../product.custom_fields 'alias_price_high' property='name'}}"highPrice": "{{value}}",{{/filter}}
+            "priceCurrency": "{{#if ../currency_selector.active_currency_code}}{{../currency_selector.active_currency_code}}{{else}}USD{{/if}}",
+            "availability": "https://schema.org/{{#if ../product.pre_order}}PreOrder{{else if ../product.out_of_stock}}OutOfStock{{else if ../product.can_purchase '===' false}}OutOfStock{{else}}InStock{{/if}}",
+            "url": "{{../product.url}}",
+            "shippingDetails": [
+                {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                        "@type": "MonetaryAmount",
+                        "value": "0",
+                        "currency": "USD"
+                    },
+                    "shippingDestination": {
+                        "@type": "DefinedRegion",
+                        "addressCountry": "US"
+                    },
+                    "deliveryTime": {
+                        "@type": "ShippingDeliveryTime",
+                        "handlingTime": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 0,
+                            "maxValue": 0,
+                            "unitCode": "DAY"
+                        },
+                        "transitTime": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 1,
+                            "maxValue": 7,
+                            "unitCode": "DAY"
+                        },
+                        "cutoffTime": "14:00-08:00"
+                    }
+                },
+                {
+                    "@type": "OfferShippingDetails",
+                    "deliveryTime": {
+                        "@type": "ShippingDeliveryTime",
+                        "handlingTime": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 0,
+                            "maxValue": 0,
+                            "unitCode": "DAY"
+                        },
+                        "cutoffTime": "14:00-08:00"
+                    }
+                }
+            ],
+            "hasMerchantReturnPolicy": [
+                {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "US",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 365,
+                    "returnMethod": ["https://schema.org/ReturnByMail", "https://schema.org/ReturnInStore"],
+                    "returnFees": "https://schema.org/FreeReturn"
+                },
+                {
+                    "@type": "MerchantReturnPolicy",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 365,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
+                }
+            ]
+        }
+        {{else}}
         "offers": {
             "@type": "Offer",
             "priceCurrency": "{{#if currency_selector.active_currency_code}}{{currency_selector.active_currency_code}}{{else}}USD{{/if}}",
@@ -54,7 +124,68 @@
             {{/if}}
             "itemCondition" : "https://schema.org/{{#if product.condition}}{{product.condition}}{{else}}New{{/if}}Condition",
             "availability" : "https://schema.org/{{#if product.pre_order}}PreOrder{{else if product.out_of_stock}}OutOfStock{{else if product.can_purchase '===' false}}OutOfStock{{else}}InStock{{/if}}",
-            "url" : "{{product.url}}"
+            "url" : "{{product.url}}",
+            "shippingDetails": [
+                {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                        "@type": "MonetaryAmount",
+                        "value": "0",
+                        "currency": "USD"
+                    },
+                    "shippingDestination": {
+                        "@type": "DefinedRegion",
+                        "addressCountry": "US"
+                    },
+                    "deliveryTime": {
+                        "@type": "ShippingDeliveryTime",
+                        "handlingTime": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 0,
+                            "maxValue": 0,
+                            "unitCode": "DAY"
+                        },
+                        "transitTime": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 1,
+                            "maxValue": 7,
+                            "unitCode": "DAY"
+                        },
+                        "cutoffTime": "14:00-08:00"
+                    }
+                },
+                {
+                    "@type": "OfferShippingDetails",
+                    "deliveryTime": {
+                        "@type": "ShippingDeliveryTime",
+                        "handlingTime": {
+                            "@type": "QuantitativeValue",
+                            "minValue": 0,
+                            "maxValue": 0,
+                            "unitCode": "DAY"
+                        },
+                        "cutoffTime": "14:00-08:00"
+                    }
+                }
+            ],
+            "hasMerchantReturnPolicy": [
+                {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "US",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 365,
+                    "returnMethod": ["https://schema.org/ReturnByMail", "https://schema.org/ReturnInStore"],
+                    "returnFees": "https://schema.org/FreeReturn"
+                },
+                {
+                    "@type": "MerchantReturnPolicy",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 365,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
+                }
+            ]
         }
+        {{/filter}}
     }
 </script>
