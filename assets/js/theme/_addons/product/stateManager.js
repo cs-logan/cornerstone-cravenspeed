@@ -271,7 +271,6 @@ export default class StateManager {
 
             return currentLevel;
         }
-
         if (!make_model_index) return null;
 
         const selectionOrder = ['make', 'model', 'generation', option_title, sub_option_title].filter(Boolean);
@@ -284,7 +283,7 @@ export default class StateManager {
             }
 
             let nextLevel;
-            if (currentLevel[selection]) {
+            if (key === 'make' && currentLevel[selection]) {
                 nextLevel = currentLevel[selection];
             } else if (key === 'model' && selections.make && currentLevel.models && currentLevel.models[selections.make + selection]) {
                 nextLevel = currentLevel.models[selections.make + selection];
