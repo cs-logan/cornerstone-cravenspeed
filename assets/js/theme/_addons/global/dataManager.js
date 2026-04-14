@@ -145,10 +145,12 @@ class DataManager {
     async getInventoryData() {
         const url = `${this.productBasePath}/global/global-inventory.json`;
         try {
-            return await this._fetchJSON(url);
+            const response = await fetch(url, { cache: 'no-cache' });
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
         } catch (error) {
             console.warn('[DataManager] Global inventory unreachable. Defaulting to in-stock behavior.', error);
-            return null; // Return null instead of throwing, as it's non-critical
+            return null;
         }
     }
 }
