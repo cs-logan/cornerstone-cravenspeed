@@ -39,6 +39,8 @@ export default class ProductController {
                 DataManager.getInventoryData(),
             ]);
 
+            window.csDataVersions = window.csDataVersions || {};
+            window.csDataVersions.archetype = { lastUpdate: archetypeData.last_json_update, name: this.archetypeName };
             archetypeData.archetypeName = this.archetypeName;
 
             const resolvedSelection = resolveUrlToSelection(window.location.pathname, archetypeData);
@@ -123,6 +125,8 @@ export default class ProductController {
         if (newAliasFile) {
             try {
                 const aliasData = await DataManager.getAliasData(this.archetypeName, newAliasFile);
+                window.csDataVersions = window.csDataVersions || {};
+                window.csDataVersions.alias = { lastUpdate: aliasData.last_json_update, file: newAliasFile };
                 this.stateManager.setAliasData(aliasData);
             } catch (error) {
                 console.error(`Failed to load alias data for ${newAliasFile}:`, error);

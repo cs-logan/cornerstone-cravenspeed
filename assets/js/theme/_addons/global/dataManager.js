@@ -66,7 +66,8 @@ class DataManager {
 
         const cachedData = this._loadFromCache();
         if (cachedData) {
-            console.log('[DataManager] Search Data Loaded from cache. Last full update:', cachedData.vehicle_registry.last_registry_update);
+            window.csDataVersions = window.csDataVersions || {};
+            window.csDataVersions.search = { lastUpdate: cachedData.vehicle_registry.last_registry_update, source: 'cache' };
             StateManager.setState({ search: { ...StateManager.getState().search, data: cachedData, isLoading: false } });
         }
 
@@ -79,7 +80,8 @@ class DataManager {
             })
             .then(data => {
                 this._saveToCache(data);
-                console.log('[DataManager] Search Data Loaded from network. Last full update:', data.vehicle_registry.last_registry_update);
+                window.csDataVersions = window.csDataVersions || {};
+                window.csDataVersions.search = { lastUpdate: data.vehicle_registry.last_registry_update, source: 'network' };
                 StateManager.setState({ search: { ...StateManager.getState().search, data, isLoading: false } });
             })
             .catch(error => {

@@ -39,7 +39,6 @@ export default class BlemProducts {
 
     update(state) {
         const { aliasData, inventory, blemSelected } = state;
-        console.log(('aliasData: ', aliasData));
 
         // Reset if no alias or no blem data
         if (!aliasData || !aliasData.blem) {
