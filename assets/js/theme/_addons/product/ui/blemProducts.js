@@ -39,6 +39,7 @@ export default class BlemProducts {
 
     update(state) {
         const { aliasData, inventory, blemSelected } = state;
+        console.log(('aliasData: ', aliasData));
 
         // Reset if no alias or no blem data
         if (!aliasData || !aliasData.blem) {
@@ -67,6 +68,11 @@ export default class BlemProducts {
 
         // Render UI
         const savings = aliasData.price - aliasData.blem.price;
+
+        if (savings <= 0) {
+            this.container.innerHTML = '';
+            return;
+        }
 
         if (blemSelected) {
             this._renderCheckbox(savings);
