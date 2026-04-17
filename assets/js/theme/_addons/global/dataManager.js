@@ -22,7 +22,9 @@ class DataManager {
         this.pendingRequests = new Map(); // Track in-flight requests
 
         DataManager.instance = this;
+        
     }
+
 
     /**
      * Generic private method to fetch and cache JSON.
@@ -147,7 +149,10 @@ class DataManager {
         try {
             const response = await fetch(url, { cache: 'no-cache' });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
+            const data = await response.json();
+            window.csDataVersions = window.csDataVersions || {};
+            window.csDataVersions.inventory = { lastUpdate: data.last_json_update, source: 'network' };
+            return data;
         } catch (error) {
             console.warn('[DataManager] Global inventory unreachable. Defaulting to in-stock behavior.', error);
             return null;

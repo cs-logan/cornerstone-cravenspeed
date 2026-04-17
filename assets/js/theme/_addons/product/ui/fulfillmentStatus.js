@@ -1,3 +1,5 @@
+const SHIPPING_CUTOFF_HOUR = 10; // Pacific Time, 24-hour format
+
 export default class FulfillmentStatus {
     constructor(stateManager) {
         this.stateManager = stateManager;
@@ -70,14 +72,14 @@ export default class FulfillmentStatus {
         const pacificMinute = parseInt(parts.find(p => p.type === 'minute').value, 10);
         const weekday = parts.find(p => p.type === 'weekday').value; // 'Sun','Mon',...'Sat'
 
-        const isBefore2PM = pacificHour < 14 || (pacificHour === 14 && pacificMinute === 0);
+        const isBeforeCutoff = pacificHour < SHIPPING_CUTOFF_HOUR || (pacificHour === SHIPPING_CUTOFF_HOUR && pacificMinute === 0);
         const isFriday = weekday === 'Fri';
         const isSaturday = weekday === 'Sat';
         const isSunday = weekday === 'Sun';
 
         let text = 'today';
 
-        if (!isBefore2PM) {
+        if (!isBeforeCutoff) {
             text = 'tomorrow';
         }
 
