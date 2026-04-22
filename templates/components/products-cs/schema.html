@@ -53,7 +53,7 @@
             "price": "{{#if product.price.with_tax}}{{product.price.with_tax.value}}{{else}}{{product.price.without_tax.value}}{{/if}}",
             {{/if}}
             "itemCondition" : "https://schema.org/{{#if product.condition}}{{product.condition}}{{else}}New{{/if}}Condition",
-            "availability" : "https://schema.org/{{#if product.pre_order}}PreOrder{{else if product.out_of_stock}}OutOfStock{{else if product.can_purchase '===' false}}OutOfStock{{else}}InStock{{/if}}",
+            "availability" : "https://schema.org/{{#if product.pre_order}}PreOrder{{else}}InStock{{/if}}",
             "url" : "{{product.url}}"
         }
     }

@@ -1,34 +1,50 @@
 export default class SchemaManager {
     constructor(stateManager) {
         this.stateManager = stateManager;
-        this.schemaPatched = false;
+        this.ratingPatched = false;
+        this.lastAliasId = null;
+        this.lastBlemSelected = null;
+        this.productScript = null;
+        this.productSchema = null;
         this.unsubscribe = this.stateManager.subscribe(this.update.bind(this));
         this.update(this.stateManager.getState());
     }
 
     update(state) {
-        if (this.schemaPatched || !state.archetypeData) return;
-        this._patchSchema(state.archetypeData);
+        if (!this.ratingPatched && state.archetypeData) {
+            this._patchRating(state.archetypeData);
+        }
+        if (state.aliasData && state.inventory) {
+            const aliasId = state.aliasData.base_id;
+            const { blemSelected } = state;
+            if (aliasId !== this.lastAliasId || blemSelected !== this.lastBlemSelected) {
+                this._patchAvailability(state.aliasData, state.inventory, blemSelected);
+                this.lastAliasId = aliasId;
+                this.lastBlemSelected = blemSelected;
+            }
+        }
     }
 
-    _patchSchema(archetypeData) {
-        const schemaScripts = document.querySelectorAll('script[type="application/ld+json"]');
-        let productScript = null;
-        let productSchema = null;
-
-        schemaScripts.forEach((script) => {
+    _findProductSchema() {
+        if (this.productScript) return true;
+        const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+        for (const script of scripts) {
             try {
                 const data = JSON.parse(script.textContent);
-                if (data['@type'] === 'Product' && !productScript) {
-                    productScript = script;
-                    productSchema = data;
+                if (data['@type'] === 'Product') {
+                    this.productScript = script;
+                    this.productSchema = data;
+                    return true;
                 }
             } catch (e) {
                 // skip unparseable scripts
             }
-        });
+        }
+        return false;
+    }
 
-        if (!productScript || !productSchema) return;
+    _patchRating(archetypeData) {
+        if (!this._findProductSchema()) return;
 
         const {
             archetype_average_review: ratingValue,
@@ -38,17 +54,32 @@ export default class SchemaManager {
         const count = parseInt(reviewCount, 10) || 0;
 
         if (count > 0 && ratingValue) {
-            productSchema.aggregateRating = {
+            this.productSchema.aggregateRating = {
                 '@type': 'AggregateRating',
                 ratingValue: String(parseFloat(ratingValue)),
                 reviewCount: String(count),
                 bestRating: '5',
                 worstRating: '1',
             };
+            this.productScript.textContent = JSON.stringify(this.productSchema);
         }
 
-        productScript.textContent = JSON.stringify(productSchema);
-        this.schemaPatched = true;
+        this.ratingPatched = true;
+    }
+
+    _patchAvailability(aliasData, inventory, blemSelected) {
+        if (!this._findProductSchema()) return;
+        if (!this.productSchema.offers) return;
+
+        const inventoryId = blemSelected && aliasData.blem
+            ? aliasData.blem.qty_id
+            : aliasData.base_id;
+
+        const entry = inventory.global_inv?.[inventoryId];
+        const isInStock = entry && (entry.av > 0 || entry.a2b > 0);
+
+        this.productSchema.offers.availability = `https://schema.org/${isInStock ? 'InStock' : 'OutOfStock'}`;
+        this.productScript.textContent = JSON.stringify(this.productSchema);
     }
 
     destroy() {

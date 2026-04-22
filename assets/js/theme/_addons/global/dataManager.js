@@ -22,7 +22,6 @@ class DataManager {
         this.pendingRequests = new Map(); // Track in-flight requests
 
         DataManager.instance = this;
-        
     }
 
 
@@ -40,7 +39,7 @@ class DataManager {
 
         const requestPromise = (async () => {
             try {
-                const response = await fetch(url);
+                const response = await fetch(url, { cache: 'no-cache' });
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 this.jsonCache.set(url, data);
