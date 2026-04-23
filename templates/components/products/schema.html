@@ -49,7 +49,7 @@
             "lowPrice": "{{value}}",
             {{#filter ../product.custom_fields 'alias_price_high' property='name'}}"highPrice": "{{value}}",{{/filter}}
             "priceCurrency": "{{#if ../currency_selector.active_currency_code}}{{../currency_selector.active_currency_code}}{{else}}USD{{/if}}",
-            "availability": "https://schema.org/{{#if ../product.pre_order}}PreOrder{{else if ../product.out_of_stock}}OutOfStock{{else if ../product.can_purchase '===' false}}OutOfStock{{else}}InStock{{/if}}",
+            "availability": "https://schema.org/{{#if ../product.pre_order}}PreOrder{{else}}InStock{{/if}}",
             "url": "{{../product.url}}",
             "shippingDetails": [
                 {
